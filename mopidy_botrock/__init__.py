@@ -22,12 +22,10 @@ class Extension(ext.Extension):
 
     def get_config_schema(self):
         schema = super(Extension, self).get_config_schema()
-        # TODO: Comment in and edit, or remove entirely
-        schema['accesskey'] = config.String()
-        schema['secretkey'] = config.String()
-	schema['channeltoken'] = config.String()
-	schema['channel'] = config.String()
-	schema['resource'] = config.String()
+        #schema['accesskey'] = config.String()
+        #schema['secretkey'] = config.String()
+        schema['channeltoken'] = config.String()
+        schema['topic'] = config.String()
         return schema
 
     def setup(self, registry):
