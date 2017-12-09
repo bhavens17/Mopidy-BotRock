@@ -39,6 +39,10 @@ class BotRockFrontend(pykka.ThreadingActor, core.CoreListener):
 		self.client.connect(_hostname, 1883, 60)
 
 		self.client.loop_start()
+
+		#Turn on consume mode, to cause tracks to be removed from playlist as they finish playing
+		self.core.tracklist.set_consume(True)
+		
 		super(BotRockFrontend, self).__init__()
 
 	def on_mqtt_connect(self, client, data, flags, rc):
