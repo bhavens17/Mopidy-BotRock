@@ -1,0 +1,451 @@
+
+.list {
+	.list-item {
+
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+
+		display: block;
+		position: relative;
+		margin: 0 -10px -1px -10px;
+		cursor: pointer;
+		border-radius: 3px;
+		border-bottom: 1px solid rgba(255,255,255,0.05);
+		border-top: 1px solid rgba(255,255,255,0.05);
+
+		.liner {
+			@include clearfix;
+			padding: 14px 30px 13px 10px;
+		}
+
+		&.selected {
+			background: rgba(255,255,255,0.08) !important;
+
+			.select-zone {
+				&::after {
+					background: $blue;
+					border-color: $blue !important;
+				}
+			}
+		}
+
+		&.playing {
+			color: $turquoise;
+		}
+
+		.select-zone,
+		.drag-zone {
+			display: none;
+		}
+
+		.context-menu-trigger {
+			position: absolute;
+			top: 6px;
+			right: 0;
+
+			.dot {
+				width: 4px;
+				height: 4px;
+				margin-left: 0;
+			}
+
+			&:before {
+				display: none !important;
+			}
+		}
+
+		.source {
+			color: $mid_grey;
+			position: absolute;
+			top: 16px;
+			right: 32px;
+		}
+
+		:root .notouch:not(.dragging) &:not(.header):not(.no-click).hover {
+			background: rgba(255,255,255,0.03);
+			cursor: pointer;
+		}
+
+		&.header {
+			font-size: 10px;
+			color: $grey;
+			text-transform: uppercase;
+			border-top: 0;
+
+			.liner {
+				padding-bottom: 2px;
+			}
+		}
+
+		&.field {
+			padding: 0 !important;
+
+			& > label {
+				display: block;
+				position: relative;
+				padding: 12px 10px 12px 20px;
+				cursor: pointer;
+			}
+		}
+	}
+
+	&.track-list {
+		.list-item {
+			.col {
+				&.name { 
+					width: 40%;
+				}
+				&.artists,
+				&.album { 
+					width: 25%;
+				}
+				&.duration {
+					width: 5%;
+				}
+			}
+
+			:root .dragging &.hover,
+			&.touch-drag-hover {
+				border-top: 3px solid $blue;
+				margin-top: -3px;
+				background: transparent;
+			}
+		}
+	}
+
+	&.playlist-list .list-item {
+		.col {
+			&.name { 
+				width: 50%;
+			}
+			&.owner {
+				width: 20%
+			}
+			&.source,
+			&.can_edit,
+			&.tracks_total,
+			&.popularity {
+				width: 10%;
+			}
+		}
+	}
+
+	&.album-list .list-item {
+		.col {
+			&.name,
+			&.artists { 
+				width: 30%;
+			}
+			&.added_at,
+			&.release_date {
+				width: 15%;
+			}
+			&.tracks_total {
+				width: 10%;
+			}
+		}
+	}
+
+	&.library-local-album-list .list-item{
+		.col {
+			&.name,
+			&.artists { 
+				width: 45%;
+			}
+			&.tracks_total {
+				width: 10%;
+			}
+		}
+	}
+
+	&.artist-list .list-item {
+		.col {
+			&.name { 
+				width: 70%;
+			}
+			&.followers_total,
+			&.popularity {
+				width: 15%;
+			}
+		}
+	}
+
+	&.queue-track-list {
+		.list-item {
+			.liner {
+				padding-right: 60px;
+			}
+		}
+		.col {
+			&.name,
+			&.artists,
+			&.album { 
+				width: 25% !important;
+			}
+			&.added { 
+				width: 20%;
+			}
+		}
+	}
+
+	&.queue-history-track-list .list-item {
+		.col {
+			&.name { 
+				width: 60%;
+			}
+			&.played_at,
+			&.source {
+				width: 20%;
+			}
+		}
+	}
+
+	&.related-artist-list {
+		padding-bottom: 20px;
+		
+		.artist {
+			display: block;
+			border: 0;
+			margin: 10px 0;
+			@include clearfix;
+
+			.thumbnail {
+				@include animate();
+				border-radius: 50%;
+				width: 50px;
+				margin-right: 15px;
+				float: left;
+				border: 3px solid transparent;
+			}
+
+			.name {
+				display: block;
+				padding-top: 20px;
+			}
+		}
+
+		a.artist:hover {
+			.thumbnail {
+				border-color: $turquoise;
+				opacity: 1;
+			}
+		}
+	}
+
+	&.track-list.mini-zones {
+		.list-item {	
+
+			&.can-sort {
+				padding-left: 60px !important;
+			}
+			
+			&:not(.can-sort){
+				padding-left: 35px !important;
+			}
+
+			.select-zone {
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 34px;
+				font-size: 8px;
+				display: block;
+				
+				.fa {
+					position: absolute;
+					top: 50%;
+					left: 17px;
+					margin-top: -3px;
+					pointer-events: none;
+					color: $white;
+					z-index: 1;
+				}
+
+				&:after {
+					display: block;
+					content: '';
+					border: 1px solid $mid_grey;
+					border-radius: 50%;
+					width: 14px;
+					height: 14px;
+					position: absolute;
+					top: 50%;
+					left: 14px;
+					margin-top: -7px;
+				}
+			}
+
+			.drag-zone {
+				position: absolute;
+				top: 0;
+				left: 34px;
+				height: 100%;
+				width: 34px;
+				font-size: 14px;
+				display: block;
+				color: $mid_grey;
+				
+				.fa {
+					position: absolute;
+					top: 50%;
+					left: 6px;
+					margin-top: -6px;
+					pointer-events: none;
+				}
+			}
+		}
+	}
+
+	@include responsive($bp_medium){
+
+		.list-item {
+
+			.liner {
+				padding: 12px !important;
+			}
+
+			.source {
+				position: static;
+				float: none;
+			}
+
+			.select-zone {
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 34px;
+				font-size: 8px;
+				display: block;
+				
+				.fa {
+					position: absolute;
+					top: 27px;
+					left: 17px;
+					pointer-events: none;
+					color: $white;
+					z-index: 1;
+				}
+
+				&:after {
+					display: block;
+					content: '';
+					border: 1px solid $mid_grey;
+					border-radius: 50%;
+					width: 14px;
+					height: 14px;
+					position: absolute;
+					top: 16px;
+					left: 14px;
+				}
+			}
+
+			.drag-zone {
+				position: absolute;
+				top: 0;
+				left: 34px;
+				height: 100%;
+				width: 34px;
+				font-size: 14px;
+				display: block;
+				color: $mid_grey;
+				
+				.fa {
+					position: absolute;
+					top: 24px;
+					left: 6px;
+					pointer-events: none;
+				}
+			}
+
+			.context-zone {
+				top: 14px;
+			}
+
+			.col {
+				&.name {
+					width: auto !important;
+					padding-right: 10%;
+					display: block;
+					float: none;
+				}
+
+				&.duration {
+					width: auto !important;
+					position: absolute;
+					right: 10px;
+					text-align: right;
+				}
+
+				&:not(.name):not(.duration):not(.album){
+					color: $mid_grey;
+					display: inline;
+					width: auto !important;
+					float: none !important;
+					word-wrap: break-word;
+				}
+
+				&.followers_total:after {
+					content: ' followers';
+				}
+
+				&.tracks_total:after {
+					content: ' tracks';
+				}
+
+				&.popularity:after {
+					content: '% popularity';
+				}
+
+				&.album,
+				&.can_edit,
+				&.release_date {
+					display: none;
+				}
+			}
+
+			&.header { 
+				display: none; 
+			}
+		}
+
+		&.queue-track-list {
+			.list-item {
+				.artists {
+					padding-left: 0 !important;
+
+					&:before {
+						display: none !important;
+					}
+				}
+
+				.source,
+				.added {
+					display: none !important;
+				}
+			}
+		}
+
+		&.queue-history-track-list {
+			.list-item {
+				.source {
+					display: none !important;
+				}
+			}
+		}
+
+		&.track-list {
+			.list-item.can-sort {
+				padding-left: 70px !important;
+			}
+			.list-item:not(.can-sort){
+				padding-left: 42px !important;
+			}
+		}
+	}
+}

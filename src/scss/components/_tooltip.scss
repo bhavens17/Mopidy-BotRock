@@ -1,0 +1,57 @@
+
+.has-tooltip {
+	position: relative;
+
+	.tooltip {
+		@include animate();
+		opacity: 0;
+		position: absolute;
+		pointer-events: none;
+		background: $overlay_dark;
+		display: block;
+		max-width: 200px;
+		padding: 5px 8px;
+		color: $white;
+		font-size: 11px;
+		line-height: 12px;
+		bottom: 37px;
+		left: 1px;
+		z-index: 97;
+		border-radius: 3px;
+		white-space: wrap;
+
+		&:first-letter {
+			text-transform: uppercase;
+		}
+
+		&:after {
+			content: '';
+			display: block;
+			width: 6px;
+			height: 6px;
+			background: $overlay_dark;
+			-ms-transform: rotate(45deg);
+			-webkit-transform: rotate(45deg);
+			transform: rotate(45deg);
+			position: absolute;
+			bottom: -3px;
+			left: 9px;
+		}
+	}
+
+	&:hover {
+		.tooltip {
+			opacity: 1;
+			bottom: 35px;
+		}
+	}
+
+	&.large-tooltip {
+		.tooltip {
+			padding: 8px 12px;
+			font-size: 12px;
+			line-height: 14px;
+			bottom: 50px;
+		}
+	}
+}

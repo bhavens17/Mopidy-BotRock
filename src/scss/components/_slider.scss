@@ -1,0 +1,59 @@
+
+.slider {
+	position: relative;
+	cursor: pointer;
+
+	.track {
+		position: absolute;
+		background: lighten($dark_grey, 10%);
+		border-radius: 2px;
+
+		.progress {
+			position: absolute;
+			background: $turquoise;
+			pointer-events: none;
+			left: 0;
+			border-radius: 2px;
+		}
+	}
+
+	&.disabled {
+		.progress {
+			background: rgba(255,255,255,0.25);
+		}
+	}
+
+	&.horizontal {
+		height: 20px;
+
+		.track {
+			height: 4px;
+			top: 42%;
+			right: 0;
+			left: 0;
+			margin-top: -3px;
+
+			.progress {
+				top: 0;
+				height: 100%;
+			}
+		}
+	}
+
+	&.vertical {
+		width: 20px;
+		height: 100%;
+
+		.track {
+			width: 5px;
+			top: 0;
+			bottom: 0;
+			left: 12px;
+
+			.progress {
+				bottom: 0;
+				width: 100%;
+			}
+		}
+	}
+}

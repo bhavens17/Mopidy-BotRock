@@ -1,0 +1,281 @@
+
+.grid {
+
+	.grid-item-wrapper {
+		display: inline-block;
+	}
+
+	.grid-item {
+		display: inline-block;
+		vertical-align: top;
+		border-bottom: 0;
+		position: relative;
+
+		.thumbnail {
+			@include animate();
+			max-width: 100%;
+		}
+
+		.name {
+			@include one_line_text;
+			padding-top: 8px;
+		}
+
+		.secondary {
+			@include one_line_text;
+			padding-top: 2px;
+			color: $secondary_grey;
+		}
+
+		.source {
+			color: $secondary_grey;
+			padding-left: 2px;
+		}
+
+		&:hover{
+			cursor: pointer;
+
+			.thumbnail {
+				opacity: 0.75;
+			}
+		}
+
+		&:active,
+		&:focus {
+			-moz-transform: scale(0.98);
+			-webkit-transform: scale(0.98);
+			transform: scale(0.98);
+		}
+	}
+
+	&.category-grid {
+		.grid-item {
+			position: relative;
+
+			.name {
+				position: absolute;
+				bottom: 15%;
+				left: 0;
+				right: 0;
+				text-align: center;
+				font-size: 14px;
+				font-weight: 600;
+				color: #FFFFFF;
+			}
+		}
+
+		@include responsive(null, $bp_wide){
+			.grid-item {
+				.name {
+					font-size: 16px;
+				}
+			}
+		}
+	}
+
+	@include responsive(null, 1900px){
+		&.mini {
+			.grid-item {
+				@include grid_item(3 )
+			}
+			&.single-row {
+				.grid-item:nth-child(1n+4){
+					display: none;
+				}
+			}		
+		}
+		&:not(.mini){
+			.grid-item {
+				@include grid_item(5 )
+			}
+			&.single-row {
+				.grid-item:nth-child(1n+6){
+					display: none;
+				}
+			}
+		}
+	}
+
+	@include responsive(1899px, 1200px){
+		&.mini {
+			.grid-item {
+				@include grid_item(2 )
+			}	
+			&.single-row {
+				.grid-item:nth-child(1n+3){
+					display: none;
+				}
+			}		
+		}
+		&:not(.mini){
+			.grid-item {
+				@include grid_item(4 )
+			}	
+			&.single-row {
+				.grid-item:nth-child(1n+5){
+					display: none;
+				}
+			}
+		}
+	}
+
+	@include responsive(1199px, 800px){
+		&.mini {
+			.grid-item {
+				@include grid_item(2 )
+			}			
+			&.single-row {
+				.grid-item:nth-child(1n+3){
+					display: none;
+				}
+			}
+		}
+		&:not(.mini){
+			.grid-item {
+				@include grid_item(4 )
+			}	
+			&.single-row {
+				.grid-item:nth-child(1n+5){
+					display: none;
+				}
+			}
+		}
+	}
+
+	@include responsive(799px, 500px){
+		&.mini{
+			.grid-item {
+				@include grid_item(6, 2%, 4% )
+			}	
+			&.single-row {
+				.grid-item:nth-child(1n+7){
+					display: none;
+				}
+			}
+		}
+		&:not(.mini){
+			.grid-item {
+				@include grid_item(3, 2%, 4% )
+			}	
+			&.single-row {
+				.grid-item:nth-child(1n+4){
+					display: none;
+				}
+			}
+		}
+	}
+
+	@include responsive(499px){
+		&.mini{
+			.grid-item {
+				@include grid_item(3, 2%, 4% )
+			}	
+			&.single-row {
+				.grid-item:nth-child(1n+4){
+					display: none;
+				}
+			}
+		}
+		&:not(.mini){
+			.grid-item {
+				@include grid_item(2, 2%, 4% )
+			}	
+			&.single-row {
+				.grid-item:nth-child(1n+5){
+					display: none;
+				}
+			}
+		}
+	}
+}
+
+
+.tiles {
+	padding-bottom: 60px;
+
+	.tile {
+		color: $white;
+		text-align: center;
+		position: relative;
+		z-index: 1;
+		float: left;
+		overflow: hidden;
+
+		.content {
+			display: block;
+			position: absolute;
+			top: 50%;
+			left: 10%;
+			right: 10%;
+			vertical-align: top;
+			margin-top: -12px;
+			font-size: 16px;
+			z-index: 2;
+		}
+
+		&:last-child {
+			@include clearfix();
+		}
+
+		&:before {
+			content: '';
+			display: block;
+			width: 100%;
+			padding-bottom: 100%;
+			background: lighten($dark_grey,2%);
+			z-index: -2;
+		}
+
+		&.thumbnail-wrapper {
+			&:before {
+				display: none;
+			}
+		}
+	}
+
+	&.artist-stats {
+
+		.tile {
+			.content {
+				.fa {
+					display: block;
+					position: absolute;
+					top: 50%;
+					left: 10%;
+					right: 10%;
+					text-align: center;
+					margin-top: -27px;
+					font-size: 60px;
+					z-index: -1;
+					opacity: 0.1;
+				}
+			}
+		}
+
+		@include responsive(null, $bp_medium){
+			.tile {
+				@include grid_item(2 );
+			}
+		}
+
+		@include responsive($bp_medium){
+			padding-bottom: 20px;
+			
+			.tile {
+				@include grid_item(3 );
+			}
+		}
+
+		@include responsive($bp_narrow){
+			.tile {
+				.text {
+					font-size: 14px;
+					.fa {
+						font-size: 28px;
+						margin-top: -12px;
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,166 @@
+
+.settings-view {
+
+	.intro {
+		position: relative;
+		@include clearfix();
+
+		.parallax {
+			position: absolute;
+			z-index: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			height: auto;
+			opacity: 0.5;
+		}
+
+		.liner {
+			position: relative;
+			z-index: 1;
+			padding: 20vh 40px 0;
+
+			.sub-views {
+				position: relative;
+			}
+		}
+	}
+
+	.content-wrapper {
+		padding-top: 0;
+	}
+	
+	.services {
+		@include clearfix();
+		margin-bottom: -20px;
+
+		.service {
+			margin-right: 20px;
+			margin-bottom: 20px;
+			padding-left: 46px;
+			box-sizing: border-box;
+			position: relative;
+			float: left;
+			min-width: 150px;
+
+			.title {
+				margin: 0;
+				padding: 0;
+			}
+
+			.icon {
+				position: absolute;
+				top: 2px;
+				left: 0;
+				width: 34px;
+				height: 25px;
+				padding-top: 9px;
+				border: 2px solid $grey;
+				text-align: center;
+				border-radius: 50%;
+
+				.fa {
+					font-size: 16px;
+				}
+			}
+		}
+	}
+
+	.field.current-user {
+		.text {
+			padding: 14px 14px 14px 0px;
+
+			.user {
+				border: 0;
+				position: relative;
+
+				.thumbnail {
+					@include animate();
+					position: absolute;
+					display: block;
+					top: -14px;
+					left: 0;
+					max-width: 40px;
+					border: 2px solid transparent;
+					border-radius: 50%;
+				}
+
+				.user-name {
+					padding: 2px 14px 2px 55px;
+				}
+
+				&[href]:hover {
+					.thumbnail {
+						cursor: pointer;
+						border-color: $turquoise;
+					}
+				}
+			}
+		}
+	}
+
+	.field.pusher-connections {
+		.connection.me {
+			color: $turquoise;
+		}
+	}
+
+	@include responsive($bp_medium){
+		.intro {
+			.liner {
+				padding: 15vh 20px 0;
+			}
+		}
+
+		.content-wrapper {
+			padding-bottom: 60px;
+		}
+
+		.services {
+			text-align: center;
+
+			.service {
+				padding: 40px 0 0 0;
+				text-align: center;
+				min-width: 100px;
+				display: inline-block;
+				margin-right: 0;
+				float: none;
+
+				.icon {
+					top: 0;
+					left: 50%;
+					margin-left: -18px;
+				}
+			}
+		}
+
+		.field.pusher-connections {
+			.connection {
+				.col {
+					width: auto;
+					display: inline-block;
+					padding-right: 10px;
+				}
+			}
+		}
+
+		section {
+			padding: 20px;
+		}
+	}
+}
+
+
+.debugger-view {
+	section {
+		padding: 40px;
+	}
+
+	@include responsive($bp_medium){
+		section {
+			padding: 20px;
+		}
+	}
+}

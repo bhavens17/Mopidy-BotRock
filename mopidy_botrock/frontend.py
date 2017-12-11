@@ -17,10 +17,13 @@ logger = logging.getLogger(__name__)
 class BotRockFrontend(pykka.ThreadingActor, core.CoreListener):
 
 	def __init__(self, config, core):
+		super(BotRockFrontend, self).__init__()
+		
 		logger.info("mopidy_botrock initializing ... ")
-		self.core = core
+		
+		mem.botrock.core = core
+		mem.botrock.config = config
 
-		self.config = config['botrock']
 		_hostname = 'mqtt.beebotte.com'
 		#_accesskey = self.config['accesskey']
 		#_secretkey = self.config['secretkey']
@@ -31,9 +34,6 @@ class BotRockFrontend(pykka.ThreadingActor, core.CoreListener):
 		self.client.on_connect = self.on_mqtt_connect
 		self.client.on_message = self.on_mqtt_message
 
-		#if _secretkey:
-		#	self.client.username_pw_set(_secretkey)
-		#else:
 		self.client.username_pw_set("token:" + _channeltoken)
 
 		self.client.connect(_hostname, 1883, 60)
@@ -42,8 +42,6 @@ class BotRockFrontend(pykka.ThreadingActor, core.CoreListener):
 
 		#Turn on consume mode, to cause tracks to be removed from playlist as they finish playing
 		self.core.tracklist.set_consume(True)
-		
-		super(BotRockFrontend, self).__init__()
 
 	def on_mqtt_connect(self, client, data, flags, rc):
 		client.subscribe(self.topic, 1)

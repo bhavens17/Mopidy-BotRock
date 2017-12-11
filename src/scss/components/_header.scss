@@ -1,0 +1,93 @@
+
+main {
+	header {
+		box-sizing: border-box;
+		padding: 40px;
+		margin-bottom: -40px;
+
+		h1 {
+			display: inline-block;
+		}
+
+		.icon {
+			@include invert();
+			display: inline-block;
+			padding-right: 14px;
+			height: 2.6rem;
+			vertical-align: bottom;
+			margin-bottom: 8px;
+		}
+
+		.options {
+			position: absolute;
+			top: 2.6rem;
+			right: 40px;
+
+			.context-menu-trigger {
+				display: none;
+				font-size: 18px;
+				padding: 16px 14px;
+			}
+
+			.button,
+			button {
+				font-size: 13px;
+				font-weight: 800;
+				font-family: "Overpass";
+				background: transparent;
+				text-transform: none;
+				padding: 13px 10px;
+				margin: 0;
+				min-width: 0;
+				color: $light_grey;
+
+				&:hover {
+					color: $blue;
+					box-shadow: none;
+
+					&:before {
+						display: none;
+					}
+				}
+			}
+		}
+
+		&.overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			z-index: 98;
+		}
+
+		@include responsive($bp_medium){
+			padding: 10px 10px 10px 0;
+			margin-bottom: -10px;
+
+			.icon {
+				height: 1.2rem;
+				margin-bottom: 5px;
+				padding-right: 10px;
+				margin-left: 10px;
+			}
+
+			h1 {
+				vertical-align: top;
+				padding-top: 6px;
+			}
+
+			.options {
+				top: 8px;
+				right: 0;
+
+				.context-menu-trigger {
+					display: block;
+				}
+
+				.items {
+					display: none;
+				}
+			}
+		}
+	}
+}

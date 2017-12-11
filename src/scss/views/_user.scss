@@ -1,0 +1,52 @@
+
+.user-view {
+	.intro {
+		@include clearfix();
+		position: relative;
+
+		.parallax {
+			position: absolute;
+			z-index: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			height: auto;
+		}
+
+		.liner {
+			position: relative;
+			z-index: 1;
+			padding: 35vh 40px 0;
+
+			h1 {
+				padding-bottom: 15px;
+				font-size: 4rem;
+			}
+
+			h2 {
+				padding-bottom: 25px;
+			}
+		}
+	}
+
+	@include responsive($bp_medium){
+		.intro {
+
+			.thumbnail {
+				float: none;
+				margin: 0 auto 20px;
+			}
+
+			.liner {
+				padding: 15vh 10px 0;
+			}
+
+			h1 {
+				padding-top: 0;
+				font-size: 3rem;
+				line-height: 3rem;
+			}
+		}
+	}
+}

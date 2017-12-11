@@ -1,0 +1,140 @@
+
+.artist-view {
+
+	.body-loader:not(.lazy-loader){
+		padding: 15vh 0;
+	}
+
+	.intro {
+		position: relative;
+		@include clearfix();
+
+		.parallax {
+			position: absolute;
+			z-index: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			height: auto;
+		}
+
+		.liner {
+			position: relative;
+			z-index: 1;
+			padding: 35vh 40px 0;
+
+			h1 {
+				padding-bottom: 25px;
+				font-size: 5rem;
+				line-height: 5rem;
+			}
+
+			.actions {
+				padding-bottom: 25px;
+
+				.context-menu-trigger {
+					color: $white;
+				}
+			}
+		}
+
+	}
+
+	.body.about {		
+		@include clearfix();
+
+		.biography {
+			padding-left: 40px;
+			box-sizing: border-box;
+
+			.biography-text {
+				overflow-wrap: break-word;
+			}			
+		}
+	}
+
+	@include responsive($bp_wide){
+		.intro {
+			.liner {
+				h1 {
+					font-size: 4rem;
+					line-height: 4rem;
+				}
+			}
+		}
+	}
+
+	@include responsive($bp_medium){
+		.intro {
+			margin-bottom: 0;
+
+			.parallax {
+				height: 60vh;
+			}
+
+			.liner {
+				padding-left: 0;
+				padding-right: 0;
+				padding-top: 30vh;
+
+				.thumbnail {
+					position: static;
+					float: left;
+					margin: 0 20px 0 20px;
+					width: 30%;
+				}
+
+				h1 {
+					@include clearfix();
+					padding: 15vw 10px 0;
+					font-size: 3rem;
+					line-height: 3rem;
+				}
+
+				.actions {
+					padding: 30px 10px 10px;
+				}
+
+				.sub-views {
+					margin-left: 5px;
+
+					.option {
+						margin: 0 8px;
+					}
+				}
+			}
+		}
+		.body {
+
+			&.overview {
+				h4 {
+					display: none;
+				}
+				.col.w70 {
+					width: 100%;
+				}
+				.col.w5,
+				.related-artists {
+					display: none;
+				}
+				.grid-wrapper {
+					padding-top: 40px !important;
+				}
+			}
+
+			&.about {
+				.col.w40,
+				.col.w60 {
+					@include clearfix();
+					width: 100%;
+					float: none;
+				}
+				
+				.biography {
+					padding-left: 0;
+				}
+			}
+		}
+	}
+}

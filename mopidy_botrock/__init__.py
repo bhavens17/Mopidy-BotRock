@@ -1,9 +1,14 @@
 from __future__ import unicode_literals
 
-import logging
-import os
+import logging, os, json
+import tornado.web
+import tornado.websocket
+import handlers
 
 from mopidy import config, ext
+from frontend import BotRockFrontend
+from handlers import WebsocketHandler, HttpHandler
+from core import BotRockCore
 
 __version__ = '0.1.0'
 
@@ -41,7 +46,33 @@ class Extension(ext.Extension):
         # registry.add('backend', FoobarBackend)
 
         # TODO: Edit or remove entirely
-        registry.add('http:static', {
+        registry.add('http:app', {
             'name': self.ext_name,
-            'path': os.path.join(os.path.dirname(__file__), 'public'),
+            'factory': botrock_factory
+            #'path': os.path.join(os.path.dirname(__file__), 'public'),
         })
+
+        # create our core instance
+        mem.botrock = BotRockCore()
+        mem.botrock.version = self.version
+
+    def botrock_factory(config, core):
+        path = os.path.join( os.path.dirname(__file__), 'static')
+        
+        return [
+            (r"/images/(.*)", tornado.web.StaticFileHandler, {
+                'path': config['local-images']['image_dir']
+            }),
+            (r'/http/([^/]*)', handlers.HttpHandler, {
+                'core': core,
+                'config': config
+            }),
+            (r'/ws/?', handlers.WebsocketHandler, { 
+                'core': core,
+                'config': config
+            }),
+            (r'/(.*)', tornado.web.StaticFileHandler, {
+                'path': path,
+                'default_filename': 'index.html'
+            }),
+        ]
