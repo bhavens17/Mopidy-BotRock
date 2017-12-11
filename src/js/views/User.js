@@ -6,7 +6,6 @@ import FontAwesome from 'react-fontawesome'
 
 import Thumbnail from '../components/Thumbnail'
 import PlaylistGrid from '../components/PlaylistGrid'
-import FollowButton from '../components/FollowButton'
 import LazyLoadListener from '../components/LazyLoadListener'
 import Parallax from '../components/Parallax'
 import ContextMenuTrigger from '../components/ContextMenuTrigger'
@@ -34,7 +33,6 @@ class User extends React.Component{
 	loadUser(props = this.props){
 		if (!props.user){
 			this.props.spotifyActions.getUser(props.params.uri, true);
-			this.props.spotifyActions.following(props.params.uri);
 		}
 	}
 
@@ -97,9 +95,6 @@ class User extends React.Component{
 								{this.isMe() ? <li><span className="blue-text">You</span></li> : null}
 							</ul>
 						</h2>
-						<div className="actions">
-							<FollowButton className="primary" uri={this.props.params.uri} addText="Follow" removeText="Unfollow" />
-						</div>
 					</div>
 				</div>
 				

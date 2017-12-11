@@ -10,7 +10,6 @@ import Thumbnail from '../components/Thumbnail'
 import Parallax from '../components/Parallax'
 import ArtistSentence from '../components/ArtistSentence'
 import ArtistGrid from '../components/ArtistGrid'
-import FollowButton from '../components/FollowButton'
 import Dater from '../components/Dater'
 import LazyLoadListener from '../components/LazyLoadListener'
 import ContextMenuTrigger from '../components/ContextMenuTrigger'
@@ -69,7 +68,6 @@ class Album extends React.Component{
 				} else {
 					this.props.spotifyActions.getAlbum(props.params.uri);
 				}
-				this.props.spotifyActions.following(props.params.uri);
 				break;
 
 			default:
@@ -159,7 +157,6 @@ class Album extends React.Component{
 
 				<div className="actions">
 					<button className="primary" onClick={e => this.play()}>Play</button>
-					{ helpers.uriSource(this.props.params.uri) == 'spotify' ? <FollowButton className="secondary" uri={this.props.params.uri} addText="Add to library" removeText="Remove from library" is_following={this.inLibrary()} /> : null }
 					<ContextMenuTrigger onTrigger={e => this.handleContextMenu(e)} />
 				</div>
 

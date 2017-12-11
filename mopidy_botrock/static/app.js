@@ -1719,9 +1719,6 @@ module.exports = warning;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 exports.set = set;
 exports.connect = connect;
 exports.authorizationGranted = authorizationGranted;
@@ -1730,7 +1727,6 @@ exports.refreshingToken = refreshingToken;
 exports.importAuthorization = importAuthorization;
 exports.getMe = getMe;
 exports.getTrack = getTrack;
-exports.getLibraryTracks = getLibraryTracks;
 exports.getFeaturedPlaylists = getFeaturedPlaylists;
 exports.getCategories = getCategories;
 exports.getCategory = getCategory;
@@ -1741,7 +1737,6 @@ exports.clearSearchResults = clearSearchResults;
 exports.getSearchResults = getSearchResults;
 exports.getAutocompleteResults = getAutocompleteResults;
 exports.clearAutocompleteResults = clearAutocompleteResults;
-exports.following = following;
 exports.resolveRadioSeeds = resolveRadioSeeds;
 exports.getFavorites = getFavorites;
 exports.getRecommendations = getRecommendations;
@@ -1752,23 +1747,14 @@ exports.playArtistTopTracks = playArtistTopTracks;
 exports.getUser = getUser;
 exports.getUserPlaylists = getUserPlaylists;
 exports.getAlbum = getAlbum;
-exports.toggleAlbumInLibrary = toggleAlbumInLibrary;
 exports.createPlaylist = createPlaylist;
 exports.savePlaylist = savePlaylist;
 exports.getPlaylist = getPlaylist;
 exports.getPlaylistTracksForPlaying = getPlaylistTracksForPlaying;
 exports.getPlaylistTracksForPlayingProcessor = getPlaylistTracksForPlayingProcessor;
-exports.toggleFollowingPlaylist = toggleFollowingPlaylist;
 exports.addTracksToPlaylist = addTracksToPlaylist;
 exports.deleteTracksFromPlaylist = deleteTracksFromPlaylist;
 exports.reorderPlaylistTracks = reorderPlaylistTracks;
-exports.flushLibrary = flushLibrary;
-exports.getLibraryPlaylists = getLibraryPlaylists;
-exports.getLibraryPlaylistsProcessor = getLibraryPlaylistsProcessor;
-exports.getLibraryArtists = getLibraryArtists;
-exports.getLibraryArtistsProcessor = getLibraryArtistsProcessor;
-exports.getLibraryAlbums = getLibraryAlbums;
-exports.getLibraryAlbumsProcessor = getLibraryAlbumsProcessor;
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -2014,19 +2000,6 @@ function getTrack(uri) {
             });
         }, function (error) {
             dispatch(coreActions.handleException('Could not load track', error));
-        });
-    };
-}
-
-function getLibraryTracks() {
-    return function (dispatch, getState) {
-        sendRequest(dispatch, getState, 'me/tracks?limit=50').then(function (response) {
-            dispatch({
-                type: 'SPOTIFY_LIBRARY_TRACKS_LOADED',
-                data: response
-            });
-        }, function (error) {
-            dispatch(coreActions.handleException('Could not get library tracks', error));
         });
     };
 }
@@ -2340,71 +2313,6 @@ function clearAutocompleteResults() {
     return {
         type: 'SPOTIFY_AUTOCOMPLETE_CLEAR',
         field_id: field_id
-    };
-}
-
-function following(uri) {
-    var method = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'GET';
-
-    return function (dispatch, getState) {
-
-        if (method == 'PUT') var is_following = true;
-        if (method == 'DELETE') var is_following = false;
-
-        var asset_name = helpers.uriType(uri);
-        var endpoint, data;
-        switch (asset_name) {
-            case 'track':
-                if (method == 'GET') {
-                    endpoint = 'me/tracks/contains/?ids=' + helpers.getFromUri('trackid', uri);
-                } else {
-                    endpoint = 'me/tracks/?ids=' + helpers.getFromUri('trackid', uri);
-                }
-                break;
-            case 'album':
-                if (method == 'GET') {
-                    endpoint = 'me/albums/contains/?ids=' + helpers.getFromUri('albumid', uri);
-                } else {
-                    endpoint = 'me/albums/?ids=' + helpers.getFromUri('albumid', uri);
-                }
-                break;
-            case 'artist':
-                if (method == 'GET') {
-                    endpoint = 'me/following/contains?type=artist&ids=' + helpers.getFromUri('artistid', uri);
-                } else {
-                    endpoint = 'me/following?type=artist&ids=' + helpers.getFromUri('artistid', uri);
-                    data = {};
-                }
-                break;
-            case 'user':
-                if (method == 'GET') {
-                    endpoint = 'me/following/contains?type=user&ids=' + helpers.getFromUri('userid', uri);
-                } else {
-                    endpoint = 'me/following?type=user&ids=' + helpers.getFromUri('userid', uri);
-                    data = {};
-                }
-                break;
-            case 'playlist':
-                if (method == 'GET') {
-                    endpoint = 'users/' + helpers.getFromUri('userid', uri) + '/playlists/' + helpers.getFromUri('playlistid', uri) + '/followers/contains?ids=' + getState().spotify.me.id;
-                } else {
-                    endpoint = 'users/' + helpers.getFromUri('userid', uri) + '/playlists/' + helpers.getFromUri('playlistid', uri) + '/followers';
-                }
-                break;
-        }
-
-        sendRequest(dispatch, getState, endpoint, method, data).then(function (response) {
-            if (response) is_following = response;
-            if ((typeof is_following === 'undefined' ? 'undefined' : _typeof(is_following)) === 'object') is_following = is_following[0];
-
-            dispatch({
-                type: 'SPOTIFY_LIBRARY_' + asset_name.toUpperCase() + '_CHECK',
-                key: uri,
-                in_library: is_following
-            });
-        }, function (error) {
-            dispatch(coreActions.handleException('Could not follow/unfollow', error));
-        });
     };
 }
 
@@ -2871,23 +2779,6 @@ function getAlbum(uri) {
     };
 }
 
-function toggleAlbumInLibrary(uri, method) {
-    if (method == 'PUT') var new_state = 1;
-    if (method == 'DELETE') var new_state = 0;
-
-    return function (dispatch, getState) {
-        sendRequest(dispatch, getState, 'me/albums?ids=' + helpers.getFromUri('albumid', uri), method).then(function (response) {
-            dispatch({
-                type: 'SPOTIFY_ALBUM_FOLLOWING',
-                key: uri,
-                data: new_state
-            });
-        }, function (error) {
-            dispatch(coreActions.handleException('Could not add/remove library album', error));
-        });
-    };
-}
-
 /**
  * =============================================================== PLAYLIST(S) ==========
  * ======================================================================================
@@ -2913,11 +2804,6 @@ function createPlaylist(name, description, is_public, is_collaborative) {
                     tracks_more: null,
                     tracks_total: 0
                 })
-            });
-
-            dispatch({
-                type: 'LIBRARY_PLAYLISTS_LOADED',
-                uris: [response.uri]
             });
 
             dispatch(uiActions.createNotification('Created playlist'));
@@ -3051,23 +2937,6 @@ function getPlaylistTracksForPlayingProcessor(data) {
     };
 }
 
-function toggleFollowingPlaylist(uri, method) {
-    if (method == 'PUT') var new_state = 1;
-    if (method == 'DELETE') var new_state = 0;
-
-    return function (dispatch, getState) {
-        sendRequest(dispatch, getState, 'users/' + helpers.getFromUri('userid', uri) + '/playlists/' + helpers.getFromUri('playlistid', uri) + '/followers', method).then(function (response) {
-            dispatch({
-                type: 'SPOTIFY_PLAYLIST_FOLLOWING_LOADED',
-                key: uri,
-                is_following: new_state
-            });
-        }, function (error) {
-            dispatch(coreActions.handleException('Could not add/remove library playlist', error));
-        });
-    };
-}
-
 function addTracksToPlaylist(uri, tracks_uris) {
     return function (dispatch, getState) {
         sendRequest(dispatch, getState, 'users/' + helpers.getFromUri('userid', uri) + '/playlists/' + helpers.getFromUri('playlistid', uri) + '/tracks', 'POST', { uris: tracks_uris }).then(function (response) {
@@ -3111,192 +2980,6 @@ function reorderPlaylistTracks(uri, range_start, range_length, insert_before, sn
             });
         }, function (error) {
             dispatch(coreActions.handleException('Could not reorder playlist tracks', error));
-        });
-    };
-}
-
-/**
- * =============================================================== LIBRARY ==============
- * ======================================================================================
- **/
-
-function flushLibrary() {
-    return {
-        type: "SPOTIFY_FLUSH_LIBRARY"
-    };
-}
-
-/**
- * Playlists
- **/
-
-function getLibraryPlaylists() {
-    return function (dispatch, getState) {
-        var last_run = getState().ui.processes.SPOTIFY_GET_LIBRARY_PLAYLISTS_PROCESSOR;
-
-        if (!last_run) {
-            dispatch(uiActions.startProcess('SPOTIFY_GET_LIBRARY_PLAYLISTS_PROCESSOR', 'Loading Spotify playlists', { next: 'me/playlists?limit=50' }));
-        } else if (last_run.status == 'cancelled') {
-            dispatch(uiActions.resumeProcess('SPOTIFY_GET_LIBRARY_PLAYLISTS_PROCESSOR'));
-
-            // We've already finished, but the status has been flushed   
-        } else if (last_run.status == 'finished' && !getState().spotify.library_playlists_loaded_all) {
-            dispatch(uiActions.startProcess('SPOTIFY_GET_LIBRARY_PLAYLISTS_PROCESSOR', 'Loading Spotify playlists', { next: 'me/playlists?limit=50' }));
-        }
-    };
-}
-
-function getLibraryPlaylistsProcessor(data) {
-    return function (dispatch, getState) {
-        sendRequest(dispatch, getState, data.next).then(function (response) {
-            dispatch({
-                type: 'SPOTIFY_LIBRARY_PLAYLISTS_LOADED',
-                playlists: response.items
-            });
-
-            // Check to see if we've been cancelled
-            if (getState().ui.processes['SPOTIFY_GET_LIBRARY_PLAYLISTS_PROCESSOR'] !== undefined) {
-                var processor = getState().ui.processes['SPOTIFY_GET_LIBRARY_PLAYLISTS_PROCESSOR'];
-
-                if (processor.status == 'cancelling') {
-                    dispatch(uiActions.processCancelled('SPOTIFY_GET_LIBRARY_PLAYLISTS_PROCESSOR'));
-                    return false;
-                }
-            }
-
-            // We got a next link, so we've got more work to be done
-            if (response.next) {
-                var total = response.total;
-                var loaded = getState().spotify.library_playlists.length;
-                var remaining = total - loaded;
-                dispatch(uiActions.updateProcess('SPOTIFY_GET_LIBRARY_PLAYLISTS_PROCESSOR', 'Loading ' + remaining + ' Spotify playlists', {
-                    next: response.next,
-                    total: response.total,
-                    remaining: remaining
-                }));
-                dispatch(uiActions.runProcess('SPOTIFY_GET_LIBRARY_PLAYLISTS_PROCESSOR', { next: response.next }));
-            } else {
-                dispatch(uiActions.processFinished('SPOTIFY_GET_LIBRARY_PLAYLISTS_PROCESSOR'));
-                dispatch({ type: 'SPOTIFY_LIBRARY_PLAYLISTS_LOADED_ALL' });
-            }
-        }, function (error) {
-            dispatch(coreActions.handleException('Could not load library playlists', error));
-        });
-    };
-}
-
-/**
- * Artists
- **/
-
-function getLibraryArtists() {
-    return function (dispatch, getState) {
-        var last_run = getState().ui.processes.SPOTIFY_GET_LIBRARY_ARTISTS_PROCESSOR;
-
-        if (!last_run) {
-            dispatch(uiActions.startProcess('SPOTIFY_GET_LIBRARY_ARTISTS_PROCESSOR', 'Loading Spotify artists', { next: 'me/following?type=artist&limit=50' }));
-        } else if (last_run.status == 'cancelled') {
-            dispatch(uiActions.resumeProcess('SPOTIFY_GET_LIBRARY_ARTISTS_PROCESSOR'));
-
-            // We've already finished, but the status has been flushed   
-        } else if (last_run.status == 'finished' && !getState().spotify.library_artists_loaded_all) {
-            dispatch(uiActions.startProcess('SPOTIFY_GET_LIBRARY_ARTISTS_PROCESSOR', 'Loading Spotify artists', { next: 'me/following?type=artist&limit=50' }));
-        }
-    };
-}
-
-function getLibraryArtistsProcessor(data) {
-    return function (dispatch, getState) {
-        sendRequest(dispatch, getState, data.next).then(function (response) {
-            dispatch({
-                type: 'SPOTIFY_LIBRARY_ARTISTS_LOADED',
-                artists: response.artists.items
-            });
-
-            // Check to see if we've been cancelled
-            if (getState().ui.processes['SPOTIFY_GET_LIBRARY_ARTISTS_PROCESSOR'] !== undefined) {
-                var processor = getState().ui.processes['SPOTIFY_GET_LIBRARY_ARTISTS_PROCESSOR'];
-
-                if (processor.status == 'cancelling') {
-                    dispatch(uiActions.processCancelled('SPOTIFY_GET_LIBRARY_ARTISTS_PROCESSOR'));
-                    return false;
-                }
-            }
-
-            // We got a next link, so we've got more work to be done
-            if (response.artists.next) {
-                var total = response.artists.total;
-                var loaded = getState().spotify.library_artists.length;
-                var remaining = total - loaded;
-                dispatch(uiActions.updateProcess('SPOTIFY_GET_LIBRARY_ARTISTS_PROCESSOR', 'Loading ' + remaining + ' Spotify artists', {
-                    next: response.artists.next,
-                    total: response.artists.total,
-                    remaining: remaining
-                }));
-                dispatch(uiActions.runProcess('SPOTIFY_GET_LIBRARY_ARTISTS_PROCESSOR', { next: response.artists.next }));
-            } else {
-                dispatch(uiActions.processFinished('SPOTIFY_GET_LIBRARY_ARTISTS_PROCESSOR'));
-            }
-        }, function (error) {
-            dispatch(coreActions.handleException('Could not load library artists', error));
-        });
-    };
-}
-
-/**
- * ALbums
- **/
-
-function getLibraryAlbums() {
-    return function (dispatch, getState) {
-        var last_run = getState().ui.processes.SPOTIFY_GET_LIBRARY_ALBUMS_PROCESSOR;
-
-        if (!last_run) {
-            dispatch(uiActions.startProcess('SPOTIFY_GET_LIBRARY_ALBUMS_PROCESSOR', 'Loading Spotify albums', { next: 'me/albums?limit=50' }));
-        } else if (last_run.status == 'cancelled') {
-            dispatch(uiActions.updateProcess('SPOTIFY_GET_LIBRARY_ALBUMS_PROCESSOR', 'Loading Spotify albums', { next: 'me/albums?limit=50' }));
-
-            // We've already finished, but the status has been flushed   
-        } else if (last_run.status == 'finished' && !getState().spotify.library_albums_loaded_all) {
-            dispatch(uiActions.startProcess('SPOTIFY_GET_LIBRARY_ALBUMS_PROCESSOR', 'Loading Spotify albums', { next: 'me/albums?limit=50' }));
-        }
-    };
-}
-
-function getLibraryAlbumsProcessor(data) {
-    return function (dispatch, getState) {
-        sendRequest(dispatch, getState, data.next).then(function (response) {
-            dispatch({
-                type: 'SPOTIFY_LIBRARY_ALBUMS_LOADED',
-                albums: response.items
-            });
-
-            // Check to see if we've been cancelled
-            if (getState().ui.processes['SPOTIFY_GET_LIBRARY_ALBUMS_PROCESSOR'] !== undefined) {
-                var processor = getState().ui.processes['SPOTIFY_GET_LIBRARY_ALBUMS_PROCESSOR'];
-
-                if (processor.status == 'cancelling') {
-                    dispatch(uiActions.processCancelled('SPOTIFY_GET_LIBRARY_ALBUMS_PROCESSOR'));
-                    return false;
-                }
-            }
-
-            // We got a next link, so we've got more work to be done
-            if (response.next) {
-                var total = response.total;
-                var loaded = getState().spotify.library_albums.length;
-                var remaining = total - loaded;
-                dispatch(uiActions.updateProcess('SPOTIFY_GET_LIBRARY_ALBUMS_PROCESSOR', 'Loading ' + remaining + ' Spotify albums', {
-                    next: response.next,
-                    total: response.total,
-                    remaining: remaining
-                }));
-                dispatch(uiActions.runProcess('SPOTIFY_GET_LIBRARY_ALBUMS_PROCESSOR', { next: response.next }));
-            } else {
-                dispatch(uiActions.processFinished('SPOTIFY_GET_LIBRARY_ALBUMS_PROCESSOR'));
-            }
-        }, function (error) {
-            dispatch(coreActions.handleException('Could not load library albums', error));
         });
     };
 }
@@ -3344,7 +3027,6 @@ exports.getPlaylist = getPlaylist;
 exports.getPlaylists = getPlaylists;
 exports.getDirectory = getDirectory;
 exports.getTrack = getTrack;
-exports.getLibraryArtists = getLibraryArtists;
 exports.getArtist = getArtist;
 exports.getArtists = getArtists;
 exports.getAlbum = getAlbum;
@@ -3572,12 +3254,6 @@ function getTrack(uri) {
 	return {
 		type: 'MOPIDY_GET_TRACK',
 		data: { uri: uri }
-	};
-}
-
-function getLibraryArtists() {
-	return {
-		type: 'MOPIDY_GET_LIBRARY_ARTISTS'
 	};
 }
 
@@ -4486,9 +4162,6 @@ exports.createPlaylist = createPlaylist;
 exports.deletePlaylist = deletePlaylist;
 exports.removeTracksFromPlaylist = removeTracksFromPlaylist;
 exports.addTracksToPlaylist = addTracksToPlaylist;
-exports.getLibraryPlaylists = getLibraryPlaylists;
-exports.getLibraryAlbums = getLibraryAlbums;
-exports.getLibraryArtists = getLibraryArtists;
 exports.loadedMore = loadedMore;
 exports.tracksLoaded = tracksLoaded;
 exports.albumsLoaded = albumsLoaded;
@@ -4628,9 +4301,6 @@ function createPlaylist(scheme, name) {
 function deletePlaylist(uri) {
     switch (helpers.uriSource(uri)) {
 
-        case 'spotify':
-            return spotifyActions.following(uri, 'DELETE');
-
         default:
             return mopidyActions.deletePlaylist(uri);
     }
@@ -4673,28 +4343,6 @@ function addTracksToPlaylist(uri, tracks_uris) {
                 tracks_uris: tracks_uris
             };
     }
-}
-
-/**
- * Asset libraries
- **/
-
-function getLibraryPlaylists() {
-    return {
-        type: 'GET_LIBRARY_PLAYLISTS'
-    };
-}
-
-function getLibraryAlbums() {
-    return {
-        type: 'GET_LIBRARY_ALBUMS'
-    };
-}
-
-function getLibraryArtists() {
-    return {
-        type: 'GET_LIBRARY_ARTISTS'
-    };
 }
 
 /**
@@ -21452,142 +21100,7 @@ var route = Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])([__WEB
 var routes = Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])([route, Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"])(route)]);
 
 /***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(4);
-
-var _reactRouter = __webpack_require__(8);
-
-var _redux = __webpack_require__(3);
-
-var _reactFontawesome = __webpack_require__(6);
-
-var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
-
-var _helpers = __webpack_require__(2);
-
-var helpers = _interopRequireWildcard(_helpers);
-
-var _actions = __webpack_require__(5);
-
-var uiActions = _interopRequireWildcard(_actions);
-
-var _actions2 = __webpack_require__(10);
-
-var spotifyActions = _interopRequireWildcard(_actions2);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var FollowButton = function (_React$Component) {
-	_inherits(FollowButton, _React$Component);
-
-	function FollowButton(props) {
-		_classCallCheck(this, FollowButton);
-
-		return _possibleConstructorReturn(this, (FollowButton.__proto__ || Object.getPrototypeOf(FollowButton)).call(this, props));
-	}
-
-	_createClass(FollowButton, [{
-		key: 'remove',
-		value: function remove() {
-			this.props.spotifyActions.following(this.props.uri, 'DELETE');
-		}
-	}, {
-		key: 'add',
-		value: function add() {
-			this.props.spotifyActions.following(this.props.uri, 'PUT');
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			if (!this.props.uri) {
-				return false;
-			}
-
-			var className = '';
-
-			// Inherit passed-down classes
-			if (this.props.className) {
-				className += ' ' + this.props.className;
-			}
-
-			// Loader
-			if (helpers.isLoading(this.props.load_queue, ['/following', '/followers', 'me/albums/contains/?ids=', 'me/albums/?ids='])) {
-				className += ' working';
-			}
-
-			if (!this.props.spotify_authorized) {
-				return _react2.default.createElement(
-					'button',
-					{ className: className + ' disabled', onClick: function onClick(e) {
-							return _this2.props.uiActions.createNotification('You must authorize Spotify first', 'warning');
-						} },
-					this.props.addText
-				);
-			} else if (this.props.is_following === true) {
-				return _react2.default.createElement(
-					'button',
-					{ className: className + ' destructive', onClick: function onClick(e) {
-							return _this2.remove();
-						} },
-					this.props.removeText
-				);
-			} else {
-				return _react2.default.createElement(
-					'button',
-					{ className: className, onClick: function onClick(e) {
-							return _this2.add();
-						} },
-					this.props.addText
-				);
-			}
-		}
-	}]);
-
-	return FollowButton;
-}(_react2.default.Component);
-
-var mapStateToProps = function mapStateToProps(state, ownProps) {
-	return {
-		load_queue: state.ui.load_queue,
-		spotify_authorized: state.spotify.authorization
-	};
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	return {
-		uiActions: (0, _redux.bindActionCreators)(uiActions, dispatch),
-		spotifyActions: (0, _redux.bindActionCreators)(spotifyActions, dispatch)
-	};
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(FollowButton);
-
-/***/ }),
+/* 61 */,
 /* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23382,230 +22895,7 @@ exports.default = DropdownField;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)))
 
 /***/ }),
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(4);
-
-var _redux = __webpack_require__(3);
-
-var _reactRouter = __webpack_require__(8);
-
-var _reactFontawesome = __webpack_require__(6);
-
-var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
-
-var _ArtistSentence = __webpack_require__(29);
-
-var _ArtistSentence2 = _interopRequireDefault(_ArtistSentence);
-
-var _Dater = __webpack_require__(47);
-
-var _Dater2 = _interopRequireDefault(_Dater);
-
-var _URILink = __webpack_require__(36);
-
-var _URILink2 = _interopRequireDefault(_URILink);
-
-var _ContextMenuTrigger = __webpack_require__(39);
-
-var _ContextMenuTrigger2 = _interopRequireDefault(_ContextMenuTrigger);
-
-var _helpers = __webpack_require__(2);
-
-var helpers = _interopRequireWildcard(_helpers);
-
-var _actions = __webpack_require__(5);
-
-var uiActions = _interopRequireWildcard(_actions);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var List = function (_React$Component) {
-	_inherits(List, _React$Component);
-
-	function List(props) {
-		_classCallCheck(this, List);
-
-		return _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, props));
-	}
-
-	_createClass(List, [{
-		key: 'handleClick',
-		value: function handleClick(e, uri) {
-
-			// make sure we haven't clicked a nested link (ie Artist name)
-			if (e.target.tagName.toLowerCase() !== 'a') {
-				_reactRouter.hashHistory.push((this.props.link_prefix ? this.props.link_prefix : '') + encodeURIComponent(uri));
-			}
-		}
-	}, {
-		key: 'handleContextMenu',
-		value: function handleContextMenu(e, item) {
-			if (this.props.handleContextMenu) {
-				e.preventDefault();
-				this.props.handleContextMenu(e, item);
-			}
-		}
-	}, {
-		key: 'renderHeader',
-		value: function renderHeader() {
-			if (!this.props.columns || this.props.noheader) return null;
-
-			return _react2.default.createElement(
-				'div',
-				{ className: 'list-item header cf' },
-				_react2.default.createElement(
-					'div',
-					{ className: 'liner' },
-					this.props.columns.map(function (col, col_index) {
-						var className = 'col ' + col.name.replace('.', '_');
-						return _react2.default.createElement(
-							'div',
-							{ className: className, key: col_index },
-							col.label ? col.label : col.name
-						);
-					})
-				)
-			);
-		}
-	}, {
-		key: 'renderValue',
-		value: function renderValue(row, key_string) {
-			var key = key_string.split('.');
-			var value = row;
-
-			for (var i = 0; i < key.length; i++) {
-				if (value[key[i]] === undefined) {
-					return _react2.default.createElement(
-						'span',
-						null,
-						'-'
-					);
-				} else if (typeof value[key[i]] === 'string' && value[key[i]].replace(' ', '') == '') {
-					return _react2.default.createElement(
-						'span',
-						null,
-						'-'
-					);
-				} else {
-					value = value[key[i]];
-				}
-			}
-
-			if (key_string === 'added_at') return _react2.default.createElement(
-				'span',
-				null,
-				_react2.default.createElement(_Dater2.default, { type: 'ago', data: value }),
-				' ago'
-			);
-			if (key_string === 'owner') return _react2.default.createElement(
-				_URILink2.default,
-				{ type: 'user', uri: value.uri },
-				value.id
-			);
-			if (key[0] === 'artists') return _react2.default.createElement(_ArtistSentence2.default, { artists: value });
-			if (value === true) return _react2.default.createElement(_reactFontawesome2.default, { name: 'check' });
-			if (typeof value === 'number') return _react2.default.createElement(
-				'span',
-				null,
-				value.toLocaleString()
-			);
-			return _react2.default.createElement(
-				'span',
-				null,
-				value
-			);
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			if (!this.props.rows) return null;
-
-			var className = 'list';
-			if (this.props.className) {
-				className += ' ' + this.props.className;
-			}
-
-			return _react2.default.createElement(
-				'div',
-				{ className: className },
-				this.renderHeader(),
-				this.props.rows.map(function (row, row_index) {
-
-					var class_name = 'list-item';
-					if (row.type) class_name += ' ' + row.type;
-
-					return _react2.default.createElement(
-						'div',
-						{ className: class_name, key: row_index },
-						_react2.default.createElement(
-							'div',
-							{
-								className: 'liner',
-								onClick: function onClick(e) {
-									return _this2.handleClick(e, row.uri);
-								},
-								onContextMenu: function onContextMenu(e) {
-									return _this2.handleContextMenu(e, row);
-								} },
-							_this2.props.columns.map(function (col, col_index) {
-								var className = 'col ' + col.name.replace('.', '_');
-								return _react2.default.createElement(
-									'div',
-									{ className: className, key: col_index },
-									_this2.renderValue(row, col.name)
-								);
-							})
-						),
-						_this2.props.nocontext ? null : _react2.default.createElement(_ContextMenuTrigger2.default, { onTrigger: function onTrigger(e) {
-								return _this2.handleContextMenu(e, row);
-							} })
-					);
-				})
-			);
-		}
-	}]);
-
-	return List;
-}(_react2.default.Component);
-
-var mapStateToProps = function mapStateToProps(state, ownProps) {
-	return {};
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	return {
-		uiActions: (0, _redux.bindActionCreators)(uiActions, dispatch)
-	};
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(List);
-
-/***/ }),
+/* 76 */,
 /* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26484,137 +25774,7 @@ var ConfirmationButton = function (_React$Component) {
 exports.default = ConfirmationButton;
 
 /***/ }),
-/* 108 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRouter = __webpack_require__(8);
-
-var _reactFontawesome = __webpack_require__(6);
-
-var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var FilterField = function (_React$Component) {
-	_inherits(FilterField, _React$Component);
-
-	function FilterField(props) {
-		_classCallCheck(this, FilterField);
-
-		var _this = _possibleConstructorReturn(this, (FilterField.__proto__ || Object.getPrototypeOf(FilterField)).call(this, props));
-
-		_this.state = {
-			value: '',
-			active: _this.props.slim_mode ? true : false
-		};
-
-		_this.handleKeyUp = _this.handleKeyUp.bind(_this);
-		return _this;
-	}
-
-	_createClass(FilterField, [{
-		key: 'componentWillMount',
-		value: function componentWillMount() {
-			window.addEventListener("keyup", this.handleKeyUp, false);
-		}
-	}, {
-		key: 'componentWillUnmount',
-		value: function componentWillUnmount() {
-			window.removeEventListener("keyup", this.handleKeyUp, false);
-		}
-	}, {
-		key: 'handleKeyUp',
-		value: function handleKeyUp(e) {
-			if (e.keyCode == 27 && !this.props.slim_mode) {
-				e.preventDefault();
-
-				this.setState({
-					value: '',
-					active: false
-				});
-
-				this.handleChange('');
-			}
-		}
-	}, {
-		key: 'activate',
-		value: function activate() {
-			this.setState({ active: true });
-		}
-	}, {
-		key: 'handleChange',
-		value: function handleChange(value) {
-			this.setState({
-				value: value,
-				active: this.props.slim_mode ? true : value != ''
-			});
-			this.props.handleChange(value);
-		}
-	}, {
-		key: 'handleBlur',
-		value: function handleBlur() {
-			if (this.state.value == '' && !this.props.slim_mode) {
-				this.setState({ active: false });
-			}
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			return _react2.default.createElement(
-				'span',
-				{ className: "filter-field " + (this.state.active ? 'active' : ''), onClick: function onClick(e) {
-						return _this2.activate();
-					} },
-				_react2.default.createElement(
-					'form',
-					null,
-					_react2.default.createElement(_reactFontawesome2.default, { name: 'search' }),
-					_react2.default.createElement('input', {
-						type: 'text',
-						placeholder: 'Filter',
-						value: this.state.value,
-						onFocus: function onFocus(e) {
-							return _this2.activate();
-						},
-						onBlur: function onBlur(e) {
-							return _this2.handleBlur();
-						},
-						onChange: function onChange(e) {
-							return _this2.handleChange(e.target.value);
-						}
-					})
-				)
-			);
-		}
-	}]);
-
-	return FilterField;
-}(_react2.default.Component);
-
-exports.default = FilterField;
-
-/***/ }),
+/* 108 */,
 /* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -34042,26 +33202,6 @@ var _DiscoverNewReleases = __webpack_require__(429);
 
 var _DiscoverNewReleases2 = _interopRequireDefault(_DiscoverNewReleases);
 
-var _LibraryArtists = __webpack_require__(430);
-
-var _LibraryArtists2 = _interopRequireDefault(_LibraryArtists);
-
-var _LibraryAlbums = __webpack_require__(431);
-
-var _LibraryAlbums2 = _interopRequireDefault(_LibraryAlbums);
-
-var _LibraryTracks = __webpack_require__(432);
-
-var _LibraryTracks2 = _interopRequireDefault(_LibraryTracks);
-
-var _LibraryPlaylists = __webpack_require__(433);
-
-var _LibraryPlaylists2 = _interopRequireDefault(_LibraryPlaylists);
-
-var _LibraryBrowse = __webpack_require__(434);
-
-var _LibraryBrowse2 = _interopRequireDefault(_LibraryBrowse);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 __webpack_require__(435); /**
@@ -34112,12 +33252,7 @@ _reactDom2.default.render(_react2.default.createElement(
 			_react2.default.createElement(_reactRouter.Route, { path: 'discover/featured', component: _DiscoverFeatured2.default }),
 			_react2.default.createElement(_reactRouter.Route, { path: 'discover/categories', component: _DiscoverCategories2.default }),
 			_react2.default.createElement(_reactRouter.Route, { path: 'discover/categories/:id', component: _DiscoverCategory2.default }),
-			_react2.default.createElement(_reactRouter.Route, { path: 'discover/new-releases', component: _DiscoverNewReleases2.default }),
-			_react2.default.createElement(_reactRouter.Route, { path: 'library/artists', component: _LibraryArtists2.default }),
-			_react2.default.createElement(_reactRouter.Route, { path: 'library/albums', component: _LibraryAlbums2.default }),
-			_react2.default.createElement(_reactRouter.Route, { path: 'library/tracks', component: _LibraryTracks2.default }),
-			_react2.default.createElement(_reactRouter.Route, { path: 'library/playlists', component: _LibraryPlaylists2.default }),
-			_react2.default.createElement(_reactRouter.Route, { path: 'library/browse(/:uri)', component: _LibraryBrowse2.default })
+			_react2.default.createElement(_reactRouter.Route, { path: 'discover/new-releases', component: _DiscoverNewReleases2.default })
 		)
 	)
 ), document.getElementById('app'));
@@ -50162,39 +49297,6 @@ var CoreMiddleware = function () {
                         next(action);
                         break;
 
-                    // Get assets from all of our providers
-                    case 'GET_LIBRARY_PLAYLISTS':
-                        if (store.getState().spotify.connected) {
-                            store.dispatch(spotifyActions.getLibraryPlaylists());
-                        }
-                        if (store.getState().mopidy.connected) {
-                            store.dispatch(mopidyActions.getLibraryPlaylists());
-                        }
-                        next(action);
-                        break;
-
-                    // Get assets from all of our providers
-                    case 'GET_LIBRARY_ALBUMS':
-                        if (store.getState().spotify.connected) {
-                            store.dispatch(spotifyActions.getLibraryAlbums());
-                        }
-                        if (store.getState().mopidy.connected) {
-                            store.dispatch(mopidyActions.getLibraryAlbums());
-                        }
-                        next(action);
-                        break;
-
-                    // Get assets from all of our providers
-                    case 'GET_LIBRARY_ARTISTS':
-                        if (store.getState().spotify.connected) {
-                            store.dispatch(spotifyActions.getLibraryArtists());
-                        }
-                        if (store.getState().mopidy.connected) {
-                            store.dispatch(mopidyActions.getLibraryArtists());
-                        }
-                        next(action);
-                        break;
-
                     case 'RESTART':
                         location.reload();
                         break;
@@ -55854,88 +54956,6 @@ var SpotifyMiddleware = function () {
                         });
                         break;
 
-                    case 'SPOTIFY_GET_LIBRARY_PLAYLISTS_PROCESSOR':
-                        store.dispatch(spotifyActions.getLibraryPlaylistsProcessor(action.data));
-                        break;
-
-                    case 'SPOTIFY_LIBRARY_PLAYLISTS_LOADED':
-                        var playlists = [];
-                        for (var i = 0; i < action.playlists.length; i++) {
-                            var playlist = Object.assign({}, action.playlists[i], {
-                                source: 'spotify',
-                                in_library: true, // assumed because we asked for library items
-                                tracks_total: action.playlists[i].tracks.total
-                            });
-
-                            // remove our tracklist. It'll overwrite any full records otherwise
-                            delete playlist.tracks;
-
-                            playlists.push(playlist);
-                        }
-
-                        store.dispatch({
-                            type: 'PLAYLISTS_LOADED',
-                            playlists: playlists
-                        });
-
-                        // Append our action with the uris. This gets handed down to subsequent middleware and our reducer.
-                        action.uris = helpers.arrayOf('uri', playlists);
-                        next(action);
-                        break;
-
-                    case 'SPOTIFY_GET_LIBRARY_ARTISTS_PROCESSOR':
-                        store.dispatch(spotifyActions.getLibraryArtistsProcessor(action.data));
-                        break;
-
-                    case 'SPOTIFY_LIBRARY_ARTISTS_LOADED':
-                        var artists = [];
-                        for (var i = 0; i < action.artists.length; i++) {
-                            artists.push(Object.assign({}, action.artists[i], {
-                                source: 'spotify',
-                                in_library: true // assumed because we asked for library items
-                            }));
-                        }
-                        store.dispatch({
-                            type: 'ARTISTS_LOADED',
-                            artists: artists
-                        });
-
-                        // Append our action with the uris. This gets handed down to subsequent middleware and our reducer.
-                        action.uris = helpers.arrayOf('uri', artists);
-                        next(action);
-                        break;
-
-                    case 'SPOTIFY_GET_LIBRARY_ALBUMS_PROCESSOR':
-                        store.dispatch(spotifyActions.getLibraryAlbumsProcessor(action.data));
-                        break;
-
-                    case 'SPOTIFY_GET_PLAYLIST_TRACKS_FOR_PLAYING_PROCESSOR':
-                        store.dispatch(spotifyActions.getPlaylistTracksForPlayingProcessor(action.data));
-                        break;
-
-                    case 'SPOTIFY_LIBRARY_ALBUMS_LOADED':
-                        var albums = [];
-                        for (var i = 0; i < action.albums.length; i++) {
-                            albums.push(Object.assign({}, action.albums[i].album, {
-                                in_library: true, // assumed because we asked for library items
-                                source: 'spotify',
-                                added_at: action.albums[i].added_at,
-                                tracks: action.albums[i].album.tracks.items,
-                                tracks_more: action.albums[i].album.tracks.next,
-                                tracks_total: action.albums[i].album.tracks.total
-                            }));
-                        }
-
-                        store.dispatch({
-                            type: 'ALBUMS_LOADED',
-                            albums: albums
-                        });
-
-                        // Append our action with the uris. This gets handed down to subsequent middleware and our reducer.
-                        action.uris = helpers.arrayOf('uri', albums);
-                        next(action);
-                        break;
-
                     case 'SPOTIFY_FAVORITES_LOADED':
                         if (action.artists.length > 0) {
                             store.dispatch({
@@ -55950,17 +54970,6 @@ var SpotifyMiddleware = function () {
                                 tracks: action.tracks
                             });
                             action.tracks_uris = helpers.arrayOf('uri', action.tracks);
-                        }
-                        next(action);
-                        break;
-
-                    case 'SPOTIFY_LIBRARY_TRACKS_LOADED':
-                    case 'SPOTIFY_LIBRARY_TRACKS_LOADED_MORE':
-                        if (action.data) {
-                            store.dispatch({
-                                type: 'TRACKS_LOADED',
-                                tracks: action.data.items
-                            });
                         }
                         next(action);
                         break;
@@ -58104,17 +57113,6 @@ var ContextMenu = function (_React$Component) {
 
 				var context = this.getContext(nextProps);
 
-				// if we're able to be in the library, run a check
-				if (nextProps.spotify_authorized && context.source == 'spotify') {
-					switch (nextProps.menu.context) {
-						case 'artist':
-						case 'album':
-						case 'playlist':
-							this.props.spotifyActions.following(nextProps.menu.items[0].uri);
-							break;
-					}
-				}
-
 				// if we're able to be in the LastFM library, run a check
 				if (nextProps.lastfm_authorized && context.is_track && context.items_count == 1) {
 					if (nextProps.menu.items[0].uri && this.props.tracks[nextProps.menu.items[0].uri] !== undefined && this.props.tracks[nextProps.menu.items[0].uri].userloved === undefined) {
@@ -58232,24 +57230,6 @@ var ContextMenu = function (_React$Component) {
 			var track = this.props.tracks[item.uri];
 
 			return track.userloved !== undefined && track.userloved == "1";
-		}
-	}, {
-		key: 'canBeInLibrary',
-		value: function canBeInLibrary() {
-			if (!this.props.spotify_authorized) {
-				return false;
-			}
-			return helpers.uriSource(this.props.menu.items[0].uri) == 'spotify';
-		}
-	}, {
-		key: 'toggleInLibrary',
-		value: function toggleInLibrary(e, in_library) {
-			this.props.uiActions.hideContextMenu();
-			if (in_library) {
-				this.props.spotifyActions.following(this.props.menu.items[0].uri, 'DELETE');
-			} else {
-				this.props.spotifyActions.following(this.props.menu.items[0].uri, 'PUT');
-			}
 		}
 	}, {
 		key: 'playQueueItem',
@@ -58685,22 +57665,6 @@ var ContextMenu = function (_React$Component) {
 					_react2.default.createElement(_reactFontawesome2.default, { className: 'submenu-icon', name: 'caret-right' })
 				),
 				this.renderPlaylistSubmenu()
-			);
-
-			var toggle_in_library = _react2.default.createElement(
-				'span',
-				{ className: 'menu-item-wrapper' },
-				_react2.default.createElement(
-					'a',
-					{ className: 'menu-item', onClick: function onClick(e) {
-							return _this3.toggleInLibrary(e, context.in_library);
-						} },
-					_react2.default.createElement(
-						'span',
-						{ className: 'label' },
-						context.in_library ? 'Remove from library' : 'Add to library'
-					)
-				)
 			);
 
 			if (!this.props.lastfm_authorized) {
@@ -61839,10 +60803,6 @@ var _ArtistGrid = __webpack_require__(55);
 
 var _ArtistGrid2 = _interopRequireDefault(_ArtistGrid);
 
-var _FollowButton = __webpack_require__(61);
-
-var _FollowButton2 = _interopRequireDefault(_FollowButton);
-
 var _Dater = __webpack_require__(47);
 
 var _Dater2 = _interopRequireDefault(_Dater);
@@ -61941,7 +60901,6 @@ var Album = function (_React$Component) {
 					} else {
 						this.props.spotifyActions.getAlbum(props.params.uri);
 					}
-					this.props.spotifyActions.following(props.params.uri);
 					break;
 
 				default:
@@ -62076,7 +61035,6 @@ var Album = function (_React$Component) {
 							} },
 						'Play'
 					),
-					helpers.uriSource(this.props.params.uri) == 'spotify' ? _react2.default.createElement(_FollowButton2.default, { className: 'secondary', uri: this.props.params.uri, addText: 'Add to library', removeText: 'Remove from library', is_following: this.inLibrary() }) : null,
 					_react2.default.createElement(_ContextMenuTrigger2.default, { onTrigger: function onTrigger(e) {
 							return _this2.handleContextMenu(e);
 						} })
@@ -62187,10 +61145,6 @@ var _RelatedArtists = __webpack_require__(410);
 
 var _RelatedArtists2 = _interopRequireDefault(_RelatedArtists);
 
-var _FollowButton = __webpack_require__(61);
-
-var _FollowButton2 = _interopRequireDefault(_FollowButton);
-
 var _ContextMenuTrigger = __webpack_require__(39);
 
 var _ContextMenuTrigger2 = _interopRequireDefault(_ContextMenuTrigger);
@@ -62278,7 +61232,6 @@ var Artist = function (_React$Component) {
 					} else {
 						this.props.spotifyActions.getArtist(props.params.uri, true);
 					}
-					this.props.spotifyActions.following(props.params.uri);
 					break;
 
 				default:
@@ -62590,7 +61543,6 @@ var Artist = function (_React$Component) {
 										} },
 									'Play'
 								),
-								is_spotify ? _react2.default.createElement(_FollowButton2.default, { className: 'white', uri: this.props.params.uri, removeText: 'Remove from library', addText: 'Add to library', is_following: this.inLibrary() }) : null,
 								_react2.default.createElement(_ContextMenuTrigger2.default, { className: 'white', onTrigger: function onTrigger(e) {
 										return _this3.handleContextMenu(e);
 									} })
@@ -62820,10 +61772,6 @@ var _LazyLoadListener = __webpack_require__(31);
 
 var _LazyLoadListener2 = _interopRequireDefault(_LazyLoadListener);
 
-var _FollowButton = __webpack_require__(61);
-
-var _FollowButton2 = _interopRequireDefault(_FollowButton);
-
 var _Header = __webpack_require__(17);
 
 var _Header2 = _interopRequireDefault(_Header);
@@ -62915,7 +61863,6 @@ var Playlist = function (_React$Component) {
 
 					case 'spotify':
 						this.props.spotifyActions.getPlaylist(props.params.uri);
-						this.props.spotifyActions.following(props.params.uri);
 						break;
 
 					default:
@@ -63043,7 +61990,6 @@ var Playlist = function (_React$Component) {
 								} },
 							'Play'
 						),
-						_react2.default.createElement(_FollowButton2.default, { className: 'secondary', uri: this.props.params.uri, addText: 'Add to library', removeText: 'Remove from library', is_following: this.inLibrary() }),
 						_react2.default.createElement(_ContextMenuTrigger2.default, { onTrigger: function onTrigger(e) {
 								return _this2.handleContextMenu(e);
 							} })
@@ -63243,10 +62189,6 @@ var _PlaylistGrid = __webpack_require__(63);
 
 var _PlaylistGrid2 = _interopRequireDefault(_PlaylistGrid);
 
-var _FollowButton = __webpack_require__(61);
-
-var _FollowButton2 = _interopRequireDefault(_FollowButton);
-
 var _LazyLoadListener = __webpack_require__(31);
 
 var _LazyLoadListener2 = _interopRequireDefault(_LazyLoadListener);
@@ -63309,7 +62251,6 @@ var User = function (_React$Component) {
 
 			if (!props.user) {
 				this.props.spotifyActions.getUser(props.params.uri, true);
-				this.props.spotifyActions.following(props.params.uri);
 			}
 		}
 	}, {
@@ -63404,11 +62345,6 @@ var User = function (_React$Component) {
 									)
 								) : null
 							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'actions' },
-							_react2.default.createElement(_FollowButton2.default, { className: 'primary', uri: this.props.params.uri, addText: 'Follow', removeText: 'Unfollow' })
 						)
 					)
 				),
@@ -63501,10 +62437,6 @@ var _ArtistSentence2 = _interopRequireDefault(_ArtistSentence);
 var _ArtistGrid = __webpack_require__(55);
 
 var _ArtistGrid2 = _interopRequireDefault(_ArtistGrid);
-
-var _FollowButton = __webpack_require__(61);
-
-var _FollowButton2 = _interopRequireDefault(_FollowButton);
 
 var _LastfmLoveButton = __webpack_require__(414);
 
@@ -63641,7 +62573,6 @@ var Track = function (_React$Component) {
 						console.info('Loading track from index');
 					} else {
 						this.props.spotifyActions.getTrack(props.params.uri);
-						this.props.spotifyActions.following(props.params.uri);
 					}
 					break;
 
@@ -68428,1587 +67359,11 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
 
 /***/ }),
-/* 430 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(4);
-
-var _redux = __webpack_require__(3);
-
-var _reactRouter = __webpack_require__(8);
-
-var _Header = __webpack_require__(17);
-
-var _Header2 = _interopRequireDefault(_Header);
-
-var _ArtistGrid = __webpack_require__(55);
-
-var _ArtistGrid2 = _interopRequireDefault(_ArtistGrid);
-
-var _List = __webpack_require__(76);
-
-var _List2 = _interopRequireDefault(_List);
-
-var _DropdownField = __webpack_require__(75);
-
-var _DropdownField2 = _interopRequireDefault(_DropdownField);
-
-var _FilterField = __webpack_require__(108);
-
-var _FilterField2 = _interopRequireDefault(_FilterField);
-
-var _LazyLoadListener = __webpack_require__(31);
-
-var _LazyLoadListener2 = _interopRequireDefault(_LazyLoadListener);
-
-var _helpers = __webpack_require__(2);
-
-var helpers = _interopRequireWildcard(_helpers);
-
-var _actions = __webpack_require__(5);
-
-var uiActions = _interopRequireWildcard(_actions);
-
-var _actions2 = __webpack_require__(11);
-
-var mopidyActions = _interopRequireWildcard(_actions2);
-
-var _actions3 = __webpack_require__(10);
-
-var spotifyActions = _interopRequireWildcard(_actions3);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var LibraryArtists = function (_React$Component) {
-	_inherits(LibraryArtists, _React$Component);
-
-	function LibraryArtists(props) {
-		_classCallCheck(this, LibraryArtists);
-
-		var _this = _possibleConstructorReturn(this, (LibraryArtists.__proto__ || Object.getPrototypeOf(LibraryArtists)).call(this, props));
-
-		_this.state = {
-			filter: '',
-			limit: 50,
-			per_page: 50
-		};
-		return _this;
-	}
-
-	_createClass(LibraryArtists, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			if (this.props.mopidy_library_artists_status != 'finished' && this.props.mopidy_connected && (this.props.source == 'all' || this.props.source == 'local')) {
-				this.props.mopidyActions.getLibraryArtists();
-			}
-
-			if (this.props.spotify_library_artists_status != 'finished' && this.props.spotify_connected && (this.props.source == 'all' || this.props.source == 'spotify')) {
-				this.props.spotifyActions.getLibraryArtists();
-			}
-		}
-	}, {
-		key: 'componentWillReceiveProps',
-		value: function componentWillReceiveProps(newProps) {
-			if (newProps.mopidy_connected && (newProps.source == 'all' || newProps.source == 'local')) {
-
-				// We've just connected
-				if (!this.props.mopidy_connected) {
-					this.props.mopidyActions.getLibraryArtists();
-				}
-
-				// Filter changed, but we haven't got this provider's library yet
-				if (this.props.source != 'all' && this.props.source != 'local' && newProps.mopidy_library_artists_status != 'finished') {
-					this.props.mopidyActions.getLibraryArtists();
-				}
-			}
-
-			if (newProps.spotify_connected && (newProps.source == 'all' || newProps.source == 'spotify')) {
-
-				// We've just connected
-				if (!this.props.spotify_connected) {
-					this.props.spotifyActions.getLibraryArtists();
-				}
-
-				// Filter changed, but we haven't got this provider's library yet
-				if (this.props.source != 'all' && this.props.source != 'spotify' && newProps.spotify_library_artists_status != 'finished') {
-					this.props.spotifyActions.getLibraryArtists();
-				}
-			}
-		}
-	}, {
-		key: 'handleContextMenu',
-		value: function handleContextMenu(e, item) {
-			var data = {
-				e: e,
-				context: 'artist',
-				uris: [item.uri],
-				items: [item]
-			};
-			this.props.uiActions.showContextMenu(data);
-		}
-	}, {
-		key: 'setSort',
-		value: function setSort(value) {
-			var reverse = false;
-			if (this.props.sort == value) reverse = !this.props.sort_reverse;
-
-			var data = {
-				library_artists_sort_reverse: reverse,
-				library_artists_sort: value
-			};
-			this.props.uiActions.set(data);
-		}
-	}, {
-		key: 'renderView',
-		value: function renderView() {
-			var _this2 = this;
-
-			var artists = [];
-
-			// Mopidy library items
-			if (this.props.mopidy_library_artists && (this.props.source == 'all' || this.props.source == 'local')) {
-				for (var i = 0; i < this.props.mopidy_library_artists.length; i++) {
-
-					// Construct item placeholder. This is used as Mopidy needs to 
-					// lookup ref objects to get the full object which can take some time
-					var uri = this.props.mopidy_library_artists[i];
-					var source = helpers.uriSource(uri);
-					var artist = {
-						uri: uri,
-						source: source
-					};
-
-					if (this.props.artists.hasOwnProperty(uri)) {
-						artist = this.props.artists[uri];
-					}
-
-					artists.push(artist);
-				}
-			}
-
-			// Spotify library items
-			if (this.props.spotify_library_artists && (this.props.source == 'all' || this.props.source == 'spotify')) {
-				for (var i = 0; i < this.props.spotify_library_artists.length; i++) {
-					var uri = this.props.spotify_library_artists[i];
-					if (this.props.artists.hasOwnProperty(uri)) {
-						artists.push(this.props.artists[uri]);
-					}
-				}
-			}
-
-			artists = helpers.sortItems(artists, this.props.sort, this.props.sort_reverse);
-
-			if (this.state.filter !== '') {
-				artists = helpers.applyFilter('name', this.state.filter, artists);
-			}
-
-			// Apply our lazy-load-rendering
-			var total_artists = artists.length;
-			artists = artists.slice(0, this.state.limit);
-
-			if (this.props.view == 'list') {
-				var columns = [{
-					label: 'Name',
-					name: 'name'
-				}, {
-					label: 'Followers',
-					name: 'followers.total'
-				}, {
-					label: 'Popularity',
-					name: 'popularity'
-				}];
-				return _react2.default.createElement(
-					'section',
-					{ className: 'content-wrapper' },
-					_react2.default.createElement(_List2.default, {
-						handleContextMenu: function handleContextMenu(e, item) {
-							return _this2.handleContextMenu(e, item);
-						},
-						rows: artists,
-						columns: columns,
-						className: 'artist-list',
-						link_prefix: global.baseURL + "artist/" }),
-					_react2.default.createElement(_LazyLoadListener2.default, { loading: this.state.limit < total_artists, loadMore: function loadMore() {
-							return _this2.setState({ limit: _this2.state.limit + _this2.state.per_page });
-						} })
-				);
-			} else {
-				return _react2.default.createElement(
-					'section',
-					{ className: 'content-wrapper' },
-					_react2.default.createElement(_ArtistGrid2.default, {
-						handleContextMenu: function handleContextMenu(e, item) {
-							return _this2.handleContextMenu(e, item);
-						},
-						artists: artists }),
-					_react2.default.createElement(_LazyLoadListener2.default, { loading: this.state.limit < total_artists, loadMore: function loadMore() {
-							return _this2.setState({ limit: _this2.state.limit + _this2.state.per_page });
-						} })
-				);
-			}
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this3 = this;
-
-			var source_options = [{
-				value: 'all',
-				label: 'All'
-			}, {
-				value: 'local',
-				label: 'Local'
-			}, {
-				value: 'spotify',
-				label: 'Spotify'
-			}];
-
-			var view_options = [{
-				label: 'Thumbnails',
-				value: 'thumbnails'
-			}, {
-				label: 'List',
-				value: 'list'
-			}];
-
-			var sort_options = [{
-				label: 'Name',
-				value: 'name'
-			}, {
-				label: 'Followers',
-				value: 'followers.total'
-			}, {
-				label: 'Popularity',
-				value: 'popularity'
-			}];
-
-			var options = _react2.default.createElement(
-				'span',
-				null,
-				_react2.default.createElement(_FilterField2.default, { handleChange: function handleChange(value) {
-						return _this3.setState({ filter: value, limit: _this3.state.per_page });
-					} }),
-				_react2.default.createElement(_DropdownField2.default, { icon: 'sort', name: 'Sort', value: this.props.sort, options: sort_options, reverse: this.props.sort_reverse, handleChange: function handleChange(value) {
-						_this3.setSort(value);_this3.props.uiActions.hideContextMenu();
-					} }),
-				_react2.default.createElement(_DropdownField2.default, { icon: 'eye', name: 'View', value: this.props.view, options: view_options, handleChange: function handleChange(value) {
-						_this3.props.uiActions.set({ library_artists_view: value });_this3.props.uiActions.hideContextMenu();
-					} }),
-				_react2.default.createElement(_DropdownField2.default, { icon: 'database', name: 'Source', value: this.props.source, options: source_options, handleChange: function handleChange(val) {
-						_this3.props.uiActions.set({ library_artists_source: val });_this3.props.uiActions.hideContextMenu();
-					} })
-			);
-
-			return _react2.default.createElement(
-				'div',
-				{ className: 'view library-artists-view' },
-				_react2.default.createElement(_Header2.default, { icon: 'mic', title: 'My artists', options: options, uiActions: this.props.uiActions }),
-				this.renderView()
-			);
-		}
-	}]);
-
-	return LibraryArtists;
-}(_react2.default.Component);
-
-/**
- * Export our component
- *
- * We also integrate our global store, using connect()
- **/
-
-var mapStateToProps = function mapStateToProps(state, ownProps) {
-	return {
-		mopidy_connected: state.mopidy.connected,
-		spotify_connected: state.spotify.connected,
-		mopidy_library_artists: state.mopidy.library_artists,
-		mopidy_library_artists_status: state.ui.processes.MOPIDY_LIBRARY_ARTISTS_PROCESSOR !== undefined ? state.ui.processes.MOPIDY_LIBRARY_ARTISTS_PROCESSOR.status : null,
-		spotify_library_artists: state.spotify.library_artists,
-		spotify_library_artists_status: state.ui.processes.SPOTIFY_GET_LIBRARY_ARTISTS_PROCESSOR !== undefined ? state.ui.processes.SPOTIFY_GET_LIBRARY_ARTISTS_PROCESSOR.status : null,
-		artists: state.core.artists,
-		source: state.ui.library_artists_source ? state.ui.library_artists_source : 'all',
-		sort: state.ui.library_artists_sort ? state.ui.library_artists_sort : 'name',
-		sort_reverse: state.ui.library_artists_sort_reverse ? true : false,
-		view: state.ui.library_artists_view
-	};
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	return {
-		uiActions: (0, _redux.bindActionCreators)(uiActions, dispatch),
-		mopidyActions: (0, _redux.bindActionCreators)(mopidyActions, dispatch),
-		spotifyActions: (0, _redux.bindActionCreators)(spotifyActions, dispatch)
-	};
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LibraryArtists);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
-
-/***/ }),
-/* 431 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(4);
-
-var _redux = __webpack_require__(3);
-
-var _reactRouter = __webpack_require__(8);
-
-var _AlbumGrid = __webpack_require__(62);
-
-var _AlbumGrid2 = _interopRequireDefault(_AlbumGrid);
-
-var _List = __webpack_require__(76);
-
-var _List2 = _interopRequireDefault(_List);
-
-var _Header = __webpack_require__(17);
-
-var _Header2 = _interopRequireDefault(_Header);
-
-var _Thumbnail = __webpack_require__(16);
-
-var _Thumbnail2 = _interopRequireDefault(_Thumbnail);
-
-var _TrackList = __webpack_require__(30);
-
-var _TrackList2 = _interopRequireDefault(_TrackList);
-
-var _ArtistSentence = __webpack_require__(29);
-
-var _ArtistSentence2 = _interopRequireDefault(_ArtistSentence);
-
-var _DropdownField = __webpack_require__(75);
-
-var _DropdownField2 = _interopRequireDefault(_DropdownField);
-
-var _FilterField = __webpack_require__(108);
-
-var _FilterField2 = _interopRequireDefault(_FilterField);
-
-var _LazyLoadListener = __webpack_require__(31);
-
-var _LazyLoadListener2 = _interopRequireDefault(_LazyLoadListener);
-
-var _helpers = __webpack_require__(2);
-
-var helpers = _interopRequireWildcard(_helpers);
-
-var _actions = __webpack_require__(22);
-
-var coreActions = _interopRequireWildcard(_actions);
-
-var _actions2 = __webpack_require__(5);
-
-var uiActions = _interopRequireWildcard(_actions2);
-
-var _actions3 = __webpack_require__(11);
-
-var mopidyActions = _interopRequireWildcard(_actions3);
-
-var _actions4 = __webpack_require__(10);
-
-var spotifyActions = _interopRequireWildcard(_actions4);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var LibraryAlbums = function (_React$Component) {
-	_inherits(LibraryAlbums, _React$Component);
-
-	function LibraryAlbums(props) {
-		_classCallCheck(this, LibraryAlbums);
-
-		var _this = _possibleConstructorReturn(this, (LibraryAlbums.__proto__ || Object.getPrototypeOf(LibraryAlbums)).call(this, props));
-
-		_this.state = {
-			filter: '',
-			limit: 50,
-			per_page: 50
-		};
-		return _this;
-	}
-
-	_createClass(LibraryAlbums, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			if (this.props.mopidy_library_albums_status != 'finished' && this.props.mopidy_library_albums_status != 'started' && this.props.mopidy_connected && (this.props.source == 'all' || this.props.source == 'local')) {
-				this.props.mopidyActions.getLibraryAlbums();
-			}
-
-			if (this.props.spotify_library_albums_status != 'finished' && this.props.spotify_library_albums_status != 'started' && this.props.spotify_connected && (this.props.source == 'all' || this.props.source == 'spotify')) {
-				this.props.spotifyActions.getLibraryAlbums();
-			}
-		}
-	}, {
-		key: 'componentWillReceiveProps',
-		value: function componentWillReceiveProps(newProps) {
-			if (newProps.mopidy_connected && (newProps.source == 'all' || newProps.source == 'local')) {
-
-				// We've just connected
-				if (!this.props.mopidy_connected) {
-					this.props.mopidyActions.getLibraryAlbums();
-				}
-
-				// Filter changed, but we haven't got this provider's library yet
-				if (this.props.source != 'all' && this.props.source != 'local' && newProps.mopidy_library_albums_status != 'finished' && newProps.mopidy_library_albums_status != 'started') {
-					this.props.mopidyActions.getLibraryAlbums();
-				}
-			}
-
-			if (newProps.spotify_connected && (newProps.source == 'all' || newProps.source == 'spotify')) {
-
-				// We've just connected
-				if (!this.props.spotify_connected) {
-					this.props.spotifyActions.getLibraryAlbums();
-				}
-
-				// Filter changed, but we haven't got this provider's library yet
-				if (this.props.source != 'all' && this.props.source != 'spotify' && newProps.spotify_library_albums_status != 'finished' && newProps.spotify_library_albums_status != 'started') {
-					this.props.spotifyActions.getLibraryAlbums();
-				}
-			}
-		}
-	}, {
-		key: 'handleContextMenu',
-		value: function handleContextMenu(e, item) {
-			var data = {
-				e: e,
-				context: 'album',
-				uris: [item.uri],
-				items: [item]
-			};
-			this.props.uiActions.showContextMenu(data);
-		}
-	}, {
-		key: 'moreURIsToLoad',
-		value: function moreURIsToLoad() {
-			var uris = [];
-			if (this.props.albums && this.props.library_albums) {
-				for (var i = 0; i < this.props.library_albums.length; i++) {
-					var uri = this.props.library_albums[i];
-					if (!this.props.albums.hasOwnProperty(uri) && helpers.uriSource(uri) == 'local') {
-						uris.push(uri);
-					}
-
-					// limit each lookup to 50 URIs
-					if (uris.length >= 50) break;
-				}
-			}
-
-			return uris;
-		}
-	}, {
-		key: 'setSort',
-		value: function setSort(value) {
-			var reverse = false;
-			if (this.props.sort == value) reverse = !this.props.sort_reverse;
-
-			var data = {
-				library_albums_sort_reverse: reverse,
-				library_albums_sort: value
-			};
-			this.props.uiActions.set(data);
-		}
-	}, {
-		key: 'renderView',
-		value: function renderView() {
-			var _this2 = this;
-
-			var albums = [];
-
-			// Spotify library items
-			if (this.props.spotify_library_albums && (this.props.source == 'all' || this.props.source == 'spotify')) {
-				for (var i = 0; i < this.props.spotify_library_albums.length; i++) {
-					var uri = this.props.spotify_library_albums[i];
-					if (this.props.albums.hasOwnProperty(uri)) {
-						albums.push(this.props.albums[uri]);
-					}
-				}
-			}
-
-			// Mopidy library items
-			if (this.props.mopidy_library_albums && (this.props.source == 'all' || this.props.source == 'local')) {
-				for (var i = 0; i < this.props.mopidy_library_albums.length; i++) {
-
-					// Construct item placeholder. This is used as Mopidy needs to 
-					// lookup ref objects to get the full object which can take some time
-					var uri = this.props.mopidy_library_albums[i];
-					var source = helpers.uriSource(uri);
-					var album = {
-						uri: uri,
-						source: source
-					};
-
-					if (this.props.albums.hasOwnProperty(uri)) {
-						album = this.props.albums[uri];
-					}
-
-					albums.push(album);
-				}
-			}
-
-			albums = helpers.sortItems(albums, this.props.sort, this.props.sort_reverse);
-
-			if (this.state.filter && this.state.filter !== '') {
-				albums = helpers.applyFilter('name', this.state.filter, albums);
-			}
-
-			// Apply our lazy-load-rendering
-			var total_albums = albums.length;
-			albums = albums.slice(0, this.state.limit);
-
-			if (this.props.view == 'list') {
-				var columns = [{
-					label: 'Name',
-					name: 'name'
-				}, {
-					label: 'Artists',
-					name: 'artists'
-				}, {
-					label: 'Added',
-					name: 'added_at'
-				}, {
-					label: 'Tracks',
-					name: 'tracks_total'
-				}, {
-					label: 'Source',
-					name: 'source'
-				}];
-				return _react2.default.createElement(
-					'section',
-					{ className: 'content-wrapper' },
-					_react2.default.createElement(_List2.default, {
-						handleContextMenu: function handleContextMenu(e, item) {
-							return _this2.handleContextMenu(e, item);
-						},
-						rows: albums,
-						columns: columns,
-						className: 'album-list',
-						link_prefix: global.baseURL + "album/" }),
-					_react2.default.createElement(_LazyLoadListener2.default, { loading: this.state.limit < total_albums, loadMore: function loadMore() {
-							return _this2.setState({ limit: _this2.state.limit + _this2.state.per_page });
-						} })
-				);
-			} else {
-				return _react2.default.createElement(
-					'section',
-					{ className: 'content-wrapper' },
-					_react2.default.createElement(_AlbumGrid2.default, {
-						handleContextMenu: function handleContextMenu(e, item) {
-							return _this2.handleContextMenu(e, item);
-						},
-						albums: albums }),
-					_react2.default.createElement(_LazyLoadListener2.default, { loading: this.state.limit < total_albums, loadMore: function loadMore() {
-							return _this2.setState({ limit: _this2.state.limit + _this2.state.per_page });
-						} })
-				);
-			}
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this3 = this;
-
-			var source_options = [{
-				value: 'all',
-				label: 'All'
-			}, {
-				value: 'local',
-				label: 'Local'
-			}, {
-				value: 'spotify',
-				label: 'Spotify'
-			}];
-
-			var view_options = [{
-				value: 'thumbnails',
-				label: 'Thumbnails'
-			}, {
-				value: 'list',
-				label: 'List'
-			}];
-
-			var sort_options = [{
-				value: 'name',
-				label: 'Name'
-			}, {
-				value: 'artists',
-				label: 'Artist'
-			}, {
-				value: 'added_at',
-				label: 'Added'
-			}, {
-				value: 'tracks_total',
-				label: 'Tracks'
-			}, {
-				value: 'source',
-				label: 'Source'
-			}];
-
-			var options = _react2.default.createElement(
-				'span',
-				null,
-				_react2.default.createElement(_FilterField2.default, { handleChange: function handleChange(value) {
-						return _this3.setState({ filter: value, limit: _this3.state.per_page });
-					} }),
-				_react2.default.createElement(_DropdownField2.default, { icon: 'sort', name: 'Sort', value: this.props.sort, options: sort_options, reverse: this.props.sort_reverse, handleChange: function handleChange(val) {
-						_this3.setSort(val);_this3.props.uiActions.hideContextMenu();
-					} }),
-				_react2.default.createElement(_DropdownField2.default, { icon: 'eye', name: 'View', value: this.props.view, options: view_options, handleChange: function handleChange(val) {
-						_this3.props.uiActions.set({ library_albums_view: val });_this3.props.uiActions.hideContextMenu();
-					} }),
-				_react2.default.createElement(_DropdownField2.default, { icon: 'database', name: 'Source', value: this.props.source, options: source_options, handleChange: function handleChange(val) {
-						_this3.props.uiActions.set({ library_albums_source: val });_this3.props.uiActions.hideContextMenu();
-					} })
-			);
-
-			return _react2.default.createElement(
-				'div',
-				{ className: 'view library-albums-view' },
-				_react2.default.createElement(_Header2.default, { icon: 'cd', title: 'My albums', options: options, uiActions: this.props.uiActions }),
-				this.renderView()
-			);
-		}
-	}]);
-
-	return LibraryAlbums;
-}(_react2.default.Component);
-
-/**
- * Export our component
- *
- * We also integrate our global store, using connect()
- **/
-
-var mapStateToProps = function mapStateToProps(state, ownProps) {
-	return {
-		mopidy_connected: state.mopidy.connected,
-		spotify_connected: state.spotify.connected,
-		load_queue: state.ui.load_queue,
-		albums: state.core.albums,
-		mopidy_library_albums: state.mopidy.library_albums,
-		mopidy_library_albums_status: state.ui.processes.MOPIDY_LIBRARY_ALBUMS_PROCESSOR !== undefined ? state.ui.processes.MOPIDY_LIBRARY_ALBUMS_PROCESSOR.status : null,
-		spotify_library_albums: state.spotify.library_albums,
-		spotify_library_albums_status: state.ui.processes.SPOTIFY_GET_LIBRARY_ALBUMS_PROCESSOR !== undefined ? state.ui.processes.SPOTIFY_GET_LIBRARY_ALBUMS_PROCESSOR.status : null,
-		view: state.ui.library_albums_view,
-		source: state.ui.library_albums_source ? state.ui.library_albums_source : 'all',
-		sort: state.ui.library_albums_sort ? state.ui.library_albums_sort : 'name',
-		sort_reverse: state.ui.library_albums_sort_reverse ? true : false
-	};
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	return {
-		coreActions: (0, _redux.bindActionCreators)(coreActions, dispatch),
-		uiActions: (0, _redux.bindActionCreators)(uiActions, dispatch),
-		mopidyActions: (0, _redux.bindActionCreators)(mopidyActions, dispatch),
-		spotifyActions: (0, _redux.bindActionCreators)(spotifyActions, dispatch)
-	};
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LibraryAlbums);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
-
-/***/ }),
-/* 432 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(4);
-
-var _redux = __webpack_require__(3);
-
-var _reactRouter = __webpack_require__(8);
-
-var _TrackList = __webpack_require__(30);
-
-var _TrackList2 = _interopRequireDefault(_TrackList);
-
-var _Header = __webpack_require__(17);
-
-var _Header2 = _interopRequireDefault(_Header);
-
-var _LazyLoadListener = __webpack_require__(31);
-
-var _LazyLoadListener2 = _interopRequireDefault(_LazyLoadListener);
-
-var _helpers = __webpack_require__(2);
-
-var helpers = _interopRequireWildcard(_helpers);
-
-var _actions = __webpack_require__(11);
-
-var mopidyActions = _interopRequireWildcard(_actions);
-
-var _actions2 = __webpack_require__(10);
-
-var spotifyActions = _interopRequireWildcard(_actions2);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var LibraryTracks = function (_React$Component) {
-	_inherits(LibraryTracks, _React$Component);
-
-	function LibraryTracks(props) {
-		_classCallCheck(this, LibraryTracks);
-
-		return _possibleConstructorReturn(this, (LibraryTracks.__proto__ || Object.getPrototypeOf(LibraryTracks)).call(this, props));
-	}
-
-	// on render
-
-
-	_createClass(LibraryTracks, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			if (this.props.library_tracks === undefined) {
-				this.props.spotifyActions.getLibraryTracks();
-			}
-		}
-	}, {
-		key: 'loadMore',
-		value: function loadMore() {
-			this.props.spotifyActions.getMore(this.props.library_tracks_more, null, {
-				type: 'SPOTIFY_LIBRARY_TRACKS_LOADED_MORE'
-			});
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			if (helpers.isLoading(this.props.load_queue, ['spotify_me/tracks'])) {
-				return _react2.default.createElement(
-					'div',
-					{ className: 'view library-tracks-view' },
-					_react2.default.createElement(_Header2.default, { icon: 'music', title: 'My tracks' }),
-					_react2.default.createElement(
-						'div',
-						{ className: 'body-loader loading' },
-						_react2.default.createElement('div', { className: 'loader' })
-					)
-				);
-			}
-
-			var tracks = [];
-			if (this.props.library_tracks && this.props.tracks) {
-				for (var i = 0; i < this.props.library_tracks.length; i++) {
-					var uri = this.props.library_tracks[i];
-					if (this.props.tracks.hasOwnProperty(uri)) {
-						tracks.push(this.props.tracks[uri]);
-					}
-				}
-			}
-
-			return _react2.default.createElement(
-				'div',
-				{ className: 'view library-tracks-view' },
-				_react2.default.createElement(_Header2.default, { icon: 'music', title: 'My tracks' }),
-				_react2.default.createElement(
-					'section',
-					{ className: 'content-wrapper' },
-					_react2.default.createElement(_TrackList2.default, { tracks: tracks }),
-					_react2.default.createElement(_LazyLoadListener2.default, { loading: this.props.library_tracks_more, loadMore: function loadMore() {
-							return _this2.loadMore();
-						} })
-				)
-			);
-		}
-	}]);
-
-	return LibraryTracks;
-}(_react2.default.Component);
-
-/**
- * Export our component
- *
- * We also integrate our global store, using connect()
- **/
-
-var mapStateToProps = function mapStateToProps(state, ownProps) {
-	return {
-		load_queue: state.ui.load_queue,
-		tracks: state.core.tracks,
-		library_tracks: state.spotify.library_tracks,
-		library_tracks_more: state.spotify.library_tracks_more
-	};
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	return {
-		mopidyActions: (0, _redux.bindActionCreators)(mopidyActions, dispatch),
-		spotifyActions: (0, _redux.bindActionCreators)(spotifyActions, dispatch)
-	};
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LibraryTracks);
-
-/***/ }),
-/* 433 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(4);
-
-var _redux = __webpack_require__(3);
-
-var _reactRouter = __webpack_require__(8);
-
-var _reactFontawesome = __webpack_require__(6);
-
-var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
-
-var _PlaylistGrid = __webpack_require__(63);
-
-var _PlaylistGrid2 = _interopRequireDefault(_PlaylistGrid);
-
-var _List = __webpack_require__(76);
-
-var _List2 = _interopRequireDefault(_List);
-
-var _DropdownField = __webpack_require__(75);
-
-var _DropdownField2 = _interopRequireDefault(_DropdownField);
-
-var _Header = __webpack_require__(17);
-
-var _Header2 = _interopRequireDefault(_Header);
-
-var _FilterField = __webpack_require__(108);
-
-var _FilterField2 = _interopRequireDefault(_FilterField);
-
-var _LazyLoadListener = __webpack_require__(31);
-
-var _LazyLoadListener2 = _interopRequireDefault(_LazyLoadListener);
-
-var _helpers = __webpack_require__(2);
-
-var helpers = _interopRequireWildcard(_helpers);
-
-var _actions = __webpack_require__(22);
-
-var coreActions = _interopRequireWildcard(_actions);
-
-var _actions2 = __webpack_require__(5);
-
-var uiActions = _interopRequireWildcard(_actions2);
-
-var _actions3 = __webpack_require__(11);
-
-var mopidyActions = _interopRequireWildcard(_actions3);
-
-var _actions4 = __webpack_require__(10);
-
-var spotifyActions = _interopRequireWildcard(_actions4);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var LibraryPlaylists = function (_React$Component) {
-	_inherits(LibraryPlaylists, _React$Component);
-
-	function LibraryPlaylists(props) {
-		_classCallCheck(this, LibraryPlaylists);
-
-		var _this = _possibleConstructorReturn(this, (LibraryPlaylists.__proto__ || Object.getPrototypeOf(LibraryPlaylists)).call(this, props));
-
-		_this.state = {
-			filter: '',
-			limit: 50,
-			per_page: 50
-		};
-		return _this;
-	}
-
-	_createClass(LibraryPlaylists, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			if (!this.props.mopidy_library_playlists && this.props.mopidy_connected && (this.props.source == 'all' || this.props.source == 'local')) {
-				this.props.mopidyActions.getLibraryPlaylists();
-			}
-
-			if (this.props.spotify_library_playlists_status !== 'finished' && this.props.spotify_connected && (this.props.source == 'all' || this.props.source == 'spotify')) {
-				this.props.spotifyActions.getLibraryPlaylists();
-			}
-		}
-	}, {
-		key: 'componentWillReceiveProps',
-		value: function componentWillReceiveProps(newProps) {
-			if (newProps.mopidy_connected && (newProps.source == 'all' || newProps.source == 'local')) {
-
-				// We've just connected
-				if (!this.props.mopidy_connected) {
-					this.props.mopidyActions.getLibraryPlaylists();
-				}
-
-				// Filter changed, but we haven't got this provider's library yet
-				if (this.props.source != 'all' && this.props.source != 'local' && !newProps.mopidy_library_playlists) {
-					this.props.mopidyActions.getLibraryPlaylists();
-				}
-			}
-
-			if (newProps.spotify_connected && (newProps.source == 'all' || newProps.source == 'spotify')) {
-
-				// We've just connected
-				if (!this.props.spotify_connected) {
-					this.props.spotifyActions.getLibraryPlaylists();
-				}
-
-				// Filter changed, but we haven't got this provider's library yet
-				if (this.props.source != 'all' && this.props.source != 'spotify' && newProps.spotify_library_playlists_status !== 'finished') {
-					this.props.spotifyActions.getLibraryPlaylists();
-				}
-			}
-		}
-	}, {
-		key: 'handleContextMenu',
-		value: function handleContextMenu(e, item) {
-			var data = {
-				e: e,
-				context: 'playlist',
-				uris: [item.uri],
-				items: [item]
-			};
-			this.props.uiActions.showContextMenu(data);
-		}
-	}, {
-		key: 'setSort',
-		value: function setSort(value) {
-			var reverse = false;
-			if (this.props.sort == value) reverse = !this.props.sort_reverse;
-
-			var data = {
-				library_playlists_sort_reverse: reverse,
-				library_playlists_sort: value
-			};
-			this.props.uiActions.set(data);
-		}
-	}, {
-		key: 'renderView',
-		value: function renderView() {
-			var _this2 = this;
-
-			var playlists = [];
-
-			// Spotify library items
-			if (this.props.spotify_library_playlists && (this.props.source == 'all' || this.props.source == 'spotify')) {
-				for (var i = 0; i < this.props.spotify_library_playlists.length; i++) {
-					var uri = this.props.spotify_library_playlists[i];
-					if (this.props.playlists.hasOwnProperty(uri)) {
-						playlists.push(this.props.playlists[uri]);
-					}
-				}
-			}
-
-			// Mopidy library items
-			if (this.props.mopidy_library_playlists && (this.props.source == 'all' || this.props.source == 'local')) {
-				for (var i = 0; i < this.props.mopidy_library_playlists.length; i++) {
-					var uri = this.props.mopidy_library_playlists[i];
-					if (this.props.playlists.hasOwnProperty(uri)) {
-						playlists.push(this.props.playlists[uri]);
-					}
-				}
-			}
-
-			playlists = helpers.sortItems(playlists, this.props.sort, this.props.sort_reverse);
-			playlists = helpers.removeDuplicates(playlists);
-
-			if (this.state.filter !== '') {
-				playlists = helpers.applyFilter('name', this.state.filter, playlists);
-			}
-
-			// Apply our lazy-load-rendering
-			var total_playlists = playlists.length;
-			playlists = playlists.slice(0, this.state.limit);
-
-			if (this.props.view == 'list') {
-				if (this.props.slim_mode) {
-					var columns = [{
-						label: 'Name',
-						name: 'name'
-					}, {
-						label: 'Tracks',
-						name: 'tracks_total'
-					}];
-				} else {
-					var columns = [{
-						label: 'Name',
-						name: 'name'
-					}, {
-						label: 'Owner',
-						name: 'owner'
-					}, {
-						label: 'Tracks',
-						name: 'tracks_total'
-					}, {
-						label: 'Editable',
-						name: 'can_edit'
-					}, {
-						label: 'Source',
-						name: 'source'
-					}];
-				}
-
-				return _react2.default.createElement(
-					'section',
-					{ className: 'content-wrapper' },
-					_react2.default.createElement(_List2.default, {
-						handleContextMenu: function handleContextMenu(e, item) {
-							return _this2.handleContextMenu(e, item);
-						},
-						rows: playlists,
-						columns: columns,
-						className: 'playlist-list',
-						link_prefix: global.baseURL + "playlist/" }),
-					_react2.default.createElement(_LazyLoadListener2.default, { loading: this.state.limit < total_playlists, loadMore: function loadMore() {
-							return _this2.setState({ limit: _this2.state.limit + _this2.state.per_page });
-						} })
-				);
-			} else {
-				return _react2.default.createElement(
-					'section',
-					{ className: 'content-wrapper' },
-					_react2.default.createElement(_PlaylistGrid2.default, {
-						handleContextMenu: function handleContextMenu(e, item) {
-							return _this2.handleContextMenu(e, item);
-						},
-						playlists: playlists }),
-					_react2.default.createElement(_LazyLoadListener2.default, { loading: this.state.limit < total_playlists, loadMore: function loadMore() {
-							return _this2.setState({ limit: _this2.state.limit + _this2.state.per_page });
-						} })
-				);
-			}
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this3 = this;
-
-			var source_options = [{
-				value: 'all',
-				label: 'All'
-			}, {
-				value: 'local',
-				label: 'Local'
-			}, {
-				value: 'spotify',
-				label: 'Spotify'
-			}];
-
-			var view_options = [{
-				value: 'thumbnails',
-				label: 'Thumbnails'
-			}, {
-				value: 'list',
-				label: 'List'
-			}];
-
-			var sort_options = [{
-				value: 'name',
-				label: 'Name'
-			}, {
-				value: 'can_edit',
-				label: 'Editable'
-			}, {
-				value: 'owner.id',
-				label: 'Owner'
-			}, {
-				value: 'tracks.total',
-				label: 'Tracks'
-			}, {
-				value: 'source',
-				label: 'Source'
-			}];
-
-			var options = _react2.default.createElement(
-				'span',
-				null,
-				_react2.default.createElement(_FilterField2.default, { handleChange: function handleChange(value) {
-						return _this3.setState({ filter: value });
-					} }),
-				_react2.default.createElement(_DropdownField2.default, { icon: 'sort', name: 'Sort', value: this.props.sort, options: sort_options, reverse: this.props.sort_reverse, handleChange: function handleChange(val) {
-						_this3.setSort(val);_this3.props.uiActions.hideContextMenu();
-					} }),
-				_react2.default.createElement(_DropdownField2.default, { icon: 'eye', name: 'View', value: this.props.view, options: view_options, handleChange: function handleChange(val) {
-						_this3.props.uiActions.set({ library_playlists_view: val });_this3.props.uiActions.hideContextMenu();
-					} }),
-				_react2.default.createElement(_DropdownField2.default, { icon: 'database', name: 'Source', value: this.props.source, options: source_options, handleChange: function handleChange(val) {
-						_this3.props.uiActions.set({ library_playlists_source: val });_this3.props.uiActions.hideContextMenu();
-					} }),
-				_react2.default.createElement(
-					'button',
-					{ className: 'no-hover', onClick: function onClick() {
-							return _this3.props.uiActions.openModal('create_playlist', {});
-						} },
-					_react2.default.createElement(_reactFontawesome2.default, { name: 'plus' }),
-					'\xA0 New'
-				)
-			);
-
-			return _react2.default.createElement(
-				'div',
-				{ className: 'view library-playlists-view' },
-				_react2.default.createElement(_Header2.default, { icon: 'playlist', title: 'My playlists', options: options, uiActions: this.props.uiActions }),
-				this.renderView()
-			);
-		}
-	}]);
-
-	return LibraryPlaylists;
-}(_react2.default.Component);
-
-/**
- * Export our component
- *
- * We also integrate our global store, using connect()
- **/
-
-var mapStateToProps = function mapStateToProps(state, ownProps) {
-	return {
-		slim_mode: state.ui.slim_mode,
-		mopidy_connected: state.mopidy.connected,
-		spotify_connected: state.spotify.connected,
-		mopidy_library_playlists: state.mopidy.library_playlists,
-		mopidy_library_playlists_status: state.ui.processes.MOPIDY_LIBRARY_PLAYLISTS_PROCESSOR !== undefined ? state.ui.processes.MOPIDY_LIBRARY_PLAYLISTS_PROCESSOR.status : null,
-		spotify_library_playlists: state.spotify.library_playlists,
-		spotify_library_playlists_status: state.ui.processes.SPOTIFY_GET_LIBRARY_PLAYLISTS_PROCESSOR !== undefined ? state.ui.processes.SPOTIFY_GET_LIBRARY_PLAYLISTS_PROCESSOR.status : null,
-		load_queue: state.ui.load_queue,
-		me_id: state.spotify.me ? state.spotify.me.id : false,
-		view: state.ui.library_playlists_view,
-		source: state.ui.library_playlists_source ? state.ui.library_playlists_source : 'all',
-		sort: state.ui.library_playlists_sort ? state.ui.library_playlists_sort : 'name',
-		sort_reverse: state.ui.library_playlists_sort_reverse ? true : false,
-		playlists: state.core.playlists
-	};
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	return {
-		coreActions: (0, _redux.bindActionCreators)(coreActions, dispatch),
-		uiActions: (0, _redux.bindActionCreators)(uiActions, dispatch),
-		mopidyActions: (0, _redux.bindActionCreators)(mopidyActions, dispatch),
-		spotifyActions: (0, _redux.bindActionCreators)(spotifyActions, dispatch)
-	};
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LibraryPlaylists);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
-
-/***/ }),
-/* 434 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(4);
-
-var _redux = __webpack_require__(3);
-
-var _reactRouter = __webpack_require__(8);
-
-var _reactFontawesome = __webpack_require__(6);
-
-var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
-
-var _Header = __webpack_require__(17);
-
-var _Header2 = _interopRequireDefault(_Header);
-
-var _List = __webpack_require__(76);
-
-var _List2 = _interopRequireDefault(_List);
-
-var _TrackList = __webpack_require__(30);
-
-var _TrackList2 = _interopRequireDefault(_TrackList);
-
-var _GridItem = __webpack_require__(74);
-
-var _GridItem2 = _interopRequireDefault(_GridItem);
-
-var _helpers = __webpack_require__(2);
-
-var helpers = _interopRequireWildcard(_helpers);
-
-var _actions = __webpack_require__(5);
-
-var uiActions = _interopRequireWildcard(_actions);
-
-var _actions2 = __webpack_require__(11);
-
-var mopidyActions = _interopRequireWildcard(_actions2);
-
-var _actions3 = __webpack_require__(10);
-
-var spotifyActions = _interopRequireWildcard(_actions3);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var LibraryBrowse = function (_React$Component) {
-	_inherits(LibraryBrowse, _React$Component);
-
-	function LibraryBrowse(props) {
-		_classCallCheck(this, LibraryBrowse);
-
-		return _possibleConstructorReturn(this, (LibraryBrowse.__proto__ || Object.getPrototypeOf(LibraryBrowse)).call(this, props));
-	}
-
-	_createClass(LibraryBrowse, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			this.loadDirectory();
-		}
-	}, {
-		key: 'componentWillReceiveProps',
-		value: function componentWillReceiveProps(nextProps) {
-
-			// mopidy goes online
-			if (!this.props.mopidy_connected && nextProps.mopidy_connected) {
-				this.loadDirectory(nextProps);
-			}
-
-			// our uri changes
-			if (nextProps.params.uri != this.props.params.uri) {
-				this.loadDirectory(nextProps);
-			}
-		}
-	}, {
-		key: 'loadDirectory',
-		value: function loadDirectory() {
-			var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.props;
-
-			if (props.mopidy_connected) {
-				var uri = null;
-				if (props.params.uri !== undefined) {
-					uri = props.params.uri;
-				}
-				this.props.mopidyActions.getDirectory(uri);
-			}
-		}
-	}, {
-		key: 'playAll',
-		value: function playAll(e) {
-			var tracks = this.arrangeDirectory().tracks;
-			var tracks_uris = helpers.arrayOf('uri', tracks);
-
-			this.props.mopidyActions.playURIs(tracks_uris, this.props.params.uri);
-			this.props.uiActions.hideContextMenu();
-		}
-	}, {
-		key: 'goBack',
-		value: function goBack(e) {
-			window.history.back();
-			this.props.uiActions.hideContextMenu();
-		}
-	}, {
-		key: 'arrangeDirectory',
-		value: function arrangeDirectory() {
-			var directory = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.props.directory;
-
-			var folders = [];
-			var tracks = [];
-
-			for (var i = 0; i < directory.length; i++) {
-				if (directory[i].type && directory[i].type == 'track') {
-					tracks.push(directory[i]);
-				} else {
-					folders.push(Object.assign({}, directory[i], {
-						uri: directory[i].uri
-					}));
-				}
-			}
-
-			return {
-				folders: folders,
-				tracks: tracks
-			};
-		}
-	}, {
-		key: 'renderDirectory',
-		value: function renderDirectory() {
-			var _this2 = this;
-
-			var title = 'Browse';
-			var uri_exploded = this.props.params.uri.split(':');
-			if (uri_exploded.length > 0) {
-				title = uri_exploded[0];
-				title = title.charAt(0).toUpperCase() + title.slice(1);
-			}
-
-			if (!this.props.directory || helpers.isLoading(this.props.load_queue, ['mopidy_browse'])) {
-				return _react2.default.createElement(
-					'div',
-					{ className: 'view library-local-view' },
-					_react2.default.createElement(_Header2.default, { icon: 'music', title: title, uiActions: this.props.uiActions }),
-					_react2.default.createElement(
-						'div',
-						{ className: 'body-loader loading' },
-						_react2.default.createElement('div', { className: 'loader' })
-					)
-				);
-			}
-
-			var items = this.arrangeDirectory(this.props.directory);
-
-			var options = _react2.default.createElement(
-				'span',
-				null,
-				_react2.default.createElement(
-					'button',
-					{ className: 'no-hover', onClick: function onClick(e) {
-							return _this2.playAll(e);
-						} },
-					_react2.default.createElement(_reactFontawesome2.default, { name: 'play' }),
-					'\xA0 Play all'
-				),
-				_react2.default.createElement(
-					'button',
-					{ className: 'no-hover', onClick: function onClick(e) {
-							return _this2.goBack(e);
-						} },
-					_react2.default.createElement(_reactFontawesome2.default, { name: 'reply' }),
-					'\xA0 Back'
-				)
-			);
-
-			return _react2.default.createElement(
-				'div',
-				{ className: 'view library-local-view' },
-				_react2.default.createElement(_Header2.default, { icon: 'music', title: title, options: options, uiActions: this.props.uiActions }),
-				_react2.default.createElement(
-					'section',
-					{ className: 'content-wrapper' },
-					_react2.default.createElement(_List2.default, {
-						nocontext: true,
-						columns: [{ name: 'name', width: '100' }],
-						rows: items.folders,
-						className: 'library-local-directory-list',
-						link_prefix: global.baseURL + 'library/browse/'
-					}),
-					_react2.default.createElement(_TrackList2.default, {
-						tracks: items.tracks,
-						className: 'library-local-track-list',
-						noheader: true })
-				)
-			);
-		}
-	}, {
-		key: 'renderIndex',
-		value: function renderIndex() {
-			var grid_items = [];
-			if (this.props.directory) {
-				for (var i = 0; i < this.props.directory.length; i++) {
-					var directory = this.props.directory[i];
-
-					switch (directory.name) {
-						case 'Dirble':
-							directory.icons = ['assets/backgrounds/browse-dirble.jpg'];
-							break;
-
-						case 'Files':
-							directory.icons = ['assets/backgrounds/browse-folders.jpg'];
-							break;
-
-						case 'Local media':
-							directory.icons = ['assets/backgrounds/browse-folders.jpg'];
-							break;
-
-						case 'Spotify':
-						case 'Spotify Browse':
-							directory.icons = ['assets/backgrounds/browse-spotify.jpg'];
-							break;
-
-						case 'Spotify Tunigo':
-						case 'Tunigo':
-							directory.icons = ['assets/backgrounds/browse-tunigo.jpg'];
-							break;
-
-						case 'TuneIn':
-							directory.icons = ['assets/backgrounds/browse-tunein.jpg'];
-							break;
-
-						case 'SoundCloud':
-							directory.icons = ['assets/backgrounds/browse-soundcloud.jpg'];
-							break;
-
-						case 'iTunes Store: Podcasts':
-							directory.icons = ['assets/backgrounds/browse-itunes.jpg'];
-							break;
-
-						case 'Soma FM':
-							directory.icons = ['assets/backgrounds/browse-somafm.jpg'];
-							break;
-
-						default:
-							directory.icons = ['assets/backgrounds/browse-default.jpg'];
-					}
-
-					grid_items.push({
-						name: directory.name,
-						link: global.baseURL + 'library/browse/' + encodeURIComponent(directory.uri),
-						icons: directory.icons
-					});
-				}
-			}
-
-			return _react2.default.createElement(
-				'div',
-				{ className: 'view library-local-view' },
-				_react2.default.createElement(_Header2.default, { icon: 'folder', title: 'Browse' }),
-				_react2.default.createElement(
-					'section',
-					{ className: 'content-wrapper' },
-					_react2.default.createElement(
-						'div',
-						{ className: 'grid category-grid' },
-						grid_items.map(function (item, index) {
-							return _react2.default.createElement(_GridItem2.default, {
-								item: item,
-								key: index,
-								onClick: function onClick(e) {
-									return _reactRouter.hashHistory.push(item.link);
-								}
-							});
-						})
-					)
-				)
-			);
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			if (this.props.params.uri !== undefined && this.props.params.uri) {
-				return this.renderDirectory();
-			} else {
-				return this.renderIndex();
-			}
-		}
-	}]);
-
-	return LibraryBrowse;
-}(_react2.default.Component);
-
-var mapStateToProps = function mapStateToProps(state, ownProps) {
-	return {
-		load_queue: state.ui.load_queue,
-		mopidy_connected: state.mopidy.connected,
-		directory: state.mopidy.directory
-	};
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	return {
-		uiActions: (0, _redux.bindActionCreators)(uiActions, dispatch),
-		mopidyActions: (0, _redux.bindActionCreators)(mopidyActions, dispatch),
-		spotifyActions: (0, _redux.bindActionCreators)(spotifyActions, dispatch)
-	};
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LibraryBrowse);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
-
-/***/ }),
+/* 430 */,
+/* 431 */,
+/* 432 */,
+/* 433 */,
+/* 434 */,
 /* 435 */
 /***/ (function(module, exports) {
 

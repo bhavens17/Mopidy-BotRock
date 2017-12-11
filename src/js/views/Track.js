@@ -10,7 +10,6 @@ import TrackList from '../components/TrackList'
 import Thumbnail from '../components/Thumbnail'
 import ArtistSentence from '../components/ArtistSentence'
 import ArtistGrid from '../components/ArtistGrid'
-import FollowButton from '../components/FollowButton'
 import LastfmLoveButton from '../components/LastfmLoveButton'
 import Dater from '../components/Dater'
 import LazyLoadListener from '../components/LazyLoadListener'
@@ -90,7 +89,6 @@ class Track extends React.Component{
 					console.info('Loading track from index');
 				} else {
 					this.props.spotifyActions.getTrack(props.params.uri);
-					this.props.spotifyActions.following(props.params.uri);
 				}
 				break;
 

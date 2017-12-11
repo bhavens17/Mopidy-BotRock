@@ -44,17 +44,6 @@ class ContextMenu extends React.Component{
 
 			var context = this.getContext(nextProps);
 
-			// if we're able to be in the library, run a check
-			if (nextProps.spotify_authorized && context.source == 'spotify'){
-				switch (nextProps.menu.context){
-					case 'artist':
-					case 'album':
-					case 'playlist':
-						this.props.spotifyActions.following(nextProps.menu.items[0].uri)
-						break
-				}
-			}
-
 			// if we're able to be in the LastFM library, run a check
 			if (nextProps.lastfm_authorized && context.is_track && context.items_count == 1){
 				if (nextProps.menu.items[0].uri && this.props.tracks[nextProps.menu.items[0].uri] !== undefined && this.props.tracks[nextProps.menu.items[0].uri].userloved === undefined){
@@ -159,22 +148,6 @@ class ContextMenu extends React.Component{
 		var track = this.props.tracks[item.uri];
 
 		return (track.userloved !== undefined && track.userloved == "1");
-	}
-
-	canBeInLibrary(){
-		if (!this.props.spotify_authorized){
-			return false
-		}
-		return (helpers.uriSource(this.props.menu.items[0].uri) == 'spotify')
-	}
-
-	toggleInLibrary(e, in_library){
-		this.props.uiActions.hideContextMenu()
-		if (in_library){
-			this.props.spotifyActions.following(this.props.menu.items[0].uri, 'DELETE')
-		} else {
-			this.props.spotifyActions.following(this.props.menu.items[0].uri, 'PUT')
-		}
 	}
 
 	playQueueItem(e){
@@ -483,16 +456,6 @@ class ContextMenu extends React.Component{
 					<FontAwesome className="submenu-icon" name='caret-right' />
 				</a>
 				{this.renderPlaylistSubmenu()}
-			</span>
-		)
-
-		var toggle_in_library = (
-			<span className="menu-item-wrapper">
-				<a className="menu-item" onClick={e => this.toggleInLibrary(e, context.in_library)}>
-					<span className="label">
-						{context.in_library ? 'Remove from library' : 'Add to library'}
-					</span>
-				</a>
 			</span>
 		)
 

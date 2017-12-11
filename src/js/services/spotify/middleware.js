@@ -207,104 +207,6 @@ const SpotifyMiddleware = (function(){
                 });
                 break
 
-            case 'SPOTIFY_GET_LIBRARY_PLAYLISTS_PROCESSOR':
-                store.dispatch(spotifyActions.getLibraryPlaylistsProcessor(action.data))
-                break
-
-            case 'SPOTIFY_LIBRARY_PLAYLISTS_LOADED':
-                var playlists = []
-                for(var i = 0; i < action.playlists.length; i++){
-                    var playlist = Object.assign(
-                        {},
-                        action.playlists[i],
-                        {
-                            source: 'spotify',
-                            in_library: true,    // assumed because we asked for library items
-                            tracks_total: action.playlists[i].tracks.total
-                        }
-                    )
-
-                    // remove our tracklist. It'll overwrite any full records otherwise
-                    delete playlist.tracks
-
-                    playlists.push(playlist)
-                }
-
-                store.dispatch({
-                    type: 'PLAYLISTS_LOADED',
-                    playlists: playlists
-                });
-
-                // Append our action with the uris. This gets handed down to subsequent middleware and our reducer.
-                action.uris = helpers.arrayOf('uri',playlists)
-                next(action)
-                break
-
-            case 'SPOTIFY_GET_LIBRARY_ARTISTS_PROCESSOR':
-                store.dispatch(spotifyActions.getLibraryArtistsProcessor(action.data))
-                break
-
-            case 'SPOTIFY_LIBRARY_ARTISTS_LOADED':
-                var artists = []
-                for (var i = 0; i < action.artists.length; i++){
-                    artists.push(
-                        Object.assign(
-                            {},
-                            action.artists[i],
-                            {
-                                source: 'spotify',
-                                in_library: true     // assumed because we asked for library items
-                            }
-                        )
-                    )
-                }
-                store.dispatch({
-                    type: 'ARTISTS_LOADED',
-                    artists: artists
-                });
-
-                // Append our action with the uris. This gets handed down to subsequent middleware and our reducer.
-                action.uris = helpers.arrayOf('uri',artists)
-                next(action)
-                break
-
-            case 'SPOTIFY_GET_LIBRARY_ALBUMS_PROCESSOR':
-                store.dispatch(spotifyActions.getLibraryAlbumsProcessor(action.data))
-                break
-
-            case 'SPOTIFY_GET_PLAYLIST_TRACKS_FOR_PLAYING_PROCESSOR':
-                store.dispatch(spotifyActions.getPlaylistTracksForPlayingProcessor(action.data))
-                break
-
-            case 'SPOTIFY_LIBRARY_ALBUMS_LOADED':
-                var albums = []
-                for (var i = 0; i < action.albums.length; i++){
-                    albums.push(
-                        Object.assign(
-                            {},
-                            action.albums[i].album,
-                            {
-                                in_library: true,    // assumed because we asked for library items
-                                source: 'spotify',
-                                added_at: action.albums[i].added_at,
-                                tracks: action.albums[i].album.tracks.items,
-                                tracks_more: action.albums[i].album.tracks.next,
-                                tracks_total: action.albums[i].album.tracks.total
-                            }
-                        )
-                    )
-                }
-
-                store.dispatch({
-                    type: 'ALBUMS_LOADED',
-                    albums: albums
-                });
-
-                // Append our action with the uris. This gets handed down to subsequent middleware and our reducer.
-                action.uris = helpers.arrayOf('uri',albums)
-                next(action)
-                break
-
             case 'SPOTIFY_FAVORITES_LOADED':
                 if (action.artists.length > 0){
                     store.dispatch({
@@ -322,17 +224,6 @@ const SpotifyMiddleware = (function(){
                 }
                 next(action)
                 break
-
-            case 'SPOTIFY_LIBRARY_TRACKS_LOADED':
-            case 'SPOTIFY_LIBRARY_TRACKS_LOADED_MORE':
-                if (action.data){
-                    store.dispatch({
-                        type: 'TRACKS_LOADED',
-                        tracks: action.data.items
-                    });
-                }
-                next(action);
-                break;
 
             case 'SPOTIFY_TRACK_LOADED':
                 store.dispatch({

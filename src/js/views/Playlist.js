@@ -11,7 +11,6 @@ import Thumbnail from '../components/Thumbnail'
 import Dater from '../components/Dater'
 import ConfirmationButton from '../components/ConfirmationButton'
 import LazyLoadListener from '../components/LazyLoadListener'
-import FollowButton from '../components/FollowButton'
 import Header from '../components/Header'
 import ContextMenuTrigger from '../components/ContextMenuTrigger'
 import URILink from '../components/URILink'
@@ -62,7 +61,6 @@ class Playlist extends React.Component{
 
 				case 'spotify':
 					this.props.spotifyActions.getPlaylist(props.params.uri);
-					this.props.spotifyActions.following(props.params.uri);
 					break
 
 				default:
@@ -143,7 +141,6 @@ class Playlist extends React.Component{
 				return (
 					<div className="actions">
 						<button className="primary" onClick={ e => this.play() }>Play</button>
-						<FollowButton className="secondary" uri={this.props.params.uri} addText="Add to library" removeText="Remove from library" is_following={this.inLibrary()} />
 						<ContextMenuTrigger onTrigger={e => this.handleContextMenu(e)} />
 					</div>
 				)

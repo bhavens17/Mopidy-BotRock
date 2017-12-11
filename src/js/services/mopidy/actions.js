@@ -208,12 +208,6 @@ export function getTrack(uri){
 	}
 }
 
-export function getLibraryArtists(){
-	return { 
-		type: 'MOPIDY_GET_LIBRARY_ARTISTS' 
-	}
-}
-
 export function getArtist(uri){
 	return { 
 		type: 'MOPIDY_GET_ARTIST', 

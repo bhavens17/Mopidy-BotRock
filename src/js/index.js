@@ -30,12 +30,6 @@ import DiscoverCategories from './views/discover/DiscoverCategories'
 import DiscoverCategory from './views/discover/DiscoverCategory'
 import DiscoverNewReleases from './views/discover/DiscoverNewReleases'
 
-import LibraryArtists from './views/library/LibraryArtists'
-import LibraryAlbums from './views/library/LibraryAlbums'
-import LibraryTracks from './views/library/LibraryTracks'
-import LibraryPlaylists from './views/library/LibraryPlaylists'
-import LibraryBrowse from './views/library/LibraryBrowse'
-
 /*
 // Hijack console error for Raven to capture
 var originalConsoleError = console.error;  
@@ -79,12 +73,6 @@ ReactDOM.render(
 				<Route path="discover/categories" component={DiscoverCategories} />
 				<Route path="discover/categories/:id" component={DiscoverCategory} />
 				<Route path="discover/new-releases" component={DiscoverNewReleases} />
-
-				<Route path="library/artists" component={LibraryArtists} />
-				<Route path="library/albums" component={LibraryAlbums} />
-				<Route path="library/tracks" component={LibraryTracks} />
-				<Route path="library/playlists" component={LibraryPlaylists} />
-				<Route path="library/browse(/:uri)" component={LibraryBrowse} />
 
 			</Route>
 		</Router>
