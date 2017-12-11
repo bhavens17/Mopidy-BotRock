@@ -1,24 +1,23 @@
 # future imports
-from __future__ import absolute_import
 from __future__ import unicode_literals
+from mopidy.core import CoreListener
 
 # stdlib imports
 import logging
 import json
 
-from mopidy import core
-
 # third-party imports
+import mem
 import pykka
 import paho.mqtt.client as mqtt
 
 logger = logging.getLogger(__name__)
 
-class BotRockFrontend(pykka.ThreadingActor, core.CoreListener):
+class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 
 	def __init__(self, config, core):
 		super(BotRockFrontend, self).__init__()
-		
+
 		logger.info("mopidy_botrock initializing ... ")
 		
 		mem.botrock.core = core
@@ -27,8 +26,8 @@ class BotRockFrontend(pykka.ThreadingActor, core.CoreListener):
 		_hostname = 'mqtt.beebotte.com'
 		#_accesskey = self.config['accesskey']
 		#_secretkey = self.config['secretkey']
-		_channeltoken = self.config['channeltoken']
-		self.topic = self.config['topic']
+		_channeltoken = config['botrock']['channeltoken']
+		self.topic = config['botrock']['topic']
 
 		self.client = mqtt.Client()
 		self.client.on_connect = self.on_mqtt_connect
@@ -41,7 +40,7 @@ class BotRockFrontend(pykka.ThreadingActor, core.CoreListener):
 		self.client.loop_start()
 
 		#Turn on consume mode, to cause tracks to be removed from playlist as they finish playing
-		self.core.tracklist.set_consume(True)
+		mem.botrock.core.tracklist.set_consume(True)
 
 	def on_mqtt_connect(self, client, data, flags, rc):
 		client.subscribe(self.topic, 1)
@@ -65,15 +64,15 @@ class BotRockFrontend(pykka.ThreadingActor, core.CoreListener):
 				track = tracks.get()[0]
 				self.playbackPlay(track)
 			elif action == "stop":
-				self.core.playback.stop()
+				mem.botrock.core.playback.stop()
 			elif action == "next":
-				self.core.playback.next()
+				mem.botrock.core.playback.next()
 			elif action == "previous":
-				self.core.playback.previous()
+				mem.botrock.core.playback.previous()
 			elif action == "pause":
-				self.core.playback.pause()
+				mem.botrock.core.playback.pause()
 			elif action == "resume":
-				self.core.playback.resume()
+				mem.botrock.core.playback.resume()
 			elif action == "tracklistAdd":
 				uris = data[u'uris']
 				at_position = data[u'at_position']
@@ -94,32 +93,32 @@ class BotRockFrontend(pykka.ThreadingActor, core.CoreListener):
 			logger.error(e)
 		
 	def playbackPlay(self, tl_track = None, tlid = None):
-		return self.core.playback.play(tl_track, tlid)
+		return mem.botrock.core.playback.play(tl_track, tlid)
 
 	def playbackStop(self):
-		return self.core.playback.stop()
+		return mem.botrock.core.playback.stop()
 
 	def playbackNext(self):
-		return self.core.playback.next()
+		return mem.botrock.core.playback.next()
 
 	def playbackPrevious(self):
-		return self.core.playback.previous()
+		return mem.botrock.core.playback.previous()
 
 	def playbackPause(self):
-		return self.core.playback.pause()
+		return mem.botrock.core.playback.pause()
 
 	def playbackResume(self):
-		return self.core.playback.resume()
+		return mem.botrock.core.playback.resume()
 
 	def playbackGetCurrentTlTrack(self):
-		return self.core.playback.get_current_tl_track()
+		return mem.botrock.core.playback.get_current_tl_track()
 
 
 	def tracklistAdd(self, uris, at_position = 0):
-		return self.core.tracklist.add(at_position = at_position, uris = uris)
+		return mem.botrock.core.tracklist.add(at_position = at_position, uris = uris)
 
 	def tracklistSlice(self, start, end):
-		return self.core.tracklist.slice(start, end)
+		return mem.botrock.core.tracklist.slice(start, end)
 
 	def tracklistIndex(self, tl_track = None, tlid = None):
-		return self.core.tracklist.index(tl_track, tlid)
+		return mem.botrock.core.tracklist.index(tl_track, tlid)

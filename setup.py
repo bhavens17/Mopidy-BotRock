@@ -24,9 +24,13 @@ setup(
     zip_safe=False,
     include_package_data=True,
     install_requires=[
-        'setuptools',
-        'Mopidy >= 1.0',
-        'Pykka >= 1.1',
+        'setuptools >= 3.3',
+        'pylast >= 1.6.0',
+        'Mopidy >= 2.0',
+        'Mopidy-Local-Images >= 1.0',
+        'ConfigObj >= 5.0.6',
+        'raven >= 6.1.0',
+        'requests >= 2.0.0',
         'paho-mqtt >= 1.3.1'
     ],
     entry_points={

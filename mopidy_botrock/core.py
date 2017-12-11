@@ -1,7 +1,7 @@
 
 from __future__ import unicode_literals
 
-import random, string, logging, json, pykka, pylast, urllib, urllib2, os, sys, mopidy_iris, subprocess
+import random, string, logging, json, pykka, pylast, urllib, urllib2, os, sys, mopidy_botrock, subprocess
 import tornado.web
 import tornado.websocket
 import tornado.ioloop
@@ -19,7 +19,7 @@ if sys.platform == 'win32':
 # import logger
 logger = logging.getLogger(__name__)
 
-class IrisCore(object):
+class BotRockCore(object):
 
     version = 0
     if sys.platform == 'win32':
@@ -461,7 +461,7 @@ class IrisCore(object):
             spotify_token = self.spotify_token
             access_token = spotify_token['access_token']
         except:
-            error = 'IrisFrontend: access_token missing or invalid'
+            error = 'BotRockFrontend: access_token missing or invalid'
             logger.error(error)
             return False
             
@@ -485,7 +485,7 @@ class IrisCore(object):
             return uris
 
         except:
-            logger.error('IrisFrontend: Failed to fetch Spotify recommendations')
+            logger.error('BotRockFrontend: Failed to fetch Spotify recommendations')
             return False
 
 

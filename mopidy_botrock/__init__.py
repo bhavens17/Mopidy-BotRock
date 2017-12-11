@@ -56,23 +56,23 @@ class Extension(ext.Extension):
         mem.botrock = BotRockCore()
         mem.botrock.version = self.version
 
-    def botrock_factory(config, core):
-        path = os.path.join( os.path.dirname(__file__), 'static')
-        
-        return [
-            (r"/images/(.*)", tornado.web.StaticFileHandler, {
-                'path': config['local-images']['image_dir']
-            }),
-            (r'/http/([^/]*)', handlers.HttpHandler, {
-                'core': core,
-                'config': config
-            }),
-            (r'/ws/?', handlers.WebsocketHandler, { 
-                'core': core,
-                'config': config
-            }),
-            (r'/(.*)', tornado.web.StaticFileHandler, {
-                'path': path,
-                'default_filename': 'index.html'
-            }),
-        ]
+def botrock_factory(config, core):
+    path = os.path.join( os.path.dirname(__file__), 'static')
+    
+    return [
+        (r"/images/(.*)", tornado.web.StaticFileHandler, {
+            'path': config['local-images']['image_dir']
+        }),
+        (r'/http/([^/]*)', handlers.HttpHandler, {
+            'core': core,
+            'config': config
+        }),
+        (r'/ws/?', handlers.WebsocketHandler, { 
+            'core': core,
+            'config': config
+        }),
+        (r'/(.*)', tornado.web.StaticFileHandler, {
+            'path': path,
+            'default_filename': 'index.html'
+        }),
+    ]
