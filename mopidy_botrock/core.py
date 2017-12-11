@@ -259,10 +259,10 @@ class BotRockCore(object):
         response = {
             'config': {
                 "spotify_username": spotify_username,
-                "country": self.config['botrock']['country'],
-                "locale": self.config['botrock']['locale'],
-                "spotify_authorization_url": self.config['botrock']['spotify_authorization_url'],
-                "lastfm_authorization_url": self.config['botrock']['lastfm_authorization_url']
+                "country": 'US',#self.config['botrock']['country'],
+                "locale": 'en_US',#self.config['botrock']['locale'],
+                "spotify_authorization_url": 'https://jamesbarnsley.co.nz/auth_spotify.php',#self.config['botrock']['spotify_authorization_url'],
+                "lastfm_authorization_url": 'https://jamesbarnsley.co.nz/auth_lastfm.php'#self.config['botrock']['lastfm_authorization_url']
             }
         }
 
