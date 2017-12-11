@@ -49,7 +49,6 @@ class App extends React.Component{
 		
 		// Fire up our services
 		this.props.coreActions.startServices()
-		this.props.coreActions.getBroadcasts()
 
 		// when we navigate to a new route
 		hashHistory.listen(location => {

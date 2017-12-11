@@ -1907,7 +1907,7 @@ function refreshToken(dispatch, getState) {
 
             var config = {
                 method: 'GET',
-                url: '//' + getState().mopidy.host + ':' + getState().mopidy.port + '/botrock/http/refresh_spotify_token',
+                url: 'http' + (getState().mopidy.ssl ? 's' : '') + '://' + getState().mopidy.host + ':' + getState().mopidy.port + '/botrock/http/refresh_spotify_token',
                 dataType: "json",
                 timeout: 10000
             };
@@ -4470,12 +4470,11 @@ module.exports = invariant;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {
+
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.getBroadcasts = getBroadcasts;
 exports.startSearch = startSearch;
 exports.handleException = handleException;
 exports.debugResponse = debugResponse;
@@ -4505,29 +4504,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var spotifyActions = __webpack_require__(10);
 var mopidyActions = __webpack_require__(11);
-
-function getBroadcasts() {
-    return function (dispatch, getState) {
-        var config = {
-            method: 'GET',
-            timeout: 15000,
-            url: 'https://gist.githubusercontent.com/jaedb/b677dccf80daf3ccb2ef12e96e495677/raw'
-        };
-        $.ajax(config).then(function (response) {
-            dispatch({
-                type: 'BROADCASTS_LOADED',
-                broadcasts: JSON.parse(response)
-            });
-        }, function (xhr, status, error) {
-            dispatch(handleException('Could not fetch broadcasts from GitHub', {
-                config: config,
-                xhr: xhr,
-                status: status,
-                error: error
-            }));
-        });
-    };
-}
 
 function startSearch(search_type, query) {
     var only_mopidy = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
@@ -4769,7 +4745,6 @@ function usersLoaded(users) {
         users: users
     };
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)))
 
 /***/ }),
 /* 23 */
@@ -48817,7 +48792,7 @@ var initialState = {
 	},
 	mopidy: {
 		connected: false,
-		host: '192.168.1.216', //window.location.hostname,
+		host: '10.10.2.216', //window.location.hostname,
 		port: '6680', //(window.location.port ? window.location.port : (window.location.protocol === 'https:' ? '443' : '80')),
 		ssl: false, //(window.location.protocol === 'https:' ? true : false),
 		mute: false,
@@ -56402,7 +56377,6 @@ var App = function (_React$Component) {
 
 			// Fire up our services
 			this.props.coreActions.startServices();
-			this.props.coreActions.getBroadcasts();
 
 			// when we navigate to a new route
 			_reactRouter.hashHistory.listen(function (location) {
@@ -56830,45 +56804,6 @@ var Sidebar = function (_React$Component) {
 								'New releases'
 							)
 						) : null,
-						_react2.default.createElement(
-							'section',
-							null,
-							_react2.default.createElement(
-								'title',
-								null,
-								'My Music'
-							),
-							_react2.default.createElement(
-								_reactRouter.Link,
-								{ className: this.linkClassName('library/playlists'), to: global.baseURL + "library/playlists" },
-								_react2.default.createElement(_Icon2.default, { name: 'playlist' }),
-								'Playlists'
-							),
-							_react2.default.createElement(
-								_reactRouter.Link,
-								{ className: this.linkClassName('library/artists'), to: global.baseURL + "library/artists" },
-								_react2.default.createElement(_Icon2.default, { name: 'mic' }),
-								'Artists'
-							),
-							_react2.default.createElement(
-								_reactRouter.Link,
-								{ className: this.linkClassName('library/albums'), to: global.baseURL + "library/albums" },
-								_react2.default.createElement(_Icon2.default, { name: 'cd' }),
-								'Albums'
-							),
-							_react2.default.createElement(
-								_reactRouter.Link,
-								{ className: this.linkClassName('library/tracks'), to: global.baseURL + "library/tracks" },
-								_react2.default.createElement(_Icon2.default, { name: 'music' }),
-								'Tracks'
-							),
-							_react2.default.createElement(
-								_reactRouter.Link,
-								{ className: this.linkClassName('library/browse'), to: global.baseURL + "library/browse" },
-								_react2.default.createElement(_Icon2.default, { name: 'folder' }),
-								'Browse'
-							)
-						),
 						_react2.default.createElement(
 							'section',
 							null,

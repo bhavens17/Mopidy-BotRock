@@ -150,7 +150,7 @@ function refreshToken(dispatch, getState){
 
             var config = {
                 method: 'GET',
-                url: '//'+getState().mopidy.host+':'+getState().mopidy.port+'/botrock/http/refresh_spotify_token',
+                url: 'http' + (getState().mopidy.ssl ? 's' : '') + '://'+getState().mopidy.host+':'+getState().mopidy.port+'/botrock/http/refresh_spotify_token',
                 dataType: "json",
                 timeout: 10000
             }

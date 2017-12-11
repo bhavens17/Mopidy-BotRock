@@ -64,30 +64,6 @@ class Sidebar extends React.Component{
 						</section> : null}
 
 						<section>
-							<title>My Music</title>
-							<Link className={this.linkClassName('library/playlists')} to={global.baseURL+"library/playlists"}>
-								<Icon name="playlist" />
-								Playlists
-							</Link>
-							<Link className={this.linkClassName('library/artists')} to={global.baseURL+"library/artists"}>
-								<Icon name="mic" />
-								Artists
-							</Link>
-							<Link className={this.linkClassName('library/albums')} to={global.baseURL+"library/albums"}>
-								<Icon name="cd" />
-								Albums
-							</Link>
-							<Link className={this.linkClassName('library/tracks')} to={global.baseURL+"library/tracks"}>
-								<Icon name="music" />
-								Tracks
-							</Link>
-							<Link className={this.linkClassName('library/browse')} to={global.baseURL+"library/browse"}>
-								<Icon name="folder" />
-								Browse
-							</Link>
-						</section>
-
-						<section>
 							<Link className={this.linkClassName('settings')} to={global.baseURL+"settings"}>
 								<Icon name="cog" />
 								Settings

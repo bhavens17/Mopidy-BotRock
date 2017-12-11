@@ -3,37 +3,6 @@ import * as helpers from '../../helpers'
 var spotifyActions = require('../../services/spotify/actions')
 var mopidyActions = require('../../services/mopidy/actions')
 
-export function getBroadcasts(){
-    return (dispatch, getState) => {
-        var config = {
-            method: 'GET',
-            timeout: 15000,
-            url: 'https://gist.githubusercontent.com/jaedb/b677dccf80daf3ccb2ef12e96e495677/raw'
-        }
-        $.ajax(config).then(
-                response => {
-                    dispatch({
-                        type: 'BROADCASTS_LOADED',
-                        broadcasts: JSON.parse(response)
-                    })
-                },
-                (xhr, status, error) => {
-                    dispatch(
-                        handleException(
-                            'Could not fetch broadcasts from GitHub',
-                            {
-                                config: config,
-                                xhr: xhr,
-                                status: status,
-                                error: error
-                            }
-                        )
-                    );
-                }
-            )
-    }
-}
-
 export function startSearch(search_type, query, only_mopidy = false){
 	return {
 		type: 'SEARCH_STARTED',
