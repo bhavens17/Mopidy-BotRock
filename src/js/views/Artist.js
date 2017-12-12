@@ -221,6 +221,14 @@ class Artist extends React.Component{
 				var uris_to_play = this.props.artist.albums_uris
 			}
 
+			var voteButtons = ""
+			if(this.props.botrock_voting)
+			{
+				voteButtons = this.props.botrock_voting.songs.map((song, index) =>
+					<button className="primary" key={index} onClick={e => this.props.pusherActions.castBotRockVote(index + 1)}>Vote for #{index + 1} ({song.votes.length})</button>
+				)
+			}
+
 			return (
 				<div className="view artist-view">
 					<div className="intro">
@@ -230,7 +238,8 @@ class Artist extends React.Component{
 						<div className="liner">
 							<h1>{this.props.artist ? this.props.artist.name : null}</h1>
 							<div className="actions">
-								<button className="primary" onClick={e => this.props.mopidyActions.playURIs(uris_to_play, this.props.artist.uri)}>Play</button>
+								<button className="primary" onClick={e => this.props.mopidyActions.enqueueURIs([this.props.params.uri], this.props.params.uri, false)}>Add All Artist Songs To Queue</button>
+								{voteButtons}
 								<ContextMenuTrigger className="white" onTrigger={e => this.handleContextMenu(e)} />
 							</div>
 							{ this.renderSubViewMenu() }
@@ -286,7 +295,8 @@ const mapStateToProps = (state, ownProps) => {
 		local_library_artists: state.mopidy.library_artists,
 		albums: (state.core.albums ? state.core.albums : []),
 		spotify_authorized: state.spotify.authorization,
-		mopidy_connected: state.mopidy.connected
+		mopidy_connected: state.mopidy.connected,
+		botrock_voting: state.pusher.botrock_voting
 	}
 }
 

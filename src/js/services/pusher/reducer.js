@@ -51,6 +51,9 @@ export default function reducer(pusher = {}, action){
         case 'PUSHER_START_UPGRADE':
             return Object.assign({}, pusher, { upgrading: true });
 
+        case 'PUSHER_BOTROCK_VOTING_UPDATED':
+            return Object.assign({}, pusher, { botrock_voting: action.voting })
+
         default:
             return pusher
     }

@@ -63,6 +63,7 @@ var initialState = {
 		connected: false,
 		username: 'Anonymous',
 		connections: {},
+		botrock_voting: null,
 		version: {
 			current: '0.0.0'
 		}

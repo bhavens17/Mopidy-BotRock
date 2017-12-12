@@ -1068,14 +1068,14 @@ export function getArtists(uris){
 }
 
 
-export function playArtistTopTracks(uri){
+export function enqueueArtistTopTracks(uri){
     return (dispatch, getState) => {
         const artists = getState().core.artists
 
         // Do we have this artist (and their tracks) in our index already?
         if (typeof(artists[uri]) !== 'undefined' && typeof(artists[uri].tracks) !== 'undefined'){
             const uris = helpers.arrayOf('uri',artists[uri].tracks)
-            dispatch(mopidyActions.playURIs(uris, uri))
+            dispatch(mopidyActions.enqueueURIs(uris, uri))
 
         // We need to load the artist's top tracks first
         } else {
@@ -1083,11 +1083,11 @@ export function playArtistTopTracks(uri){
             .then(
                 response => {
                     const uris = helpers.arrayOf('uri',response.tracks)
-                    dispatch(mopidyActions.playURIs(uris, uri))
+                    dispatch(mopidyActions.enqueueURIs(uris, uri))
                 },
                 error => {
                     dispatch(coreActions.handleException(
-                        'Could not play artist\'s top tracks',
+                        'Could not enqueue artist\'s top tracks',
                         error
                     ));
                 }

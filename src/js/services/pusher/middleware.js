@@ -98,6 +98,11 @@ const PusherMiddleware = (function(){
         switch(action.type){
 
             case 'PUSHER_CONNECT':
+                var state = store.getState();
+                if(!state.pusher.username)
+                {
+                    store.dispatch(uiActions.openModal('enter_username', { username: state.pusher.username }))
+                }
 
                 // Stagnant socket, close it first
                 if (socket != null){
@@ -105,8 +110,7 @@ const PusherMiddleware = (function(){
                 }
 
                 store.dispatch({ type: 'PUSHER_CONNECTING' });
-
-                var state = store.getState();
+                
                 var connection = {
                     client_id: helpers.generateGuid(),
                     connection_id: helpers.generateGuid(),
@@ -199,6 +203,21 @@ const PusherMiddleware = (function(){
                         error => {                            
                             store.dispatch(coreActions.handleException(
                                 'Could not load radio',
+                                error
+                            ));
+                        }
+                    );
+                request(store, 'get_botrock_voting')
+                    .then(
+                        response => {
+                            store.dispatch({
+                                type: 'PUSHER_BOTROCK_VOTING_UPDATED'
+                                ,voting: response.voting
+                            })
+                        },
+                        error => {
+                            store.dispatch(coreActions.handleException(
+                                'Could not get BotRock voting',
                                 error
                             ));
                         }
@@ -467,6 +486,23 @@ const PusherMiddleware = (function(){
             case 'PUSHER_ERROR':
                 store.dispatch(uiActions.createNotification(action.message, 'bad'))
                 ReactGA.event({ category: 'Pusher', action: 'Error', label: action.message })
+                break
+
+            case 'PUSHER_CAST_BOTROCK_VOTE':
+                var state = store.getState();
+                var username = state.pusher.username;
+                request(store, 'cast_botrock_vote', { song_number: action.song_number, username: username })
+                    .then(
+                        response => {
+                            console.log(response)
+                        },
+                        error => {
+                            store.dispatch(coreActions.handleException(
+                                'Could not cast BotRock vote',
+                                error
+                            ));
+                        }
+                    );
                 break
 
             // This action is irrelevant to us, pass it on to the next middleware

@@ -109,3 +109,16 @@ export function addQueueMetadata(tlids = [], from_uri = null){
 		from_uri: from_uri
 	}
 }
+
+export function castBotRockVote(song_number){
+	return {
+		type: "PUSHER_CAST_BOTROCK_VOTE",
+		song_number: song_number
+	}
+}
+
+export function getBotRockVoting(){
+	return {
+		type: "PUSHER_GET_BOTROCK_VOTING",
+	}
+}

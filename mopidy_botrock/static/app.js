@@ -1743,7 +1743,7 @@ exports.getRecommendations = getRecommendations;
 exports.getGenres = getGenres;
 exports.getArtist = getArtist;
 exports.getArtists = getArtists;
-exports.playArtistTopTracks = playArtistTopTracks;
+exports.enqueueArtistTopTracks = enqueueArtistTopTracks;
 exports.getUser = getUser;
 exports.getUserPlaylists = getUserPlaylists;
 exports.getAlbum = getAlbum;
@@ -2635,22 +2635,22 @@ function getArtists(uris) {
     };
 }
 
-function playArtistTopTracks(uri) {
+function enqueueArtistTopTracks(uri) {
     return function (dispatch, getState) {
         var artists = getState().core.artists;
 
         // Do we have this artist (and their tracks) in our index already?
         if (typeof artists[uri] !== 'undefined' && typeof artists[uri].tracks !== 'undefined') {
             var uris = helpers.arrayOf('uri', artists[uri].tracks);
-            dispatch(mopidyActions.playURIs(uris, uri));
+            dispatch(mopidyActions.enqueueURIs(uris, uri));
 
             // We need to load the artist's top tracks first
         } else {
             sendRequest(dispatch, getState, 'artists/' + helpers.getFromUri('artistid', uri) + '/top-tracks?country=' + getState().core.country).then(function (response) {
                 var uris = helpers.arrayOf('uri', response.tracks);
-                dispatch(mopidyActions.playURIs(uris, uri));
+                dispatch(mopidyActions.enqueueURIs(uris, uri));
             }, function (error) {
-                dispatch(coreActions.handleException('Could not play artist\'s top tracks', error));
+                dispatch(coreActions.handleException('Could not enqueue artist\'s top tracks', error));
             });
         }
     };
@@ -4419,6 +4419,8 @@ exports.stopRadio = stopRadio;
 exports.debug = debug;
 exports.getQueueMetadata = getQueueMetadata;
 exports.addQueueMetadata = addQueueMetadata;
+exports.castBotRockVote = castBotRockVote;
+exports.getBotRockVoting = getBotRockVoting;
 
 /**
  * Actions and Action Creators
@@ -4537,6 +4539,19 @@ function addQueueMetadata() {
 		type: 'PUSHER_ADD_QUEUE_METADATA',
 		tlids: tlids,
 		from_uri: from_uri
+	};
+}
+
+function castBotRockVote(song_number) {
+	return {
+		type: "PUSHER_CAST_BOTROCK_VOTE",
+		song_number: song_number
+	};
+}
+
+function getBotRockVoting() {
+	return {
+		type: "PUSHER_GET_BOTROCK_VOTING"
 	};
 }
 
@@ -47939,6 +47954,7 @@ var initialState = {
 		connected: false,
 		username: 'Anonymous',
 		connections: {},
+		botrock_voting: null,
 		version: {
 			current: '0.0.0'
 		}
@@ -48509,6 +48525,9 @@ function reducer() {
 
         case 'PUSHER_START_UPGRADE':
             return Object.assign({}, pusher, { upgrading: true });
+
+        case 'PUSHER_BOTROCK_VOTING_UPDATED':
+            return Object.assign({}, pusher, { botrock_voting: action.voting });
 
         default:
             return pusher;
@@ -50006,6 +50025,10 @@ var PusherMiddleware = function () {
                 switch (action.type) {
 
                     case 'PUSHER_CONNECT':
+                        var state = store.getState();
+                        if (!state.pusher.username) {
+                            store.dispatch(uiActions.openModal('enter_username', { username: state.pusher.username }));
+                        }
 
                         // Stagnant socket, close it first
                         if (socket != null) {
@@ -50014,7 +50037,6 @@ var PusherMiddleware = function () {
 
                         store.dispatch({ type: 'PUSHER_CONNECTING' });
 
-                        var state = store.getState();
                         var connection = {
                             client_id: helpers.generateGuid(),
                             connection_id: helpers.generateGuid(),
@@ -50086,6 +50108,14 @@ var PusherMiddleware = function () {
                             store.dispatch(response);
                         }, function (error) {
                             store.dispatch(coreActions.handleException('Could not load radio', error));
+                        });
+                        request(store, 'get_botrock_voting').then(function (response) {
+                            store.dispatch({
+                                type: 'PUSHER_BOTROCK_VOTING_UPDATED',
+                                voting: response.voting
+                            });
+                        }, function (error) {
+                            store.dispatch(coreActions.handleException('Could not get BotRock voting', error));
                         });
 
                         store.dispatch(pusherActions.getQueueMetadata());
@@ -50293,6 +50323,16 @@ var PusherMiddleware = function () {
                     case 'PUSHER_ERROR':
                         store.dispatch(uiActions.createNotification(action.message, 'bad'));
                         _reactGa2.default.event({ category: 'Pusher', action: 'Error', label: action.message });
+                        break;
+
+                    case 'PUSHER_CAST_BOTROCK_VOTE':
+                        var state = store.getState();
+                        var username = state.pusher.username;
+                        request(store, 'cast_botrock_vote', { song_number: action.song_number, username: username }).then(function (response) {
+                            console.log(response);
+                        }, function (error) {
+                            store.dispatch(coreActions.handleException('Could not cast BotRock vote', error));
+                        });
                         break;
 
                     // This action is irrelevant to us, pass it on to the next middleware
@@ -57262,10 +57302,10 @@ var ContextMenu = function (_React$Component) {
 			this.props.mopidyActions.playPlaylist(this.props.menu.uris[0]);
 		}
 	}, {
-		key: 'playArtistTopTracks',
-		value: function playArtistTopTracks(e) {
+		key: 'enqueueArtistTopTracks',
+		value: function enqueueArtistTopTracks(e) {
 			this.props.uiActions.hideContextMenu();
-			this.props.spotifyActions.playArtistTopTracks(this.props.menu.uris[0]);
+			this.props.spotifyActions.enqueueArtistTopTracks(this.props.menu.uris[0]);
 		}
 	}, {
 		key: 'addToQueue',
@@ -57617,18 +57657,18 @@ var ContextMenu = function (_React$Component) {
 				)
 			);
 
-			var play_artist_top_tracks = _react2.default.createElement(
+			var enqueue_artist_top_tracks = _react2.default.createElement(
 				'span',
 				{ className: 'menu-item-wrapper' },
 				_react2.default.createElement(
 					'a',
 					{ className: 'menu-item', onClick: function onClick(e) {
-							return _this3.playArtistTopTracks(e);
+							return _this3.enqueueArtistTopTracks(e);
 						} },
 					_react2.default.createElement(
 						'span',
 						{ className: 'label' },
-						'Play top tracks'
+						'Add Top Tracks to Queue'
 					)
 				)
 			);
@@ -57878,7 +57918,7 @@ var ContextMenu = function (_React$Component) {
 					return _react2.default.createElement(
 						'div',
 						null,
-						context.source == 'spotify' ? play_artist_top_tracks : null,
+						context.source == 'spotify' ? enqueue_artist_top_tracks : null,
 						context.source == 'spotify' ? start_radio : null,
 						_react2.default.createElement('div', { className: 'divider' }),
 						context.source == 'spotify' ? go_to_recommendations : null,
@@ -58263,6 +58303,10 @@ var _VolumeModal = __webpack_require__(403);
 
 var _VolumeModal2 = _interopRequireDefault(_VolumeModal);
 
+var _EnterUsernameModal = __webpack_require__(454);
+
+var _EnterUsernameModal2 = _interopRequireDefault(_EnterUsernameModal);
+
 var _AuthorizationModal_Send = __webpack_require__(404);
 
 var _AuthorizationModal_Send2 = _interopRequireDefault(_AuthorizationModal_Send);
@@ -58417,7 +58461,11 @@ var Modal = function (_React$Component) {
 						uiActions: this.props.uiActions,
 						mopidyActions: this.props.mopidyActions,
 						volume: this.props.volume,
-						mute: this.props.mute }) : null
+						mute: this.props.mute }) : null,
+					this.props.modal.name == 'enter_username' ? _react2.default.createElement(_EnterUsernameModal2.default, {
+						uiActions: this.props.uiActions,
+						pusherActions: this.props.pusherActions,
+						username: this.props.username }) : null
 				)
 			);
 		}
@@ -58444,7 +58492,8 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
 		mopidy_connected: state.mopidy.connected,
 		spotify_authorized: state.spotify.authorization,
 		spotify_library_playlists: state.spotify.library_playlists,
-		mopidy_library_playlists: state.mopidy.library_playlists
+		mopidy_library_playlists: state.mopidy.library_playlists,
+		username: state.pusher.username
 	};
 };
 
@@ -61511,6 +61560,23 @@ var Artist = function (_React$Component) {
 					var uris_to_play = this.props.artist.albums_uris;
 				}
 
+				var voteButtons = "";
+				if (this.props.botrock_voting) {
+					voteButtons = this.props.botrock_voting.songs.map(function (song, index) {
+						return _react2.default.createElement(
+							'button',
+							{ className: 'primary', key: index, onClick: function onClick(e) {
+									return _this3.props.pusherActions.castBotRockVote(index + 1);
+								} },
+							'Vote for #',
+							index + 1,
+							' (',
+							song.votes.length,
+							')'
+						);
+					});
+				}
+
 				return _react2.default.createElement(
 					'div',
 					{ className: 'view artist-view' },
@@ -61532,10 +61598,11 @@ var Artist = function (_React$Component) {
 								_react2.default.createElement(
 									'button',
 									{ className: 'primary', onClick: function onClick(e) {
-											return _this3.props.mopidyActions.playURIs(uris_to_play, _this3.props.artist.uri);
+											return _this3.props.mopidyActions.enqueueURIs([_this3.props.params.uri], _this3.props.params.uri, false);
 										} },
-									'Play'
+									'Add All Artist Songs To Queue'
 								),
+								voteButtons,
 								_react2.default.createElement(_ContextMenuTrigger2.default, { className: 'white', onTrigger: function onTrigger(e) {
 										return _this3.handleContextMenu(e);
 									} })
@@ -61613,7 +61680,8 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
 		local_library_artists: state.mopidy.library_artists,
 		albums: state.core.albums ? state.core.albums : [],
 		spotify_authorized: state.spotify.authorization,
-		mopidy_connected: state.mopidy.connected
+		mopidy_connected: state.mopidy.connected,
+		botrock_voting: state.pusher.botrock_voting
 	};
 };
 
@@ -67361,6 +67429,140 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 436 */,
+/* 437 */,
+/* 438 */,
+/* 439 */,
+/* 440 */,
+/* 441 */,
+/* 442 */,
+/* 443 */,
+/* 444 */,
+/* 445 */,
+/* 446 */,
+/* 447 */,
+/* 448 */,
+/* 449 */,
+/* 450 */,
+/* 451 */,
+/* 452 */,
+/* 453 */,
+/* 454 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Icon = __webpack_require__(20);
+
+var _Icon2 = _interopRequireDefault(_Icon);
+
+var _helpers = __webpack_require__(2);
+
+var helpers = _interopRequireWildcard(_helpers);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var EnterUsernameModal = function (_React$Component) {
+	_inherits(EnterUsernameModal, _React$Component);
+
+	function EnterUsernameModal(props) {
+		_classCallCheck(this, EnterUsernameModal);
+
+		var _this = _possibleConstructorReturn(this, (EnterUsernameModal.__proto__ || Object.getPrototypeOf(EnterUsernameModal)).call(this, props));
+
+		_this.state = {
+			username: ''
+		};
+		return _this;
+	}
+
+	_createClass(EnterUsernameModal, [{
+		key: 'enterUsername',
+		value: function enterUsername(e) {
+			e.preventDefault();
+
+			if (!this.state.username || this.state.username == '') {
+				this.setState({ error: 'Name is required' });
+				return false;
+			} else {
+				this.props.pusherActions.setUsername(this.state.username);
+				this.props.uiActions.closeModal();
+			}
+
+			return false;
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'h1',
+					null,
+					'Enter Name'
+				),
+				_react2.default.createElement(
+					'form',
+					{ onSubmit: function onSubmit(e) {
+							return _this2.enterUsername(e);
+						} },
+					_react2.default.createElement(
+						'div',
+						{ className: 'field text' },
+						_react2.default.createElement(
+							'span',
+							{ className: 'label' },
+							'Name'
+						),
+						_react2.default.createElement('input', {
+							type: 'text',
+							onChange: function onChange(e) {
+								return _this2.setState({ username: e.target.value });
+							},
+							value: this.state.username })
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'actions centered-text' },
+						_react2.default.createElement(
+							'button',
+							{ type: 'submit', className: 'primary wide' },
+							'Done'
+						)
+					)
+				)
+			);
+		}
+	}]);
+
+	return EnterUsernameModal;
+}(_react2.default.Component);
+
+exports.default = EnterUsernameModal;
 
 /***/ })
 /******/ ]);

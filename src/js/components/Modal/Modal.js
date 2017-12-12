@@ -15,6 +15,7 @@ import ImageZoomModal from './ImageZoomModal'
 import KioskModeModal from './KioskModeModal'
 import SearchURISchemesModal from './SearchURISchemesModal'
 import VolumeModal from './VolumeModal'
+import EnterUsernameModal from './EnterUsernameModal'
 import AuthorizationModal_Send from './AuthorizationModal_Send'
 import AuthorizationModal_Receive from './AuthorizationModal_Receive'
 
@@ -137,6 +138,11 @@ class Modal extends React.Component{
 						volume={this.props.volume} 
 						mute={this.props.mute} /> : null }
 
+					{ this.props.modal.name == 'enter_username' ? <EnterUsernameModal
+						uiActions={this.props.uiActions}
+						pusherActions={this.props.pusherActions} 
+						username={this.props.username} /> : null }
+
 				</div>
 			</div>
 		);
@@ -161,7 +167,8 @@ const mapStateToProps = (state, ownProps) => {
 		mopidy_connected: state.mopidy.connected,
 		spotify_authorized: state.spotify.authorization,
 		spotify_library_playlists: state.spotify.library_playlists,
-		mopidy_library_playlists: state.mopidy.library_playlists
+		mopidy_library_playlists: state.mopidy.library_playlists,
+		username: state.pusher.username
 	}
 }
 
