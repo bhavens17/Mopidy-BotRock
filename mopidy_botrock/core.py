@@ -37,6 +37,7 @@ class BotRockCore(object):
         "seed_tracks": [],
         "results": []
     }
+    botRockVoting = None
 
 
     ##
@@ -711,6 +712,64 @@ class BotRockCore(object):
             request = tornado.httpclient.HTTPRequest(data['url'], headers=headers, validate_cert=False)
             http_client.fetch(request, callback=callback)
 
+    ##
+    # New Test Method
+    ##
+    def cast_botrock_vote(self, *args, **kwargs):
+        callback = kwargs.get('callback', False)
+        data = kwargs.get('data', {})
+        print(u'cast_botrock_vote')
+
+        if (self.botRockVoting == None):
+            self.botRockVoting = {
+                "song1": {
+                    "trackId": 123,
+                    "votes": []
+                }
+                ,"song2": {
+                    "trackId": 456,
+                    "votes": []
+                }
+            }
+
+        songVote = None
+        songNonVote = None
+        username = data['username']
+
+        if (data['song_number'] == 1):
+            songVote = self.botRockVoting['song1']
+            songNonVote = self.botRockVoting['song2']
+        elif (data['song_number'] == 2):
+            songVote = self.botRockVoting['song2']
+            songNonVote = self.botRockVoting['song2']
+
+        if not username in songVote['votes']:
+            songVote['votes'].append(username)
+
+        songNonVote['votes'].remove(username)
+
+        returnData = {
+            "voting": self.botRockVoting
+        }
+        
+        if (callback):
+            callback(returnData)
+        else:
+            return returnData
+
+    ##
+    # New Test Method
+    ##
+    def get_botrock_voting(self, *args, **kwargs):
+        callback = kwargs.get('callback', False)
+        print(u'get_botrock_voting')
+        returnData = {
+            "voting": self.botRockVoting
+        }
+        if (callback):
+            callback(returnData)
+        else:
+            return returnData
 
     ##
     # Simple test method
