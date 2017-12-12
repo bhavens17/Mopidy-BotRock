@@ -47927,7 +47927,7 @@ var initialState = {
 	},
 	mopidy: {
 		connected: false,
-		host: '10.10.2.216', //window.location.hostname,
+		host: '192.168.1.216', //window.location.hostname,
 		port: '6680', //(window.location.port ? window.location.port : (window.location.protocol === 'https:' ? '443' : '80')),
 		ssl: false, //(window.location.protocol === 'https:' ? true : false),
 		mute: false,
@@ -57869,12 +57869,6 @@ var ContextMenu = function (_React$Component) {
 					return _react2.default.createElement(
 						'div',
 						null,
-						play_uris,
-						play_uris_next,
-						add_to_queue,
-						this.canBeInLibrary() ? _react2.default.createElement('div', { className: 'divider' }) : null,
-						this.canBeInLibrary() ? toggle_in_library : null,
-						_react2.default.createElement('div', { className: 'divider' }),
 						go_to_artist,
 						copy_uris
 					);
@@ -57886,8 +57880,6 @@ var ContextMenu = function (_React$Component) {
 						null,
 						context.source == 'spotify' ? play_artist_top_tracks : null,
 						context.source == 'spotify' ? start_radio : null,
-						this.canBeInLibrary() ? _react2.default.createElement('div', { className: 'divider' }) : null,
-						this.canBeInLibrary() ? toggle_in_library : null,
 						_react2.default.createElement('div', { className: 'divider' }),
 						context.source == 'spotify' ? go_to_recommendations : null,
 						copy_uris
@@ -57899,8 +57891,6 @@ var ContextMenu = function (_React$Component) {
 						'div',
 						null,
 						play_playlist,
-						this.canBeInLibrary() ? _react2.default.createElement('div', { className: 'divider' }) : null,
-						this.canBeInLibrary() ? toggle_in_library : null,
 						_react2.default.createElement('div', { className: 'divider' }),
 						context.source == 'spotify' ? go_to_user : null,
 						copy_uris
@@ -57912,8 +57902,6 @@ var ContextMenu = function (_React$Component) {
 						'div',
 						null,
 						play_playlist,
-						this.canBeInLibrary() ? _react2.default.createElement('div', { className: 'divider' }) : null,
-						this.canBeInLibrary() ? toggle_in_library : null,
 						_react2.default.createElement('div', { className: 'divider' }),
 						context.source == 'spotify' ? go_to_user : null,
 						copy_uris,
@@ -60929,6 +60917,11 @@ var Album = function (_React$Component) {
 			this.props.mopidyActions.playURIs([this.props.params.uri], this.props.params.uri);
 		}
 	}, {
+		key: 'addToQueue',
+		value: function addToQueue() {
+			this.props.mopidyActions.enqueueURIs([this.props.params.uri], this.props.params.uri, false);
+		}
+	}, {
 		key: 'inLibrary',
 		value: function inLibrary() {
 			var library = helpers.uriSource(this.props.params.uri) + '_library_albums';
@@ -61031,9 +61024,9 @@ var Album = function (_React$Component) {
 					_react2.default.createElement(
 						'button',
 						{ className: 'primary', onClick: function onClick(e) {
-								return _this2.play();
+								return _this2.addToQueue();
 							} },
-						'Play'
+						'Add To Queue'
 					),
 					_react2.default.createElement(_ContextMenuTrigger2.default, { onTrigger: function onTrigger(e) {
 							return _this2.handleContextMenu(e);

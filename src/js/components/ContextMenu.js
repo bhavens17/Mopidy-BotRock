@@ -568,12 +568,6 @@ class ContextMenu extends React.Component{
 			case 'album':
 				return (
 					<div>
-						{play_uris}
-						{play_uris_next}
-						{add_to_queue}
-						{this.canBeInLibrary() ? <div className="divider" /> : null}
-						{this.canBeInLibrary() ? toggle_in_library : null}
-						<div className="divider" />
 						{go_to_artist}
 						{copy_uris}
 					</div>
@@ -585,8 +579,6 @@ class ContextMenu extends React.Component{
 					<div>
 						{context.source == 'spotify' ? play_artist_top_tracks : null}
 						{context.source == 'spotify' ? start_radio : null}
-						{this.canBeInLibrary() ? <div className="divider" /> : null}
-						{this.canBeInLibrary() ? toggle_in_library : null}
 						<div className="divider" />
 						{context.source == 'spotify' ? go_to_recommendations : null}
 						{copy_uris}
@@ -598,8 +590,6 @@ class ContextMenu extends React.Component{
 				return (
 					<div>
 						{play_playlist}
-						{this.canBeInLibrary() ? <div className="divider" /> : null}
-						{this.canBeInLibrary() ? toggle_in_library : null}
 						<div className="divider" />
 						{context.source == 'spotify' ? go_to_user : null}
 						{copy_uris}
@@ -611,8 +601,6 @@ class ContextMenu extends React.Component{
 				return (
 					<div>
 						{play_playlist}
-						{this.canBeInLibrary() ? <div className="divider" /> : null}
-						{this.canBeInLibrary() ? toggle_in_library : null}
 						<div className="divider" />
 						{context.source == 'spotify' ? go_to_user : null}
 						{copy_uris}

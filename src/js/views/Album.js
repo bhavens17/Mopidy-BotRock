@@ -97,6 +97,10 @@ class Album extends React.Component{
 		this.props.mopidyActions.playURIs([this.props.params.uri], this.props.params.uri)
 	}
 
+	addToQueue(){
+		this.props.mopidyActions.enqueueURIs([this.props.params.uri], this.props.params.uri, false)
+	}
+
 	inLibrary(){
 		var library = helpers.uriSource(this.props.params.uri)+'_library_albums'
 		return (this.props[library] && this.props[library].indexOf(this.props.params.uri) > -1)
@@ -156,7 +160,7 @@ class Album extends React.Component{
 				</div>
 
 				<div className="actions">
-					<button className="primary" onClick={e => this.play()}>Play</button>
+					<button className="primary" onClick={e => this.addToQueue()}>Add To Queue</button>
 					<ContextMenuTrigger onTrigger={e => this.handleContextMenu(e)} />
 				</div>
 
