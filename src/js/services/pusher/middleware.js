@@ -99,11 +99,7 @@ const PusherMiddleware = (function(){
 
             case 'PUSHER_CONNECT':
                 var state = store.getState();
-                if(!state.pusher.username)
-                {
-                    store.dispatch(uiActions.openModal('enter_username', { username: state.pusher.username }))
-                }
-
+                
                 // Stagnant socket, close it first
                 if (socket != null){
                     socket.close();
@@ -145,6 +141,7 @@ const PusherMiddleware = (function(){
                 break;
 
             case 'PUSHER_CONNECTED':
+                var state = store.getState();
                 ReactGA.event({ category: 'Pusher', action: 'Connected', label: action.username})
                 request(store, 'get_config')
                     .then(
@@ -222,6 +219,11 @@ const PusherMiddleware = (function(){
                             ));
                         }
                     );
+                
+                if(!state.pusher.username)
+                {
+                    store.dispatch(uiActions.openModal('enter_username', { username: state.pusher.username }))
+                }
 
                 store.dispatch(pusherActions.getQueueMetadata())
 

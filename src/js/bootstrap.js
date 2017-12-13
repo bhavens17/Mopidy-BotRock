@@ -51,7 +51,7 @@ var initialState = {
 	},
 	mopidy: {
 		connected: false,
-		host: '192.168.1.216', //window.location.hostname,
+		host: '10.10.2.216', //window.location.hostname,
 		port: '6680', //(window.location.port ? window.location.port : (window.location.protocol === 'https:' ? '443' : '80')),
 		ssl: false, //(window.location.protocol === 'https:' ? true : false),
 		mute: false,
@@ -61,7 +61,7 @@ var initialState = {
 	},
 	pusher: {
 		connected: false,
-		username: 'Anonymous',
+		username: null,
 		connections: {},
 		botrock_voting: null,
 		version: {

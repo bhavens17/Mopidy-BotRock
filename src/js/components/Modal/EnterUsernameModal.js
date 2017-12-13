@@ -41,7 +41,7 @@ export default class EnterUsernameModal extends React.Component{
 					</div>
 					
 					<div className="actions centered-text">
-						<button type="submit" className="primary wide">Done</button>
+					<button type="submit" className="primary wide">Done</button>
 					</div>
 
 				</form>

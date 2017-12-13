@@ -65,11 +65,16 @@ class Modal extends React.Component{
 		return (
 			<div className={this.props.modal.name+" modal"}>
 
-				<div className="controls">
-					<div className="control close" onClick={e => this.props.uiActions.closeModal()}>
-						<Icon name="close" className="white" />
+				{ 
+					this.props.showClose != false
+					?
+					<div className="controls">
+						<div className="control close" onClick={e => this.props.uiActions.closeModal()}>
+							<Icon name="close" className="white" />
+						</div>
 					</div>
-				</div>
+					: null
+				}
 
 				<div className="content">
 
@@ -140,8 +145,7 @@ class Modal extends React.Component{
 
 					{ this.props.modal.name == 'enter_username' ? <EnterUsernameModal
 						uiActions={this.props.uiActions}
-						pusherActions={this.props.pusherActions} 
-						username={this.props.username} /> : null }
+						pusherActions={this.props.pusherActions} /> : null }
 
 				</div>
 			</div>

@@ -314,18 +314,6 @@ const SpotifyMiddleware = (function(){
 
             case 'SPOTIFY_ME_LOADED':
 
-                // We've loaded 'me' and we are Anonymous currently
-                if (action.data && store.getState().pusher.username == 'Anonymous'){
-                    if (action.data.display_name !== null){
-                        var name = action.data.display_name;
-                    } else {
-                        var name = action.data.id;
-                    }
-
-                    // Use 'me' name as my Pusher username
-                    store.dispatch(pusherActions.setUsername(name));
-                }
-
                 var label = null;
                 if (store.getState().core.anonymise_analytics){
                     label = "anonymised_"+store.getState().pusher.client_id;
