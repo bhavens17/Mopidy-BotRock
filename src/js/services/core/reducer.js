@@ -36,7 +36,8 @@ export default function reducer(core = {}, action){
                     )
                 }
             }
-            return Object.assign({}, core, { current_tracklist: tracklist, queue_metadata: action.queue_metadata });
+            return Object.assign({},
+                 core, { current_tracklist: tracklist, queue_metadata: action.queue_metadata });
 
         case 'PUSHER_RADIO':
         case 'PUSHER_RADIO_STARTED':

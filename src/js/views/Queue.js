@@ -64,7 +64,7 @@ class Queue extends React.Component{
 		)
 	}
 
-	renderArtwork(image){
+	renderArtwork(track, image){
 		if (!image){
 			return (
 				<span className={this.props.radio_enabled ? 'artwork radio-enabled' : 'artwork'}>
@@ -75,8 +75,8 @@ class Queue extends React.Component{
 		}
 
 		var uri = null
-		if (this.props.current_track.album && this.props.current_track.album.uri){
-			uri = this.props.current_track.album.uri;
+		if (track.album && track.album.uri){
+			uri = track.album.uri;
 		}
 		return (
 			<URILink
@@ -93,6 +93,7 @@ class Queue extends React.Component{
 
 		var current_track = null;
 		var tracks = [];
+
 		if (this.props.queue && this.props.tracks){
 			for (var i = 0; i < this.props.queue.length; i++){
 				var track = this.props.queue[i];
@@ -160,6 +161,44 @@ class Queue extends React.Component{
 			</span>
 		)
 
+		var voting = (
+			<div className="title">
+				No Vote Currently In Progress
+			</div>
+		)
+
+		if(this.props.botrock_voting){
+			voting = this.props.botrock_voting.songs.map(
+				(song, index) =>
+				{
+					var track = tracks.find((item) => 
+						{
+							return item.tlid == song.track.tlid 
+						}
+					)
+
+					var songImage = null
+					if(track && track.images)
+					{
+						songImage = helpers.sizedImages(track.images)
+						songImage = songImage.large
+					}
+
+					return (
+						<div key={index}>
+							{this.renderArtwork(track, songImage)}
+							<div className="title">
+								{track ? <URILink type="track" uri={track.uri}>{track.name}</URILink> : <span>-</span>}
+								<div>
+									<button className="primary" key={index} onClick={e => this.props.pusherActions.castBotRockVote(index + 1)}>Cast Vote ({song.votes.length})</button>
+								</div>
+							</div>
+						</div>
+					)
+				}
+			)
+		}
+
 		return (
 			<div className="view queue-view">			
 				<Header icon="play" className="overlay" title="Now playing" options={options} uiActions={this.props.uiActions} />
@@ -167,11 +206,13 @@ class Queue extends React.Component{
 				<div className="content-wrapper">
 				
 					<div className="current-track">
-						{this.renderArtwork(image)}
+						{voting}
+
+						{/* {this.renderArtwork(image)}
 						<div className="title">
 							{current_track ? <URILink type="track" uri={current_track.uri}>{current_track.name}</URILink> : <span>-</span>}
 						</div>
-						{current_track ? <ArtistSentence artists={current_track.artists} /> : <ArtistSentence />}
+						{current_track ? <ArtistSentence artists={current_track.artists} /> : <ArtistSentence />} */}
 					</div>
 
 					<section className="list-wrapper">
@@ -208,7 +249,8 @@ const mapStateToProps = (state, ownProps) => {
 		queue: state.core.queue,
 		queue_tlids: state.core.queue_tlids,
 		queue_metadata: state.core.queue_metadata,
-		current_track: state.core.current_track
+		current_track: state.core.current_track,
+		botrock_voting: state.pusher.botrock_voting
 	}
 }
 

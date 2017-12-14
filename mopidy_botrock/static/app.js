@@ -2226,7 +2226,7 @@ function getSearchResults(type, query) {
 
         type = type.replace(/s+$/, "");
         if (type == 'all') {
-            type = 'album,artist,playlist,track';
+            type = 'album,artist,track';
         }
 
         var url = 'search?q=' + query;
@@ -47806,7 +47806,7 @@ var initialState = {
 	},
 	pusher: {
 		connected: false,
-		username: null,
+		username: '',
 		connections: {},
 		botrock_voting: null,
 		version: {
@@ -47816,7 +47816,7 @@ var initialState = {
 	lastfm: {
 		connected: false,
 		me: false,
-		authorization_url: 'https://jamesbarnsley.co.nz/auth_lastfm.php'
+		authorization_url: '' //'https://jamesbarnsley.co.nz/auth_lastfm.php'
 	},
 	genius: {
 		connected: false
@@ -47825,7 +47825,7 @@ var initialState = {
 		connected: false,
 		me: false,
 		autocomplete_results: {},
-		authorization_url: 'https://jamesbarnsley.co.nz/auth_spotify.php'
+		authorization_url: '' //'https://jamesbarnsley.co.nz/auth_spotify.php'
 	}
 };
 
@@ -50190,6 +50190,17 @@ var PusherMiddleware = function () {
                             store.dispatch(coreActions.handleException('Could not cast BotRock vote', error));
                         });
                         break;
+
+                    case 'PUSHER_BOTROCK_VOTING_UPDATED':
+                        if (action.voting) {
+                            for (var i = 0; i < action.voting.songs.length; i++) {
+                                var song = action.voting.songs[i];
+                                if (helpers.uriSource(song.track.uri) == 'spotify' && store.getState().spotify.enabled) {
+                                    store.dispatch(spotifyActions.getTrack(song.track.uri));
+                                }
+                            }
+                        }
+                        return next(action);
 
                     // This action is irrelevant to us, pass it on to the next middleware
                     default:
@@ -63314,7 +63325,7 @@ var Queue = function (_React$Component) {
 		}
 	}, {
 		key: 'renderArtwork',
-		value: function renderArtwork(image) {
+		value: function renderArtwork(track, image) {
 			if (!image) {
 				return _react2.default.createElement(
 					'span',
@@ -63325,8 +63336,8 @@ var Queue = function (_React$Component) {
 			}
 
 			var uri = null;
-			if (this.props.current_track.album && this.props.current_track.album.uri) {
-				uri = this.props.current_track.album.uri;
+			if (track.album && track.album.uri) {
+				uri = track.album.uri;
 			}
 			return _react2.default.createElement(
 				_URILink2.default,
@@ -63345,6 +63356,7 @@ var Queue = function (_React$Component) {
 
 			var current_track = null;
 			var tracks = [];
+
 			if (this.props.queue && this.props.tracks) {
 				for (var i = 0; i < this.props.queue.length; i++) {
 					var track = this.props.queue[i];
@@ -63423,6 +63435,58 @@ var Queue = function (_React$Component) {
 				)
 			);
 
+			var voting = _react2.default.createElement(
+				'div',
+				{ className: 'title' },
+				'No Vote Currently In Progress'
+			);
+
+			if (this.props.botrock_voting) {
+				voting = this.props.botrock_voting.songs.map(function (song, index) {
+					var track = tracks.find(function (item) {
+						return item.tlid == song.track.tlid;
+					});
+
+					var songImage = null;
+					if (track && track.images) {
+						songImage = helpers.sizedImages(track.images);
+						songImage = songImage.large;
+					}
+
+					return _react2.default.createElement(
+						'div',
+						{ key: index },
+						_this2.renderArtwork(track, songImage),
+						_react2.default.createElement(
+							'div',
+							{ className: 'title' },
+							track ? _react2.default.createElement(
+								_URILink2.default,
+								{ type: 'track', uri: track.uri },
+								track.name
+							) : _react2.default.createElement(
+								'span',
+								null,
+								'-'
+							),
+							_react2.default.createElement(
+								'div',
+								null,
+								_react2.default.createElement(
+									'button',
+									{ className: 'primary', key: index, onClick: function onClick(e) {
+											return _this2.props.pusherActions.castBotRockVote(index + 1);
+										} },
+									'Cast Vote (',
+									song.votes.length,
+									')'
+								)
+							)
+						)
+					);
+				});
+			}
+
 			return _react2.default.createElement(
 				'div',
 				{ className: 'view queue-view' },
@@ -63434,21 +63498,7 @@ var Queue = function (_React$Component) {
 					_react2.default.createElement(
 						'div',
 						{ className: 'current-track' },
-						this.renderArtwork(image),
-						_react2.default.createElement(
-							'div',
-							{ className: 'title' },
-							current_track ? _react2.default.createElement(
-								_URILink2.default,
-								{ type: 'track', uri: current_track.uri },
-								current_track.name
-							) : _react2.default.createElement(
-								'span',
-								null,
-								'-'
-							)
-						),
-						current_track ? _react2.default.createElement(_ArtistSentence2.default, { artists: current_track.artists }) : _react2.default.createElement(_ArtistSentence2.default, null)
+						voting
 					),
 					_react2.default.createElement(
 						'section',
@@ -63494,7 +63544,8 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
 		queue: state.core.queue,
 		queue_tlids: state.core.queue_tlids,
 		queue_metadata: state.core.queue_metadata,
-		current_track: state.core.current_track
+		current_track: state.core.current_track,
+		botrock_voting: state.pusher.botrock_voting
 	};
 };
 
@@ -65259,6 +65310,11 @@ var Debug = function (_React$Component) {
 										'option',
 										{ value: '{"method":"proxy_request","data":{"url":"https://jsonplaceholder.typicode.com/posts/1"}}' },
 										'Proxy request'
+									),
+									_react2.default.createElement(
+										'option',
+										{ value: '{"method":"create_new_botrock_voting"}' },
+										'Create new Botrock Voting'
 									)
 								)
 							)

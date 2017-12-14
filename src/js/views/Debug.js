@@ -175,6 +175,7 @@ class Debug extends React.Component{
 									<option value='{"method":"refresh_spotify_token"}'>Refresh Spotify token</option>
 									<option value='{"method":"perform_upgrade"}'>Perform upgrade (beta)</option>
 									<option value='{"method":"proxy_request","data":{"url":"https://jsonplaceholder.typicode.com/posts/1"}}'>Proxy request</option>
+									<option value='{"method":"create_new_botrock_voting"}'>Create new Botrock Voting</option>
 								</select>
 							</div>
 						</div>

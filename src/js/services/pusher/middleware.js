@@ -507,6 +507,18 @@ const PusherMiddleware = (function(){
                     );
                 break
 
+            case 'PUSHER_BOTROCK_VOTING_UPDATED':
+                if(action.voting)
+                {
+                    for(var i = 0; i < action.voting.songs.length; i++){
+                        var song = action.voting.songs[i];
+                        if (helpers.uriSource(song.track.uri) == 'spotify' && store.getState().spotify.enabled){
+                            store.dispatch(spotifyActions.getTrack(song.track.uri))
+                        }
+                    }
+                }
+                return next(action);
+
             // This action is irrelevant to us, pass it on to the next middleware
             default:
                 return next(action);

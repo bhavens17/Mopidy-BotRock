@@ -61,7 +61,7 @@ var initialState = {
 	},
 	pusher: {
 		connected: false,
-		username: null,
+		username: '',
 		connections: {},
 		botrock_voting: null,
 		version: {
@@ -71,7 +71,7 @@ var initialState = {
 	lastfm: {
 		connected: false,
 		me: false,
-		authorization_url: 'https://jamesbarnsley.co.nz/auth_lastfm.php'
+		authorization_url: '' //'https://jamesbarnsley.co.nz/auth_lastfm.php'
 	},
 	genius: {
 		connected: false
@@ -80,7 +80,7 @@ var initialState = {
 		connected: false,
 		me: false,
 		autocomplete_results: {},
-		authorization_url: 'https://jamesbarnsley.co.nz/auth_spotify.php'
+		authorization_url: '' //'https://jamesbarnsley.co.nz/auth_spotify.php'
 	}
 };
 
