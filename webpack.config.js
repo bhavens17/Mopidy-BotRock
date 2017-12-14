@@ -1,4 +1,4 @@
-const isDev = process.env.NODE_ENV !== "production";
+const isDev = (process.env.NODE_ENV != "production");
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');

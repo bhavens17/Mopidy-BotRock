@@ -43,12 +43,11 @@
   },
   "scripts": {
     "build": "node build_tools/build.js",
-    "dev": "node build_tools/build.js && NODE_ENV=development webpack --watch",
-    "dev windows": "set NODE_ENV=development && node build_tools/build.js && webpack --watch",
-    "dev windows run": "set NODE_ENV=development && node build_tools/build.js && start http://localhost:3000 && webpack --watch",
-    "prod": "node build_tools/build.js && NODE_ENV=development webpack && NODE_ENV=production webpack --watch",
-    "prod windows": "set NODE_ENV=development && node build_tools/build.js && set NODE_ENV=production && webpack --watch",
-    "release": "node build_tools/build.js && NODE_ENV=production webpack && NODE_ENV=development webpack && python setup.py sdist upload -r pypi && build_tools/release.sh",
+    "dev": "node build_tools/build.js && NODE_ENV=development&& webpack --watch",
+    "dev windows": "set NODE_ENV=development&& node build_tools/build.js && webpack --watch",
+    "prod": "node build_tools/build.js && NODE_ENV=development&& webpack && NODE_ENV=production webpack --watch",
+    "prod windows": "node build_tools/build.js && set NODE_ENV=development&& webpack && set NODE_ENV=production&& webpack --watch",
+    "release": "node build_tools/build.js && NODE_ENV=production&& webpack && NODE_ENV=development webpack && python setup.py sdist upload -r pypi && build_tools/release.sh",
     "release windows": "node build_tools/build.js && NODE_ENV=production webpack && NODE_ENV=development webpack && python setup.py sdist upload -r pypi && build_tools/release.sh"
   }
 }
