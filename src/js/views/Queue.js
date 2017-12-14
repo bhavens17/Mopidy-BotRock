@@ -163,7 +163,7 @@ class Queue extends React.Component{
 
 		var voting = (
 			<div className="title">
-				No Vote Currently In Progress
+				No Voting Currently In Progress
 			</div>
 		)
 
@@ -190,9 +190,10 @@ class Queue extends React.Component{
 							<div className="title">
 								{track ? <URILink type="track" uri={track.uri}>{track.name}</URILink> : <span>-</span>}
 								<div>
-									<button className="primary" key={index} onClick={e => this.props.pusherActions.castBotRockVote(index + 1)}>Cast Vote ({song.votes.length})</button>
+									<button className="primary" key={index} onClick={e => this.props.pusherActions.castBotRockVote(index + 1)}>Vote! ({song.votes.length})</button>
 								</div>
 							</div>
+							{track ? <ArtistSentence artists={track.artists} /> : <ArtistSentence />}
 						</div>
 					)
 				}
@@ -207,12 +208,6 @@ class Queue extends React.Component{
 				
 					<div className="current-track">
 						{voting}
-
-						{/* {this.renderArtwork(image)}
-						<div className="title">
-							{current_track ? <URILink type="track" uri={current_track.uri}>{current_track.name}</URILink> : <span>-</span>}
-						</div>
-						{current_track ? <ArtistSentence artists={current_track.artists} /> : <ArtistSentence />} */}
 					</div>
 
 					<section className="list-wrapper">

@@ -115,7 +115,7 @@ const PusherMiddleware = (function(){
                 if (state.pusher.username){
                     connection.username = state.pusher.username;
                 }
-                connection.username = connection.username.replace(/\W/g, '');
+                connection.username = connection.username//.replace(/\W/g, '');
                 
                 socket = new WebSocket(
                     'ws'+(window.location.protocol === 'https:' ? 's' : '')+'://'+state.mopidy.host+':'+state.mopidy.port+'/botrock/ws/',
@@ -518,6 +518,12 @@ const PusherMiddleware = (function(){
                     }
                 }
                 return next(action);
+
+            case 'PUSHER_BOTROCK_VOTING_WON':
+                if(action.song)
+                {
+                    store.dispatch(uiActions.createNotification("We have a winner!  '" + action.song.track.name + "' by " + action.song.track.artist))
+                }
 
             // This action is irrelevant to us, pass it on to the next middleware
             default:

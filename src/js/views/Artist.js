@@ -221,14 +221,6 @@ class Artist extends React.Component{
 				var uris_to_play = this.props.artist.albums_uris
 			}
 
-			var voteButtons = ""
-			if(this.props.botrock_voting)
-			{
-				voteButtons = this.props.botrock_voting.songs.map((song, index) =>
-					<button className="primary" key={index} onClick={e => this.props.pusherActions.castBotRockVote(index + 1)}>Vote for #{index + 1} ({song.votes.length})</button>
-				)
-			}
-
 			return (
 				<div className="view artist-view">
 					<div className="intro">
@@ -239,7 +231,6 @@ class Artist extends React.Component{
 							<h1>{this.props.artist ? this.props.artist.name : null}</h1>
 							<div className="actions">
 								<button className="primary" onClick={e => this.props.mopidyActions.enqueueURIs([this.props.params.uri], this.props.params.uri, false)}>Add All Artist Songs To Queue</button>
-								{voteButtons}
 								<ContextMenuTrigger className="white" onTrigger={e => this.handleContextMenu(e)} />
 							</div>
 							{ this.renderSubViewMenu() }

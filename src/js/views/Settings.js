@@ -98,7 +98,7 @@ class Settings extends React.Component {
 	}
 
 	handleUsernameChange(username){
-		this.setState({pusher_username: username.replace(/\W/g, '')})
+		this.setState({pusher_username: username/*.replace(/\W/g, '')*/})
 	}
 
 	handleUsernameBlur(e){
