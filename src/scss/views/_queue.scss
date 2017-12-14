@@ -6,9 +6,21 @@
 		margin-bottom: -45vh;
 	}
 
-	.current-track {
+	.voting {
 		text-align: center;
 		padding: 60px 0;
+
+		.voting-title{
+			font-size: 18px;
+			padding-top: 20px;
+		}
+
+		@include responsive($min_width: $bp_medium){
+			.voting-track {
+				display: inline-block;
+				width: 50%;
+			}
+		}
 
 		.artwork {
 			position: relative;

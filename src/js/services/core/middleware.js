@@ -69,14 +69,6 @@ const CoreMiddleware = (function(){
                     }
                 );
 
-                // Log with Raven Sentry
-                Raven.captureException(
-                    new Error(message), 
-                    {
-                        extra: data
-                    }
-                );
-
                 // Log with Analytics
                 ReactGA.event({
                     category: "Error",

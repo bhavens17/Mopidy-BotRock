@@ -5570,32 +5570,39 @@ main .track-view {
   opacity: 0.5;
   margin-bottom: -45vh; }
 
-.queue-view .current-track {
+.queue-view .voting {
   text-align: center;
   padding: 60px 0; }
-  .queue-view .current-track .artwork {
+  .queue-view .voting .voting-title {
+    font-size: 18px;
+    padding-top: 20px; }
+  @media (min-width: 800px) {
+    .queue-view .voting .voting-track {
+      display: inline-block;
+      width: 50%; } }
+  .queue-view .voting .artwork {
     position: relative;
     margin: 0 auto;
     width: 60%;
     max-width: 60vh;
     display: block;
     border: 0 !important; }
-    .queue-view .current-track .artwork .thumbnail {
+    .queue-view .voting .artwork .thumbnail {
       margin: 0 auto;
       max-width: 100%; }
-    .queue-view .current-track .artwork.radio-enabled .thumbnail {
+    .queue-view .voting .artwork.radio-enabled .thumbnail {
       box-sizing: border-box; }
-    .queue-view .current-track .artwork.radio-enabled .radio-overlay {
+    .queue-view .voting .artwork.radio-enabled .radio-overlay {
       position: absolute;
       top: -15%;
       left: -15%;
       width: 130%;
       height: 130%;
       z-index: 2; }
-  .queue-view .current-track .title {
+  .queue-view .voting .title {
     font-size: 18px;
     padding-top: 20px; }
-  .queue-view .current-track .artist-sentence {
+  .queue-view .voting .artist-sentence {
     display: block;
     font-size: 18px;
     opacity: 0.5; }

@@ -71,7 +71,6 @@ export default class EditPlaylistModal extends React.Component{
 						</div>
 					</div>
 				)
-				break
 
 			default:
 				return (

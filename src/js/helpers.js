@@ -450,14 +450,12 @@ export let uriType = function(uri){
     	case 'genre':
     	case 'discover':
     		return exploded[1]
-    		break
 
     	case 'user':
     		if (exploded.length > 3 && exploded[3] == 'playlist'){
     			return 'playlist'
     		}
     		return exploded[1]
-    		break
     }
 
     return null;
