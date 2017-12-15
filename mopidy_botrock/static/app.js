@@ -2184,7 +2184,7 @@ function getSearchResults(type, query) {
 
         type = type.replace(/s+$/, "");
         if (type == 'all') {
-            type = 'album,artist,track';
+            type = 'album,artist,track,playlist';
         }
 
         var url = 'search?q=' + query;
@@ -15711,7 +15711,7 @@ var TrackList = function (_React$Component) {
 		key: 'handleDoubleClick',
 		value: function handleDoubleClick(e, track_key) {
 			if (this.props.context_menu) this.props.uiActions.hideContextMenu();
-			this.playTracks();
+			//this.playTracks()
 		}
 	}, {
 		key: 'handleContextMenu',
@@ -32625,19 +32625,11 @@ var Track = function (_React$Component) {
 						'div',
 						{ className: 'liner'
 							//onTouchEnd={e => this.handleTouchEnd(e)}			// When touch dragging is dropped on me
-							, onMouseDown: function onMouseDown(e) {
-								return _this2.handleMouseDown(e);
-							} // Click (or potentially a mouse drag start)
-							, onMouseMove: function onMouseMove(e) {
-								return _this2.handleMouseMove(e);
-							} // Any movement over me
-							, onMouseUp: function onMouseUp(e) {
-								return _this2.handleMouseUp(e);
-							} // End of click, or potentially a dragging drop event
-							, onDoubleClick: function onDoubleClick(e) {
-								return _this2.props.handleDoubleClick(e);
-							},
-							onContextMenu: function onContextMenu(e) {
+							//onMouseDown={e => this.handleMouseDown(e)}			// Click (or potentially a mouse drag start)
+							//onMouseMove={e => this.handleMouseMove(e)}			// Any movement over me
+							//onMouseUp={e => this.handleMouseUp(e)}				// End of click, or potentially a dragging drop event
+							//onDoubleClick={e => this.props.handleDoubleClick(e)}
+							, onContextMenu: function onContextMenu(e) {
 								_this2.handleContextMenu(e);
 							} },
 						track_columns
@@ -58009,8 +58001,7 @@ var ContextMenu = function (_React$Component) {
 						_react2.default.createElement('div', { className: 'divider' }),
 						context.source == 'spotify' && context.items_count <= 5 ? go_to_recommendations : null,
 						context.items_count == 1 ? go_to_track : null,
-						copy_uris,
-						_react2.default.createElement('div', { className: 'divider' })
+						copy_uris
 					);
 
 				case 'editable-playlist-track':

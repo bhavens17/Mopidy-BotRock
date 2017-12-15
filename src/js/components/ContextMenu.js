@@ -609,7 +609,6 @@ class ContextMenu extends React.Component{
 						{context.source == 'spotify' && context.items_count <= 5 ? go_to_recommendations : null}
 						{context.items_count == 1 ? go_to_track : null}
 						{copy_uris}
-						<div className="divider" />
 					</div>
 				)
 
