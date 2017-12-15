@@ -713,6 +713,85 @@ class BotRockCore(object):
             http_client.fetch(request, callback=callback)
 
     ##
+    # create_new_botrock_voting
+    ##  
+    def create_new_botrock_voting(self):
+        print 'create_new_botrock_voting'
+        tracklist = self.core.tracklist.get_tl_tracks().get()
+            
+        if len(tracklist) > self.botRockVoteCandidateNum:
+            self.botRockVoting = {
+                "songs": self.get_songs_for_botrock_voting()
+            }
+
+            self.broadcast(
+                data={
+                    'type': 'botrock_voting_updated',
+                    'voting': self.botRockVoting
+                })
+
+    ##
+    # get_songs_for_botrock_voting
+    ##
+    def get_songs_for_botrock_voting(self):
+        print 'get_songs_for_botrock_voting'
+        tracklist = self.core.tracklist.get_tl_tracks().get()
+        currenttrack = self.core.playback.get_current_tl_track().get()
+        trackIndexList = []
+        songList = []
+        
+        for songIndex in range(0, self.botRockVoteCandidateNum):
+            track = None
+            while True:
+                trackIndex = randint(1, len(tracklist) - 1)
+                track = tracklist[trackIndex]
+                if track != currenttrack and trackIndex not in trackIndexList:
+                    trackIndexList.append(trackIndex)
+                    break
+            artistNameList = []
+            for artist in track.track.artists:
+                artistNameList.append(artist.name)
+            songList.append({
+                "track": {
+                    "tlid": track.tlid
+                    ,"uri": track.track.uri
+                    ,"name": track.track.name
+                    ,"artist": ', '.join(artistNameList)
+                },
+                "votes": [],
+                "first_vote_timestamp": None
+                })
+        
+        return songList
+
+    ##
+    # remove_botrock_voting
+    ##  
+    def remove_botrock_voting(self):
+        self.botRockVoting = None
+
+        self.broadcast(
+            data={
+                'type': 'botrock_voting_updated',
+                'voting': self.botRockVoting
+            })
+
+    ##
+    # get_botrock_voting
+    ##
+    def get_botrock_voting(self, *args, **kwargs):
+        callback = kwargs.get('callback', False)
+        print(u'get_botrock_voting')
+            
+        returnData = {
+            "voting": self.botRockVoting
+        }
+        if (callback):
+            callback(returnData)
+        else:
+            return returnData
+
+    ##
     # cast_botrock_vote
     ##
     def cast_botrock_vote(self, *args, **kwargs):
@@ -750,84 +829,15 @@ class BotRockCore(object):
                 if username in song['votes']:
                     song['votes'].remove(username)
 
-        self.broadcast(
-            data={
-                'type': 'botrock_voting_updated',
-                'voting': self.botRockVoting
-            })
+            #Set song vote timestamp
+            if len(song['votes']) == 0:
+                #Song does not have any votes.  Clear its timestamp
+                song['first_vote_timestamp'] = None
+            elif song['first_vote_timestamp'] == None:
+                #Song has votes but no timestamp.  Set timestamp
+                song['first_vote_timestamp'] = time.time()
 
-    ##
-    # get_botrock_voting
-    ##
-    def get_botrock_voting(self, *args, **kwargs):
-        callback = kwargs.get('callback', False)
-        print(u'get_botrock_voting')
-            
-        returnData = {
-            "voting": self.botRockVoting
-        }
-        if (callback):
-            callback(returnData)
-        else:
-            return returnData
-
-    ##
-    # get_songs_for_botrock_voting
-    ##
-    def get_songs_for_botrock_voting(self):
-        print 'get_songs_for_botrock_voting'
-        tracklist = self.core.tracklist.get_tl_tracks().get()
-        currenttrack = self.core.playback.get_current_tl_track().get()
-        trackIndexList = []
-        songList = []
-        
-        for songIndex in range(0, self.botRockVoteCandidateNum):
-            track = None
-            while True:
-                trackIndex = randint(1, len(tracklist) - 1)
-                track = tracklist[trackIndex]
-                if track != currenttrack and trackIndex not in trackIndexList:
-                    trackIndexList.append(trackIndex)
-                    break
-            artistNameList = []
-            for artist in track.track.artists:
-                artistNameList.append(artist.name)
-            songList.append({
-                "track": {
-                    "tlid": track.tlid
-                    ,"uri": track.track.uri
-                    ,"name": track.track.name
-                    ,"artist": ', '.join(artistNameList)
-                },
-                "votes": []
-                })
-        
-        return songList
-
-    ##
-    # create_new_botrock_voting
-    ##  
-    def create_new_botrock_voting(self):
-        print 'create_new_botrock_voting'
-        tracklist = self.core.tracklist.get_tl_tracks().get()
-            
-        if len(tracklist) > self.botRockVoteCandidateNum:
-            self.botRockVoting = {
-                "songs": self.get_songs_for_botrock_voting()
-            }
-
-            self.broadcast(
-                data={
-                    'type': 'botrock_voting_updated',
-                    'voting': self.botRockVoting
-                })
-
-    ##
-    # remove_botrock_voting
-    ##  
-    def remove_botrock_voting(self):
-        self.botRockVoting = None
-
+        #broadcast message that voting has been updated
         self.broadcast(
             data={
                 'type': 'botrock_voting_updated',
@@ -844,10 +854,14 @@ class BotRockCore(object):
 
         if self.botRockVoting:
             winnerVotes = 0
+            winnerTimestamp = 0
             for song in self.botRockVoting['songs']:
-                if len(song['votes']) > winnerVotes:
+                songVotes = len(song['votes'])
+                songTimestamp = song['first_vote_timestamp']
+                if songVotes > winnerVotes or (songVotes > 0 and songVotes == winnerVotes and songTimestamp < winnerTimestamp):
                     winner = song
-                    winnerVotes = len(song['votes'])
+                    winnerVotes = songVotes
+                    winnerTimestamp = songTimestamp
             if winner:
                 winnerIndex = self.core.tracklist.index(tlid = winner['track']['tlid']).get()
                 print 'Voting Winner: ' + str(winner) + ' index: ' + str(winnerIndex)
