@@ -178,7 +178,7 @@ class TrackList extends React.Component{
 
 	handleDoubleClick(e,track_key){
 		if (this.props.context_menu) this.props.uiActions.hideContextMenu()
-		this.playTracks()
+		//this.playTracks()
 	}
 
 	handleContextMenu(e,track_key = null){

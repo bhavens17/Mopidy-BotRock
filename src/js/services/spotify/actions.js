@@ -524,7 +524,7 @@ export function getSearchResults(type, query, limit = 50, offset = 0){
 
         type = type.replace(/s+$/, "")
         if (type == 'all'){
-            type = 'album,artist,track'
+            type = 'album,artist,track,playlist'
         }
 
         var url = 'search?q='+query
