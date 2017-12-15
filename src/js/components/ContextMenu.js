@@ -604,8 +604,6 @@ class ContextMenu extends React.Component{
 			case 'queue-track':
 				return (
 					<div>
-						{add_to_queue}
-						<div className="divider" />
 						{context.source == 'spotify' && context.items_count <= 5 ? go_to_recommendations : null}
 						{context.items_count == 1 ? go_to_track : null}
 						{copy_uris}
