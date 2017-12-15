@@ -53,8 +53,6 @@ class Queue extends React.Component{
 	}
 
 	renderQueueStats(){
-		var total_time = 0
-
 		return (
 			<div className="queue-stats grey-text">
 				<span>{this.props.current_tracklist.length} tracks</span>
@@ -162,13 +160,13 @@ class Queue extends React.Component{
 		)
 
 		var voting = (
-			<div className="title">
+			<div className="voting-title">
 				No Voting Currently In Progress
 			</div>
 		)
 
 		if(this.props.botrock_voting){
-			voting = this.props.botrock_voting.songs.map(
+			var votingSongs = this.props.botrock_voting.songs.map(
 				(song, index) =>
 				{
 					var track = tracks.find((item) => 
@@ -185,18 +183,28 @@ class Queue extends React.Component{
 					}
 
 					return (
-						<div key={index}>
+						<div className="voting-track" key={index}>
 							{this.renderArtwork(track, songImage)}
 							<div className="title">
-								{track ? <URILink type="track" uri={track.uri}>{track.name}</URILink> : <span>-</span>}
+								{track ? track.name : <span>-</span>}
+								{track ? <ArtistSentence artists={track.artists} /> : <ArtistSentence />}
 								<div>
 									<button className="primary" key={index} onClick={e => this.props.pusherActions.castBotRockVote(index + 1)}>Vote! ({song.votes.length})</button>
 								</div>
 							</div>
-							{track ? <ArtistSentence artists={track.artists} /> : <ArtistSentence />}
+							
 						</div>
 					)
 				}
+			)
+
+			voting = (
+				<div>
+					<div className="voting-title">
+						Current Vote
+					</div>
+					{votingSongs}
+				</div>
 			)
 		}
 
@@ -206,7 +214,7 @@ class Queue extends React.Component{
 				<Parallax blur image={image} />
 				<div className="content-wrapper">
 				
-					<div className="current-track">
+					<div className="voting">
 						{voting}
 					</div>
 

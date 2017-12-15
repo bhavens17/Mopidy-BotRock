@@ -572,7 +572,6 @@ class ContextMenu extends React.Component{
 						{copy_uris}
 					</div>
 				)
-				break
 
 			case 'artist':
 				return (
@@ -584,7 +583,6 @@ class ContextMenu extends React.Component{
 						{copy_uris}
 					</div>
 				)
-				break
 
 			case 'playlist':
 				return (
@@ -595,7 +593,6 @@ class ContextMenu extends React.Component{
 						{copy_uris}
 					</div>
 				)
-				break
 
 			case 'editable-playlist':
 				return (
@@ -608,7 +605,6 @@ class ContextMenu extends React.Component{
 						{delete_playlist}
 					</div>
 				)
-				break
 
 			case 'queue-track':
 				return (
@@ -625,7 +621,6 @@ class ContextMenu extends React.Component{
 						{remove_from_queue}
 					</div>
 				)
-				break
 
 			case 'editable-playlist-track':
 				return (
@@ -645,7 +640,6 @@ class ContextMenu extends React.Component{
 						{remove_from_playlist}
 					</div>
 				)
-				break
 
 			default:
 				return (
@@ -665,7 +659,6 @@ class ContextMenu extends React.Component{
 						{copy_uris}
 					</div>
 				)
-				break
 		}
 	}
 

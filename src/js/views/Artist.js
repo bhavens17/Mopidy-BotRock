@@ -213,8 +213,6 @@ class Artist extends React.Component{
 		}
 
 		if (this.props.artist){
-			var is_spotify = (scheme == 'spotify')
-			
 			if (this.props.artist.tracks_uris && this.props.artist.tracks_uris.length > 0){
 				var uris_to_play = this.props.artist.tracks_uris
 			} else {

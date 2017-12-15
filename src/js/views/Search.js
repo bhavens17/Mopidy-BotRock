@@ -119,7 +119,6 @@ class Search extends React.Component{
 						</section>
 					</div>
 				)
-				break
 
 			case 'albums':
 				return (
@@ -130,7 +129,6 @@ class Search extends React.Component{
 						</section>
 					</div>
 				)
-				break
 
 			case 'playlists':
 				return (
@@ -141,7 +139,6 @@ class Search extends React.Component{
 						</section>
 					</div>
 				)
-				break
 
 			case 'tracks':
 				return (
@@ -152,7 +149,6 @@ class Search extends React.Component{
 						</section>
 					</div>
 				)
-				break
 
 			default:
 			
