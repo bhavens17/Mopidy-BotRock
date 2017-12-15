@@ -816,8 +816,18 @@ class BotRockCore(object):
             self.botRockVoting = {
                 "songs": self.get_songs_for_botrock_voting()
             }
-        else:
-            self.botRockVoting = None
+
+            self.broadcast(
+                data={
+                    'type': 'botrock_voting_updated',
+                    'voting': self.botRockVoting
+                })
+
+    ##
+    # remove_botrock_voting
+    ##  
+    def remove_botrock_voting(self):
+        self.botRockVoting = None
 
         self.broadcast(
             data={
@@ -854,10 +864,33 @@ class BotRockCore(object):
                 #Play winner
                 self.core.playback.play(tlid = winner['track']['tlid'])
 
+    ##
+    # remove_tl_track
+    ##
     def remove_tl_track(self, tl_track):
         print 'remove_tl_track'
         self.core.tracklist.remove({ 'tlid': [ tl_track.tlid ] })
 
+    ##
+    # update_botrock_voting_status
+    ##
+    def update_botrock_voting_status(self):
+        tracklist = self.core.tracklist.get_tl_tracks().get()
+        if len(tracklist) <= self.botRockVoteCandidateNum:
+            self.remove_botrock_voting()
+        elif self.botRockVoting == None:
+            self.create_new_botrock_voting()
+
+    ##
+    # play_first_track_if_one_not_already_playing
+    ##
+    def play_first_track_if_one_not_already_playing(self):
+        state = self.core.playback.get_state().get()
+        print state
+        if state == 'stopped':
+            tracklist = self.core.tracklist.get_tl_tracks().get()
+            if len(tracklist) > 0:
+                self.core.playback.play(tlid = tracklist[0].tlid)
     ##
     # Simple test method
     ##

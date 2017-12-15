@@ -54,6 +54,11 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 	def on_start(self):        
 		logger.info('Starting BotRock '+ mem.botrock.version)
 
+	def tracklist_changed(self):
+		print 'tracklist_changed'
+		mem.botrock.play_first_track_if_one_not_already_playing()
+		mem.botrock.update_botrock_voting_status()
+
 	def track_playback_started(self, tl_track):
 		print 'track_playback_started'
 		mem.botrock.create_new_botrock_voting()
@@ -96,7 +101,7 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 				tracks = self.tracklistAdd(data[u'uris'], insertIndex)
 				track = tracks.get()[0]
 				self.playbackPlay(track)
-			elif: action == "vote":
+			elif action == "vote":
 				mem.botrock.cast_botrock_vote_internal(data[u'username'], data[u'song_number'])
 			else:
 				logger.info("Unhandled action")
