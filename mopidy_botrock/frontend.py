@@ -40,7 +40,7 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 		self.client.loop_start()
 
 		#Turn on consume mode, to cause tracks to be removed from playlist as they finish playing
-		mem.botrock.core.tracklist.set_consume(True)
+		#mem.botrock.core.tracklist.set_consume(True)
 
 	def on_mqtt_connect(self, client, data, flags, rc):
 		client.subscribe(self.topic, 1)
@@ -54,6 +54,19 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 		action = data[u'action']
 		self.handle_action(action, data)
 
+	def on_start(self):        
+		logger.info('Starting BotRock '+ mem.botrock.version)
+
+	def track_playback_started(self, tl_track):
+		print 'track_playback_started'
+		mem.botrock.create_new_botrock_voting()
+
+	def track_playback_ended(self, tl_track, time_position):
+		if time_position > 1:
+			print 'track_playback_ended'
+			mem.botrock.remove_tl_track(tl_track)
+			mem.botrock.play_winner_of_botrock_voting()
+			
 	def handle_action(self, action, data = None):
 		try:
 			logger.info("Action: " + action)
