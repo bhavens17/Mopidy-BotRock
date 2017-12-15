@@ -49,7 +49,6 @@ class BotRockCore(object):
     ##
     def generateGuid(self, length):
        return ''.join(random.choice(string.lowercase) for i in range(length))
-    
 
     ##
     # Digest a protocol header into it's id/name parts
