@@ -1,0 +1,49 @@
+<html>
+
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            function voteForSong(username, song_number){
+                var payload = {
+                    data: {
+                        action: 'vote'
+                        ,username: username
+                        ,song_number: song_number
+                    }
+                }
+                $.ajax({
+                    url: 'https://api.beebotte.com/v1/data/publish/BotRock/MoshPit?token=1512502520228_cKDTidgaEPi6ZXwh',
+                    type: "POST",
+                    data: JSON.stringify(payload),
+                    processData: false,
+                    contentType: 'application/json; charset=utf-8',
+                    
+                })
+            }
+
+            $('#btnVoteForSong1').on('click', function(){
+                voteForSong('MQTT Client 1', 1)
+            })
+
+            $('#btnVoteForSong2').on('click', function(){
+                voteForSong('MQTT Client 1', 2)
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <button id="btnVoteForSong1" class="btn btn-primary">1</button>
+    <button id="btnVoteForSong2" class="btn btn-primary">2</button>
+</body>
+
+</html>

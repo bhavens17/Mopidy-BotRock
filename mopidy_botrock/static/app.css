@@ -3971,7 +3971,7 @@ input[type="submit"] {
     .playback-controls section.progress {
       bottom: 10px;
       left: 40px;
-      right: 10px;
+      right: 40px;
       padding-left: 20px;
       padding-right: 20px;
       color: #a3a19f; }
@@ -3994,8 +3994,8 @@ input[type="submit"] {
         right: 0;
         width: 50px; }
     .playback-controls section.settings {
-      right: 170px;
-      width: 120px;
+      right: 30px;
+      width: 20px;
       text-align: center; }
     .playback-controls section.volume {
       bottom: 10px;
