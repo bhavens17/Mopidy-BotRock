@@ -39,9 +39,6 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 
 		self.client.loop_start()
 
-		#Turn on consume mode, to cause tracks to be removed from playlist as they finish playing
-		#mem.botrock.core.tracklist.set_consume(True)
-
 	def on_mqtt_connect(self, client, data, flags, rc):
 		client.subscribe(self.topic, 1)
 		logger.info("Connected to topic: " + self.topic)
@@ -52,7 +49,7 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 		#logger.info(payload)
 		data = payload[u'data']
 		action = data[u'action']
-		self.handle_action(action, data)
+		self.handle_mqtt_action(action, data)
 
 	def on_start(self):        
 		logger.info('Starting BotRock '+ mem.botrock.version)
@@ -67,7 +64,7 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 			mem.botrock.remove_tl_track(tl_track)
 			mem.botrock.play_winner_of_botrock_voting()
 			
-	def handle_action(self, action, data = None):
+	def handle_mqtt_action(self, action, data = None):
 		try:
 			logger.info("Action: " + action)
 			if action == "play":
@@ -99,6 +96,8 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 				tracks = self.tracklistAdd(data[u'uris'], insertIndex)
 				track = tracks.get()[0]
 				self.playbackPlay(track)
+			elif: action == "vote":
+				mem.botrock.cast_botrock_vote_internal(data[u'username'], data[u'song_number'])
 			else:
 				logger.info("Unhandled action")
 			pass

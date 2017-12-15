@@ -714,14 +714,28 @@ class BotRockCore(object):
             http_client.fetch(request, callback=callback)
 
     ##
-    # New Test Method
+    # cast_botrock_vote
     ##
     def cast_botrock_vote(self, *args, **kwargs):
         callback = kwargs.get('callback', False)
         data = kwargs.get('data', {})
 
-        song_index = data['song_number'] - 1
-        username = data['username']
+        self.cast_botrock_vote_internal(data['username'], data['song_number'])
+
+        returnData = {
+            "voting": self.botRockVoting
+        }
+        
+        if (callback):
+            callback(returnData)
+        else:
+            return returnData
+
+    ##
+    # cast_botrock_vote_internal
+    ##
+    def cast_botrock_vote_internal(self, username, song_number):
+        song_index = song_number - 1
         print 'Vote cast: username - ' + username + ', song_index - ' + str(song_index)
 
         for i in range(0, len(self.botRockVoting['songs'])):
@@ -743,17 +757,8 @@ class BotRockCore(object):
                 'voting': self.botRockVoting
             })
 
-        returnData = {
-            "voting": self.botRockVoting
-        }
-        
-        if (callback):
-            callback(returnData)
-        else:
-            return returnData
-
     ##
-    # New Test Method
+    # get_botrock_voting
     ##
     def get_botrock_voting(self, *args, **kwargs):
         callback = kwargs.get('callback', False)
@@ -767,6 +772,9 @@ class BotRockCore(object):
         else:
             return returnData
 
+    ##
+    # get_songs_for_botrock_voting
+    ##
     def get_songs_for_botrock_voting(self):
         print 'get_songs_for_botrock_voting'
         tracklist = self.core.tracklist.get_tl_tracks().get()
@@ -796,7 +804,10 @@ class BotRockCore(object):
                 })
         
         return songList
-        
+
+    ##
+    # create_new_botrock_voting
+    ##  
     def create_new_botrock_voting(self):
         print 'create_new_botrock_voting'
         tracklist = self.core.tracklist.get_tl_tracks().get()
@@ -814,6 +825,9 @@ class BotRockCore(object):
                 'voting': self.botRockVoting
             })
 
+    ##
+    # play_winner_of_botrock_voting
+    ##
     def play_winner_of_botrock_voting(self):
         print 'play_winner_of_botrock_voting'
 
