@@ -246,10 +246,6 @@ class Settings extends React.Component {
 					Debug
 					{this.props.ui && this.props.ui.test_mode ? <span className="flag warning">Test mode</span> : null}
 				</button>
-				<a className="no-hover button" href="https://github.com/jaedb/Botrock/wiki" target="_blank">
-					<FontAwesome name="question" />&nbsp;
-					Help
-				</a>
 			</span>
 		)
 
@@ -285,15 +281,12 @@ class Settings extends React.Component {
 								onFocus={e => this.setState({input_in_focus: 'pusher_username'})}
 								onBlur={e => this.handleUsernameBlur(e)}
 								value={this.state.pusher_username } />
-							<div className="description">
-								A non-unique string used to identify this client (no special characters)
-							</div>
 						</div>
 					</div>
 
 					<form onSubmit={(e) => this.setConfig(e)}>
 						<div className="field">
-							<div className="name">Host</div>
+							<div className="name">Server</div>
 							<div className="input">
 								<input 
 									type="text"
@@ -471,30 +464,6 @@ class Settings extends React.Component {
 						<div className="input">
 					        <ConfirmationButton className="destructive" content="Reset all settings" confirmingContent="Are you sure?" onConfirm={() => this.resetAllSettings()} />
 				        </div>
-			        </div>
-
-					<h4 className="underline">About</h4>
-
-					<div className="field">
-						<div>
-							<em><a href="https://github.com/jaedb/Botrock" target="_blank">Botrock</a></em> is an open-source project by <a href="https://github.com/jaedb" target="_blank">James Barnsley</a>. It is provided free and with absolutely no warranty. If you paid someone for this software, please let me know.
-								<br />
-								<br />
-								Google Analytics is used to help trace issues and provide valuable insight into how we can continue to make improvements. This may include personal information (eg Spotify Username). For more information, see <a href="https://github.com/jaedb/Botrock/wiki/Terms-of-use" target="_blank">terms and conditions</a>.
-								<br />
-						</div>
-						<br /><br />
-						<div>
-					        <a className="button" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=james%40barnsley%2enz&lc=NZ&item_name=James%20Barnsley&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted" target="_blank">
-					        	<FontAwesome name="paypal" />&nbsp;Donate
-					        </a>
-					        &nbsp;&nbsp;
-					        <a className="button" href="https://github.com/jaedb/Botrock" target="_blank">
-					        	<FontAwesome name="github" />&nbsp;GitHub
-					        </a>
-					        &nbsp;&nbsp;
-					        <a className="button" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank"><FontAwesome name="creative-commons" />&nbsp;Licence</a>
-						</div>
 			        </div>
 
 		        </section>

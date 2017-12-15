@@ -37,8 +37,8 @@ class DiscoverNewReleases extends React.Component{
 		);
 	}
 
-	playAlbum(e,album){
-        this.props.mopidyActions.playURIs([album.uri],album.uri)
+	enqueueAlbum(e,album){
+        this.props.mopidyActions.enqueueURIs([album.uri])
 	}
 
 	handleContextMenu(e,item){
@@ -72,7 +72,7 @@ class DiscoverNewReleases extends React.Component{
 							<ArtistSentence artists={album.artists} />
 						</h3>
 						<div className="actions">
-							<button className="primary" onClick={e => this.playAlbum(e,album)}>Play</button>
+							<button className="primary" onClick={e => this.enqueueAlbum(e,album)}>Add to BotRock</button>
 						</div>
 					</div>
 				</div>

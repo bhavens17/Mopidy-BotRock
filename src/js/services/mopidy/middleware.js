@@ -341,6 +341,47 @@ const MopidyMiddleware = (function(){
                     );
                 break;
 
+                case 'MOPIDY_ENQUEUE_PLAYLIST':
+                    // playlist already in index
+                    if (store.getState().core.playlists.hasOwnProperty(action.uri)){
+                        
+                        // make sure we didn't get this playlist from Mopidy-Spotify
+                        // if we did, we'd have a cached version on server so no need to fetch
+                        if (!store.getState().core.playlists[action.uri].is_mopidy){
+                            store.dispatch(spotifyActions.getPlaylistTracksForQueueing(action.uri))
+                            break
+                        }
+    
+                    // it's a spotify playlist that we haven't loaded
+                    // we need to fetch via HTTP API to avoid timeout
+                    } else if (helpers.uriSource(action.uri) == 'spotify' && store.getState().spotify.enabled){
+                        store.dispatch(spotifyActions.getPlaylistTracksForQueueing(action.uri))
+                        break
+    
+                    // Not in index, and Spotify HTTP not enabled, so just play it as-is
+                    }
+    
+                    // fetch the playlist tracks via backend
+                    // add each track by URI
+                    instruct(socket, store, 'playlists.lookup', {uri: action.uri})
+                        .then(
+                            response => {
+                                if (response.tracks === undefined){
+                                    store.dispatch(uiActions.createNotification('Failed to load playlist tracks','bad'))
+                                } else {
+                                    var tracks_uris = helpers.arrayOf('uri',response.tracks)
+                                    store.dispatch(mopidyActions.enqueueURIs(tracks_uris, action.uri))
+                                }
+                            },
+                            error => {
+                                store.dispatch(coreActions.handleException(
+                                    "Mopidy: "+(error.message ? error.message : "Lookup failed"),
+                                    error
+                                ));
+                            }
+                        );
+                    break;
+
             case 'MOPIDY_ENQUEUE_URIS':
 
                 if (!action.uris || action.uris.length <= 0){

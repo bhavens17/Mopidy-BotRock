@@ -86,9 +86,8 @@ class Artist extends React.Component{
 		);
 	}
 
-	inLibrary(){
-		var library = helpers.uriSource(this.props.params.uri)+'_library_artists'
-		return (this.props[library] && this.props[library].indexOf(this.props.params.uri) > -1)
+	enqueueArtistTopTracks(e){
+		this.props.spotifyActions.enqueueArtistTopTracks(this.props.params.uri)
 	}
 
 	renderSubViewMenu(){		
@@ -228,7 +227,7 @@ class Artist extends React.Component{
 						<div className="liner">
 							<h1>{this.props.artist ? this.props.artist.name : null}</h1>
 							<div className="actions">
-								<button className="primary" onClick={e => this.props.mopidyActions.enqueueURIs([this.props.params.uri], this.props.params.uri, false)}>Add All Artist Songs To Queue</button>
+								<button className="primary" onClick={e => this.enqueueArtistTopTracks(e)}>Add Top Tracks to BotRock</button>
 								<ContextMenuTrigger className="white" onTrigger={e => this.handleContextMenu(e)} />
 							</div>
 							{ this.renderSubViewMenu() }

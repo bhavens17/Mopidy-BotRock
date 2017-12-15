@@ -11,8 +11,10 @@
 		padding: 60px 0;
 
 		.voting-title{
-			font-size: 18px;
+			font-size: 23px;
 			padding-top: 20px;
+			padding-bottom: 20px;
+			opacity: 1;
 		}
 
 		@include responsive($min_width: $bp_medium){

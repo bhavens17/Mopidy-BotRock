@@ -160,7 +160,7 @@ class Album extends React.Component{
 				</div>
 
 				<div className="actions">
-					<button className="primary" onClick={e => this.addToQueue()}>Add To Queue</button>
+					<button className="primary" onClick={e => this.addToQueue()}>Add To BotRock</button>
 					<ContextMenuTrigger onTrigger={e => this.handleContextMenu(e)} />
 				</div>
 

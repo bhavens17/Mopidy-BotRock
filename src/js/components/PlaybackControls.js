@@ -84,32 +84,13 @@ class PlaybackControls extends React.Component{
 				</div>
 
 				<section className="playback">
-					<a className="control previous" onClick={() => this.props.mopidyActions.previous()}>
-						<Icon name="back" />
-					</a>
 					{ this.renderPlayButton() }
-					<a className="control stop" onClick={() => this.props.mopidyActions.stop()}>
-						<Icon name="stop" />
-					</a>
-					<a className="control next" onClick={() => this.props.mopidyActions.next()}>
-						<Icon name="skip" />
-					</a>
-				</section>
-
-				<section className="settings">
-					{this.renderConsumeButton()}
-					{this.renderRandomButton()}
-					{this.renderRepeatButton()}
 				</section>
 
 				<section className="progress">
 					<ProgressSlider />
 					<span className="current">{ this.props.time_position ? <Dater type="length" data={this.props.time_position} /> : '-' }</span>
 					<span className="total">{ this.props.current_track ? <Dater type="length" data={this.props.current_track.length} /> : '-' }</span>
-				</section>
-
-				<section className="volume">
-					<VolumeControl />
 				</section>
 
 				<section className="triggers">

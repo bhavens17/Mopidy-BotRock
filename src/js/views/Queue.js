@@ -139,18 +139,9 @@ class Queue extends React.Component{
 
 		var options = (
 			<span>
-				{this.props.spotify_enabled ? <button className="no-hover" onClick={e => this.props.uiActions.openModal('edit_radio')}>
-					<FontAwesome name="podcast" />&nbsp;
-					Radio
-					{this.props.radio && this.props.radio.enabled ? <span className="flag blue">On</span> : null}
-				</button> : null}
 				<button className="no-hover" onClick={e => hashHistory.push(global.baseURL+'queue/history')}>
 					<FontAwesome name="history" />&nbsp;
 					History
-				</button>
-				<button className="no-hover" onClick={e => this.props.mopidyActions.clearTracklist()}>
-					<FontAwesome name="trash" />&nbsp;
-					Clear
 				</button>
 				<button className="no-hover" onClick={e => this.props.uiActions.openModal('add_to_queue', {})}>
 					<FontAwesome name="plus" />&nbsp;
@@ -201,7 +192,7 @@ class Queue extends React.Component{
 			voting = (
 				<div>
 					<div className="voting-title">
-						Current Vote
+						Vote now for which song to hear next!
 					</div>
 					{votingSongs}
 				</div>
@@ -210,7 +201,7 @@ class Queue extends React.Component{
 
 		return (
 			<div className="view queue-view">			
-				<Header icon="play" className="overlay" title="Now playing" options={options} uiActions={this.props.uiActions} />
+				<Header icon="play" className="overlay" title="BotRock Queue" options={options} uiActions={this.props.uiActions} />
 				<Parallax blur image={image} />
 				<div className="content-wrapper">
 				

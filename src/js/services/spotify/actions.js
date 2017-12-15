@@ -1465,6 +1465,80 @@ export function getPlaylistTracksForPlayingProcessor(data){
     }
 }
 
+export function getPlaylistTracksForQueueing(uri){
+    return (dispatch, getState) => {
+        dispatch(uiActions.startProcess(
+            'SPOTIFY_GET_PLAYLIST_TRACKS_FOR_QUEUEING_PROCESSOR',
+            'Loading playlist tracks', 
+            {
+                uri: uri,
+                next: 'users/'+ helpers.getFromUri('userid',uri) +'/playlists/'+ helpers.getFromUri('playlistid',uri) +'/tracks?market='+getState().core.country
+            }
+        ))
+    }
+}
+
+export function getPlaylistTracksForQueueingProcessor(data){
+    return (dispatch, getState) => {
+        sendRequest(dispatch, getState, data.next)
+            .then(
+                response => {
+
+                    // Check to see if we've been cancelled
+                    if (getState().ui.processes['SPOTIFY_GET_PLAYLIST_TRACKS_FOR_QUEUEING_PROCESSOR'] !== undefined){
+                        var processor = getState().ui.processes['SPOTIFY_GET_PLAYLIST_TRACKS_FOR_QUEUEING_PROCESSOR']
+
+                        if (processor.status == 'cancelling'){
+                            dispatch(uiActions.processCancelled('SPOTIFY_GET_PLAYLIST_TRACKS_FOR_QUEUEING_PROCESSOR'))
+                            return false
+                        }
+                    }
+
+                    // Add on our new batch of loaded tracks
+                    var uris = []
+                    var new_uris = []
+                    for (var i = 0; i < response.items.length; i++){
+                        new_uris.push(response.items[i].track.uri)
+                    }
+                    if (data.uris){
+                        uris = [...data.uris, ...new_uris];
+                    } else {
+                        uris = new_uris;
+                    }
+
+                    // We got a next link, so we've got more work to be done
+                    if (response.next){
+                        dispatch(uiActions.updateProcess(
+                            'SPOTIFY_GET_PLAYLIST_TRACKS_FOR_QUEUEING_PROCESSOR', 
+                            'Loading '+(response.total-uris.length)+' playlist tracks', 
+                            {
+                                next: response.next,
+                                total: response.total,
+                                remaining: response.total - uris.length
+                            }
+                        ))
+                        dispatch(uiActions.runProcess(
+                            'SPOTIFY_GET_PLAYLIST_TRACKS_FOR_QUEUEING_PROCESSOR', 
+                            {
+                                next: response.next,
+                                uris: uris
+                            }
+                        ))
+                    } else {
+                        dispatch(mopidyActions.enqueueURIs(uris, data.uri))
+                        dispatch(uiActions.processFinished('SPOTIFY_GET_PLAYLIST_TRACKS_FOR_QUEUEING_PROCESSOR'))
+                    }
+                },
+                error => {
+                    dispatch(coreActions.handleException(
+                        'Could not load tracks to play playlist',
+                        error
+                    ));
+                }
+            );
+    }
+}
+
 export function addTracksToPlaylist(uri, tracks_uris){
     return (dispatch, getState) => {
         sendRequest(dispatch, getState, 'users/'+ helpers.getFromUri('userid',uri) + '/playlists/'+ helpers.getFromUri('playlistid',uri) + '/tracks', 'POST', { uris: tracks_uris } )

@@ -436,7 +436,7 @@ class ContextMenu extends React.Component{
 		var enqueue_artist_top_tracks = (
 			<span className="menu-item-wrapper">
 				<a className="menu-item" onClick={e => this.enqueueArtistTopTracks(e)}>
-					<span className="label">Add Top Tracks to Queue</span>
+					<span className="label">Add Top Tracks to BotRock</span>
 				</a>
 			</span>
 		)
@@ -576,9 +576,6 @@ class ContextMenu extends React.Component{
 			case 'artist':
 				return (
 					<div>
-						{context.source == 'spotify' ? enqueue_artist_top_tracks : null}
-						{context.source == 'spotify' ? start_radio : null}
-						<div className="divider" />
 						{context.source == 'spotify' ? go_to_recommendations : null}
 						{copy_uris}
 					</div>
@@ -587,8 +584,6 @@ class ContextMenu extends React.Component{
 			case 'playlist':
 				return (
 					<div>
-						{play_playlist}
-						<div className="divider" />
 						{context.source == 'spotify' ? go_to_user : null}
 						{copy_uris}
 					</div>
@@ -609,29 +604,19 @@ class ContextMenu extends React.Component{
 			case 'queue-track':
 				return (
 					<div>
-						{context.items_count == 1 ? play_queue_item : null}
-						<div className="divider" />
-						{add_to_playlist}
-						{toggle_loved}
+						{add_to_queue}
 						<div className="divider" />
 						{context.source == 'spotify' && context.items_count <= 5 ? go_to_recommendations : null}
 						{context.items_count == 1 ? go_to_track : null}
 						{copy_uris}
 						<div className="divider" />
-						{remove_from_queue}
 					</div>
 				)
 
 			case 'editable-playlist-track':
 				return (
 					<div>
-						{play_uris}
-						{play_uris_next}
 						{add_to_queue}
-						{context.source == 'spotify' && context.items_count == 1 ? start_radio : null}
-						<div className="divider" />
-						{add_to_playlist}
-						{toggle_loved}
 						<div className="divider" />
 						{context.source == 'spotify' && context.items_count <= 5 ? go_to_recommendations : null}
 						{context.items_count == 1 ? go_to_track : null}
@@ -644,13 +629,7 @@ class ContextMenu extends React.Component{
 			default:
 				return (
 					<div>
-						{play_uris}
-						{play_uris_next}
 						{add_to_queue}
-						{context.source == 'spotify' && context.items_count == 1 ? start_radio : null}
-						<div className="divider" />
-						{add_to_playlist}
-						{toggle_loved}
 						<div className="divider" />
 						{context.source == 'spotify' && context.items_count <= 5 ? go_to_recommendations : null}
 						{context.items_count == 1 ? go_to_album : null}

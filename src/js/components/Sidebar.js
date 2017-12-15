@@ -35,7 +35,7 @@ class Sidebar extends React.Component{
 		        		<section>
 							<Link className={this.linkClassName('queue')} to={global.baseURL+"queue"}>
 								<Icon name="play" />
-								Now playing
+								BotRock Queue
 							</Link>
 							<Link className={this.linkClassName('search')} to={global.baseURL+"search"}>
 								<Icon name="search" />

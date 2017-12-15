@@ -77,6 +77,13 @@ export function playPlaylist(uri){
 	}
 }
 
+export function enqueuePlaylist(uri){
+	return {
+		type: 'MOPIDY_ENQUEUE_PLAYLIST',
+		uri: uri
+	}
+}
+
 export function playAlbum(uri){
 	return {
 		type: 'MOPIDY_PLAY_ALBUM',

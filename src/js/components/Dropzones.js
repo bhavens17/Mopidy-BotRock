@@ -19,17 +19,6 @@ class Dropzones extends React.Component{
 				title: 'Add to queue',
 				icon: 'play',
 				action: 'enqueue'
-			},
-			{
-				title: 'Play next',
-				icon: 'play',
-				action: 'enqueue_next'
-			},
-			{
-				title: 'Add to playlist',
-				icon: 'playlist',
-				action: 'add_to_playlist',
-				accepts: ['tltrack','track','album','playlist','artist']
 			}
 		]
 	}
@@ -50,14 +39,6 @@ class Dropzones extends React.Component{
 		switch(target.action){
 			case 'enqueue':
 				this.props.mopidyActions.enqueueURIs(uris, this.props.dragger.from_uri)
-				break
-
-			case 'enqueue_next':
-				this.props.mopidyActions.enqueueURIs(uris, this.props.dragger.from_uri, true)
-				break
-
-			case 'add_to_playlist':
-				this.props.uiActions.openModal('add_to_playlist',{tracks_uris: uris})
 				break
 		}
 	}

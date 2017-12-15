@@ -24,8 +24,8 @@ class DiscoverFeatured extends React.Component{
 		this.props.spotifyActions.getFeaturedPlaylists();
 	}
 
-	playPlaylist(e,playlist){
-        this.props.mopidyActions.playPlaylist(playlist.uri)
+	enqueuePlaylist(e,playlist){
+        this.props.mopidyActions.enqueuePlaylist(playlist.uri)
 	}
 
 	handleContextMenu(e,item){
@@ -55,7 +55,7 @@ class DiscoverFeatured extends React.Component{
 						</Link>
 						{playlist.description ? <h3 dangerouslySetInnerHTML={{__html: playlist.description}}></h3> : null}
 						<div className="actions">
-							<button className="primary" onClick={e => this.playPlaylist(e,playlist)}>Play</button>
+							<button className="primary" onClick={e => this.enqueuePlaylist(e,playlist)}>Add to BotRock</button>
 						</div>
 					</div>
 				</div>

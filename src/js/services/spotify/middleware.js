@@ -206,6 +206,14 @@ const SpotifyMiddleware = (function(){
                     total: action.data.playlists.total
                 });
                 break
+            
+            case 'SPOTIFY_GET_PLAYLIST_TRACKS_FOR_PLAYING_PROCESSOR':
+                store.dispatch(spotifyActions.getPlaylistTracksForPlayingProcessor(action.data))
+                break
+
+            case 'SPOTIFY_GET_PLAYLIST_TRACKS_FOR_QUEUEING_PROCESSOR':
+                store.dispatch(spotifyActions.getPlaylistTracksForQueueingProcessor(action.data))
+                break
 
             case 'SPOTIFY_FAVORITES_LOADED':
                 if (action.artists.length > 0){

@@ -87,6 +87,10 @@ class Playlist extends React.Component{
         this.props.mopidyActions.playPlaylist(this.props.playlist.uri)
 	}
 
+	addToQueue(){
+		this.props.mopidyActions.enqueuePlaylist(this.props.playlist.uri)
+	}
+
 	follow(){
         ReactGA.event({ category: 'Playlist', action: 'Follow', label: this.props.playlist.uri })
 		this.props.spotifyActions.toggleFollowingPlaylist(this.props.playlist.uri, 'PUT')
@@ -122,8 +126,7 @@ class Playlist extends React.Component{
 			case 'm3u':
 				return (
 					<div className="actions">
-						<button className="primary" onClick={ e => this.play() }>Play</button>
-						<button className="secondary" onClick={ e => this.props.uiActions.openModal('edit_playlist', { uri: this.props.params.uri, name: this.props.playlist.name }) }>Edit</button>
+						<button className="primary" onClick={ e => this.addToQueue() }>Add to BotRock</button>
 						<ContextMenuTrigger onTrigger={e => this.handleContextMenu(e)} />
 					</div>
 				)
@@ -132,15 +135,14 @@ class Playlist extends React.Component{
 				if (this.props.playlist.can_edit){
 					return (
 						<div className="actions">
-							<button className="primary" onClick={ e => this.play() }>Play</button>
-							<button className="secondary" onClick={ e => this.props.uiActions.openModal('edit_playlist', { uri: this.props.params.uri, name: this.props.playlist.name, public: this.props.playlist.public, collaborative: this.props.playlist.collaborative, description: this.props.playlist.description }) }>Edit</button>
+							<button className="primary" onClick={ e => this.addToQueue() }>Add to BotRock</button>
 							<ContextMenuTrigger onTrigger={e => this.handleContextMenu(e)} />
 						</div>
 					)
 				}
 				return (
 					<div className="actions">
-						<button className="primary" onClick={ e => this.play() }>Play</button>
+						<button className="primary" onClick={ e => this.addToQueue() }>Add to BotRock</button>
 						<ContextMenuTrigger onTrigger={e => this.handleContextMenu(e)} />
 					</div>
 				)
@@ -148,7 +150,7 @@ class Playlist extends React.Component{
 			default:
 				return (
 					<div className="actions">
-						<button className="primary" onClick={ e => this.play() }>Play</button>
+						<button className="primary" onClick={ e => this.addToQueue() }>Add To BotRock</button>
 						<ContextMenuTrigger onTrigger={e => this.handleContextMenu(e)} />
 					</div>
 				)
