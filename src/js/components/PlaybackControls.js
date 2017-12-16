@@ -11,6 +11,7 @@ import Dater from './Dater'
 import ArtistSentence from './ArtistSentence'
 import Thumbnail from './Thumbnail'
 import Icon from './Icon'
+import URILink from './URILink'
 
 import * as uiActions from '../services/ui/actions'
 import * as mopidyActions from '../services/mopidy/actions'
@@ -76,7 +77,7 @@ class PlaybackControls extends React.Component{
 						<Thumbnail size="small" images={images} />
 					</div>
 					<div className="title">
-						{ this.props.current_track ? this.props.current_track.name : <span>-</span> }
+						{ this.props.current_track ? <URILink className="title" type="track" uri={this.props.current_track.uri}>{this.props.current_track.name}</URILink> : <span>-</span> }
 					</div>
 					<div className="artist">
 						{ this.props.current_track ? <ArtistSentence artists={ this.props.current_track.artists } /> : <ArtistSentence /> }

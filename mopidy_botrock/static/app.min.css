@@ -3929,7 +3929,10 @@ input[type="submit"] {
       padding-top: 20px;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis; }
+      text-overflow: ellipsis;
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px dotted transparent; }
     .playback-controls .current-track .artist-sentence {
       opacity: 0.5;
       display: block;
