@@ -128,7 +128,8 @@ if (isDev) {
     new webpack.optimize.UglifyJsPlugin({
       compress: true,
       mangle: false,
-      sourceMap: true
+      sourceMap: true,
+      warnings: false
     })
   );
 }

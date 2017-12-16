@@ -2919,6 +2919,11 @@ input[type="submit"] {
     input[type="button"]:not(.no-hover):hover:before, .notouch
     input[type="submit"]:not(.no-hover):hover:before {
       opacity: 0.2; }
+  .button.nomargin,
+  button.nomargin,
+  input[type="button"].nomargin,
+  input[type="submit"].nomargin {
+    margin: 0; }
   .button:active,
   button:active,
   input[type="button"]:active,
@@ -5578,10 +5583,14 @@ main .track-view {
     padding-top: 20px;
     padding-bottom: 20px;
     opacity: 1; }
-  @media (min-width: 800px) {
+  .queue-view .voting .voting-track {
+    display: inline-block;
+    width: 50%; }
+  @media (max-width: 800px) {
     .queue-view .voting .voting-track {
-      display: inline-block;
-      width: 50%; } }
+      display: block;
+      width: inherit;
+      padding-bottom: 20px; } }
   .queue-view .voting .artwork {
     position: relative;
     margin: 0 auto;
@@ -5601,6 +5610,10 @@ main .track-view {
       width: 130%;
       height: 130%;
       z-index: 2; }
+  .queue-view .voting .icon {
+    height: 14px;
+    padding-right: 5px;
+    vertical-align: middle; }
   .queue-view .voting .title {
     font-size: 18px;
     padding-top: 20px; }

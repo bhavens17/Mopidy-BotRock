@@ -13,6 +13,7 @@ import ArtistSentence from '../components/ArtistSentence'
 import Thumbnail from '../components/Thumbnail'
 import Header from '../components/Header'
 import URILink from '../components/URILink'
+import Icon from '../components/Icon'
 
 import * as helpers from '../helpers'
 import * as uiActions from '../services/ui/actions'
@@ -177,13 +178,15 @@ class Queue extends React.Component{
 						<div className="voting-track" key={index}>
 							{this.renderArtwork(track, songImage)}
 							<div className="title">
-								{track ? track.name : <span>-</span>}
+								{track ? <URILink type="track" uri={track.uri}>{track.name}</URILink> : <span>-</span>}	
 								{track ? <ArtistSentence artists={track.artists} /> : <ArtistSentence />}
 								<div>
-									<button className="primary" key={index} onClick={e => this.props.pusherActions.castBotRockVote(index + 1)}>Vote! ({song.votes.length})</button>
+									<button className="primary nomargin has-tooltip" key={index} onClick={e => this.props.pusherActions.castBotRockVote(index + 1)}>
+										<Icon name="vote" />Vote! ({song.votes.length})
+										<span className="tooltip">{song.votes.length ? song.votes.map(t => <p>{t}</p>) : <p>No Votes</p>}</span>
+									</button>
 								</div>
 							</div>
-							
 						</div>
 					)
 				}

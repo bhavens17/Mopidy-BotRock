@@ -92,6 +92,10 @@ input[type="submit"] {
 		}
 	}
 
+	&.nomargin {
+		margin: 0
+	}
+
 	&:active {
 		@include noanimate();
 		background: darken($white,5%);

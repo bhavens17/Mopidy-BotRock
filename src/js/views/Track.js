@@ -235,8 +235,6 @@ class Track extends React.Component{
 				</div>
 
 				<div className="actions">
-					<button className="primary" onClick={e => this.play()}>Play</button>
-					<LastfmLoveButton uri={this.props.params.uri} artist={this.props.track.artists[0].name} track={this.props.track.name} addText="Love" removeText="Unlove" is_loved={this.props.track.userloved} />
 					<ContextMenuTrigger onTrigger={e => this.handleContextMenu(e)} />
 				</div>
 

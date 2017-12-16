@@ -1425,7 +1425,7 @@ var _propTypes = __webpack_require__(22);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _screenReaderStyles = __webpack_require__(383);
+var _screenReaderStyles = __webpack_require__(384);
 
 var _screenReaderStyles2 = _interopRequireDefault(_screenReaderStyles);
 
@@ -3854,7 +3854,7 @@ var Thumbnail = function (_React$Component) {
 
 			// no images
 			if (!this.props.image && (!this.props.images || this.props.images.length <= 0)) {
-				return __webpack_require__(384);
+				return __webpack_require__(385);
 
 				// single image
 			} else if (this.props.image) {
@@ -3922,15 +3922,6 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 
 /***/ }),
 /* 17 */
-/***/ (function(module, exports) {
-
-module.exports = function() {
-	throw new Error("define cannot be used indirect");
-};
-
-
-/***/ }),
-/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3979,6 +3970,15 @@ var Icon = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Icon;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+module.exports = function() {
+	throw new Error("define cannot be used indirect");
+};
+
 
 /***/ }),
 /* 19 */
@@ -4295,7 +4295,7 @@ var _reactFontawesome = __webpack_require__(7);
 
 var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -25427,7 +25427,7 @@ var go = exports.go = function go(n) {
 	}
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
@@ -31985,7 +31985,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 	return TimeoutError;
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 /***/ }),
 /* 158 */
@@ -32026,7 +32026,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 
 /***/ }),
@@ -32086,7 +32086,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 
 
@@ -33067,69 +33067,69 @@ var _App = __webpack_require__(350);
 
 var _App2 = _interopRequireDefault(_App);
 
-var _Album = __webpack_require__(405);
+var _Album = __webpack_require__(406);
 
 var _Album2 = _interopRequireDefault(_Album);
 
-var _Artist = __webpack_require__(406);
+var _Artist = __webpack_require__(407);
 
 var _Artist2 = _interopRequireDefault(_Artist);
 
-var _Playlist = __webpack_require__(408);
+var _Playlist = __webpack_require__(409);
 
 var _Playlist2 = _interopRequireDefault(_Playlist);
 
-var _User = __webpack_require__(409);
+var _User = __webpack_require__(410);
 
 var _User2 = _interopRequireDefault(_User);
 
-var _Track = __webpack_require__(410);
+var _Track = __webpack_require__(411);
 
 var _Track2 = _interopRequireDefault(_Track);
 
-var _Queue = __webpack_require__(413);
+var _Queue = __webpack_require__(414);
 
 var _Queue2 = _interopRequireDefault(_Queue);
 
-var _QueueHistory = __webpack_require__(414);
+var _QueueHistory = __webpack_require__(415);
 
 var _QueueHistory2 = _interopRequireDefault(_QueueHistory);
 
-var _Settings = __webpack_require__(415);
+var _Settings = __webpack_require__(416);
 
 var _Settings2 = _interopRequireDefault(_Settings);
 
-var _Debug = __webpack_require__(417);
+var _Debug = __webpack_require__(418);
 
 var _Debug2 = _interopRequireDefault(_Debug);
 
-var _Search = __webpack_require__(418);
+var _Search = __webpack_require__(419);
 
 var _Search2 = _interopRequireDefault(_Search);
 
-var _DiscoverRecommendations = __webpack_require__(421);
+var _DiscoverRecommendations = __webpack_require__(422);
 
 var _DiscoverRecommendations2 = _interopRequireDefault(_DiscoverRecommendations);
 
-var _DiscoverFeatured = __webpack_require__(423);
+var _DiscoverFeatured = __webpack_require__(424);
 
 var _DiscoverFeatured2 = _interopRequireDefault(_DiscoverFeatured);
 
-var _DiscoverCategories = __webpack_require__(424);
+var _DiscoverCategories = __webpack_require__(425);
 
 var _DiscoverCategories2 = _interopRequireDefault(_DiscoverCategories);
 
-var _DiscoverCategory = __webpack_require__(426);
+var _DiscoverCategory = __webpack_require__(427);
 
 var _DiscoverCategory2 = _interopRequireDefault(_DiscoverCategory);
 
-var _DiscoverNewReleases = __webpack_require__(427);
+var _DiscoverNewReleases = __webpack_require__(428);
 
 var _DiscoverNewReleases2 = _interopRequireDefault(_DiscoverNewReleases);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-__webpack_require__(428); /**
+__webpack_require__(429); /**
                               * Base-level application wrapper
                               **/
 
@@ -47852,9 +47852,9 @@ var initialState = {
 	},
 	mopidy: {
 		connected: false,
-		host: '10.10.2.216', //window.location.hostname,
-		port: '6680', //(window.location.port ? window.location.port : (window.location.protocol === 'https:' ? '443' : '80')),
-		ssl: false, //(window.location.protocol === 'https:' ? true : false),
+		host: window.location.hostname,
+		port: window.location.port ? window.location.port : window.location.protocol === 'https:' ? '443' : '80',
+		ssl: window.location.protocol === 'https:' ? true : false,
 		mute: false,
 		volume: 0,
 		progress: 0,
@@ -52677,7 +52677,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 	return when;
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-})(__webpack_require__(17));
+})(__webpack_require__(18));
 
 
 /***/ }),
@@ -52762,7 +52762,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 
 /***/ }),
@@ -53074,7 +53074,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 
 /***/ }),
@@ -53241,7 +53241,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 
 /***/ }),
@@ -53275,7 +53275,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 
 /***/ }),
@@ -53302,7 +53302,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 
 /***/ }),
@@ -53374,7 +53374,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 
 /***/ }),
@@ -53405,7 +53405,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 
 /***/ }),
@@ -53449,7 +53449,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 
 
@@ -53543,7 +53543,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 
 /***/ }),
@@ -53606,7 +53606,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 
 /***/ }),
@@ -53630,7 +53630,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-})(__webpack_require__(17));
+})(__webpack_require__(18));
 
 
 /***/ }),
@@ -54592,7 +54592,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 	};
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
@@ -54680,7 +54680,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(17)));
+}(__webpack_require__(18)));
 
 
 /***/ }),
@@ -55283,27 +55283,27 @@ var _Sidebar = __webpack_require__(351);
 
 var _Sidebar2 = _interopRequireDefault(_Sidebar);
 
-var _PlaybackControls = __webpack_require__(385);
+var _PlaybackControls = __webpack_require__(386);
 
 var _PlaybackControls2 = _interopRequireDefault(_PlaybackControls);
 
-var _ContextMenu = __webpack_require__(388);
+var _ContextMenu = __webpack_require__(389);
 
 var _ContextMenu2 = _interopRequireDefault(_ContextMenu);
 
-var _Dragger = __webpack_require__(389);
+var _Dragger = __webpack_require__(390);
 
 var _Dragger2 = _interopRequireDefault(_Dragger);
 
-var _Modal = __webpack_require__(390);
+var _Modal = __webpack_require__(391);
 
 var _Modal2 = _interopRequireDefault(_Modal);
 
-var _Notifications = __webpack_require__(403);
+var _Notifications = __webpack_require__(404);
 
 var _Notifications2 = _interopRequireDefault(_Notifications);
 
-var _DebugInfo = __webpack_require__(404);
+var _DebugInfo = __webpack_require__(405);
 
 var _DebugInfo2 = _interopRequireDefault(_DebugInfo);
 
@@ -55691,11 +55691,11 @@ var _redux = __webpack_require__(3);
 
 var _reactRouter = __webpack_require__(9);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
-var _Dropzones = __webpack_require__(381);
+var _Dropzones = __webpack_require__(382);
 
 var _Dropzones2 = _interopRequireDefault(_Dropzones);
 
@@ -55896,7 +55896,8 @@ var map = {
 	"./spotify.svg": 377,
 	"./star.svg": 378,
 	"./stop.svg": 379,
-	"./websocket.svg": 380
+	"./vote.svg": 380,
+	"./websocket.svg": 381
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -56080,10 +56081,16 @@ module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGlu
 /* 380 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE2IDE2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTUuMzc2LDEzLjQ3NmMtMC41Ny0wLjU3MS0xLjE0My0xLjE0Mi0xLjcxNC0xLjcxNw0KCWMtMC4wNTUtMC4wNTUtMC4xMTQtMC4wNjMtMC4xODUtMC4wNjJjLTAuNDY3LDAtMC45MzMsMC0xLjQwMSwwYy0xLjU3OCwwLTMuMTU2LDAtNC43MzUsMGMtMC4wNjgsMC0wLjEzMSwwLjAwNS0wLjE4OC0wLjA1NA0KCWMtMC40NjYtMC40NzEtMC45MzUtMC45MzgtMS40MDQtMS40MDRjLTAuMDUxLTAuMDUxLTAuMDQ3LTAuMDc4LDAuMDAxLTAuMTI0YzAuMTY4LTAuMTY0LDAuMzM2LTAuMzI2LDAuNDk2LTAuNDk2DQoJYzAuMDc0LTAuMDgyLDAuMTEzLTAuMDYzLDAuMTgsMC4wMDZjMC4zNTQsMC4zNiwwLjcxNiwwLjcxNywxLjA3LDEuMDc4YzAuMDY0LDAuMDYyLDAuMTI1LDAuMDkyLDAuMjE3LDAuMDkyDQoJYzAuNzc0LTAuMDA1LDEuNTQ5LTAuMDAzLDIuMzIzLTAuMDA0YzAuMDQ0LDAsMC4wODgsMC4wMTcsMC4xMzItMC4wMjNjLTAuMDM1LTAuMDM4LTAuMDctMC4wNzctMC4xMDktMC4xMTUNCglDOS4yODUsOS44NzksOC41MTIsOS4xMDEsNy43MzIsOC4zM2MtMC4wODEtMC4wODItMC4wNzktMC4xMjUsMC4wMDMtMC4yQzcuODg5LDcuOTg4LDguMDM5LDcuODQsOC4xNzgsNy42ODQNCgljMC4wODMtMC4wOSwwLjEyNS0wLjA4OCwwLjIxMi0wLjAwMWMwLjc3LDAuNzc5LDEuNTQ3LDEuNTUzLDIuMzIzLDIuMzI3YzAuMDM0LDAuMDM1LDAuMDYxLDAuMDg3LDAuMTMzLDAuMDk3DQoJYzAtMC4wNDgsMC0wLjA5MSwwLTAuMTM0YzAtMC43NjktMC4wMDItMS41MzgsMC4wMDItMi4zMDhjMC0wLjA5Ni0wLjAzLTAuMTYyLTAuMDk5LTAuMjI4Yy0wLjM1LTAuMzQ1LTAuNjkyLTAuNjk4LTEuMDQ3LTEuMDQNCglDOS42MTMsNi4zMSw5LjU5NSw2LjI1OCw5LjY5OSw2LjE2NWMwLjE3Mi0wLjE1NywwLjMyOC0wLjMzMiwwLjQ5MS0wLjQ5OGMwLjA3LTAuMDM2LDAuMDkzLDAuMDMsMC4xMjgsMC4wNjQNCgljMC40NDQsMC40NDIsMC44ODcsMC44ODksMS4zMzMsMS4zMjljMC4wNzIsMC4wNzIsMC4xMDMsMC4xNDEsMC4xMDMsMC4yNDNjLTAuMDA0LDEuMTE0LTAuMDAyLDIuMjI5LTAuMDA2LDMuMzQ0DQoJYzAsMC4xMDksMC4wMiwwLjE1MiwwLjE0NCwwLjE0OWMwLjUyLTAuMDA4LDEuMDQxLTAuMDA3LDEuNTYyLDBjMC4xMTcsMC4wMDIsMC4xNDQtMC4wMzQsMC4xNDQtMC4xNDYNCgljLTAuMDAzLTEuMzc4LTAuMDAyLTIuNzU2LTAuMDAyLTQuMTMzYzAtMC4wODUtMC4wMjItMC4xNDUtMC4wODMtMC4yMDVDMTIuODgsNS42ODMsMTIuMjUsNS4wNTQsMTEuNjIzLDQuNDINCgljLTAuMDc1LTAuMDc2LTAuMTEzLTAuMDgzLTAuMTkyLTAuMDAxYy0wLjM2NSwwLjM3NS0wLjczOCwwLjc0NS0xLjExMiwxLjExNmMtMC4wMzUsMC4wMzMtMC4wNTgsMC4xLTAuMTI4LDAuMDYzDQoJYy0wLjAwOS0wLjAxMi0wLjAxNi0wLjAyNS0wLjAyNi0wLjAzNUM5LjE1Miw0LjU1MSw4LjEzOCwzLjU0LDcuMTI3LDIuNTI2QzcuMDY3LDIuNDY3LDcuMDA1LDIuNDU5LDYuOTMsMi40NTkNCglDNC45MDQsMi40NiwyLjg3NywyLjQ2LDAuODUxLDIuNDYxYy0wLjA0NCwwLTAuMDk2LTAuMDIxLTAuMTQyLDAuMDI0QzAuNzQzLDIuNTIyLDAuNzc1LDIuNTU5LDAuODEsMi41OTINCgljMC41MzcsMC41MzgsMS4wNzYsMS4wNzQsMS42MSwxLjYxNGMwLjA3MiwwLjA3MiwwLjE0MiwwLjEsMC4yNDIsMC4wOThjMS4xNjktMC4wMDIsMi4zMzctMC4wMDEsMy41MDctMC4wMDENCgljMC4wNzQsMCwwLjEzOCwwLjAwNCwwLjE5NywwLjA2NWMwLjM5MywwLjM5OSwwLjc4OCwwLjc5NSwxLjE4OCwxLjE4OGMwLjA3MSwwLjA2OCwwLjA1MSwwLjEwMS0wLjAwNywwLjE1OA0KCUM2Ljk1LDYuMzA5LDYuMzU0LDYuOTA0LDUuNzYsNy41MDJjLTAuMDYzLDAuMDY0LTAuMDk2LDAuMDY1LTAuMTU5LDBjLTAuMzktMC4zOTYtMC43ODMtMC43ODktMS4xNzgtMS4xNzgNCglDNC4zNjUsNi4yNjgsNC4zNDUsNi4yMTEsNC4zNDYsNi4xMzJjMC4wMDMtMC4yNjgtMC4wMDItMC41MzYsMC4wMDMtMC44MDRjMC4wMDItMC4wOTYtMC4wMjQtMC4xMjMtMC4xMjEtMC4xMjINCglDMy42OTcsNS4yMSwzLjE2Niw1LjIxMiwyLjYzNSw1LjIwNUMyLjUxOCw1LjIwNCwyLjUwMyw1LjI0NiwyLjUwMyw1LjM0OGMwLjAwNCwwLjUxMiwwLjAwNCwxLjAyMywwLDEuNTM1DQoJYzAsMC4wOTUsMC4wMjcsMC4xNjIsMC4wOTUsMC4yMjljMC45OTEsMC45ODYsMS45NzcsMS45NzksMi45NjksMi45NjJjMC4wOTYsMC4wOTQsMC4wODIsMC4xMzctMC4wMDUsMC4yMjMNCgljLTAuMzY2LDAuMzU2LTAuNzIyLDAuNzIzLTEuMDg4LDEuMDhjLTAuMDc4LDAuMDc2LTAuMDc5LDAuMTE0LDAsMC4xOTFjMC42MywwLjYyMywxLjI1NywxLjI1MiwxLjg4MSwxLjg4MQ0KCWMwLjA2NywwLjA2NywwLjEzNCwwLjA5MywwLjIyOSwwLjA5M2MyLjg5My0wLjAwMSw1Ljc4OS0wLjAwMSw4LjY4Mi0wLjAwMmMwLjA0NywwLDAuMDk1LDAuMDE3LDAuMTQ2LTAuMDE4DQoJQzE1LjM5NywxMy41MDUsMTUuMzg5LDEzLjQ4OSwxNS4zNzYsMTMuNDc2eiIvPg0KPC9zdmc+DQo="
+module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgo8c3ZnCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgdmVyc2lvbj0iMS4wIgogICB3aWR0aD0iNTAwIgogICBoZWlnaHQ9IjUwMCIKICAgaWQ9InN2ZzQ1Ij4KICA8ZGVmcwogICAgIGlkPSJkZWZzMyIgLz4KICA8ZwogICAgIGlkPSJsYXllcjEiPgogICAgPHJlY3QKICAgICAgIHdpZHRoPSIyOTcuMTQyODUiCiAgICAgICBoZWlnaHQ9IjI5Ny4xNDI4NSIKICAgICAgIHg9IjEwMS40Mjg1NyIKICAgICAgIHk9IjEwMS40Mjg1NyIKICAgICAgIHN0eWxlPSJvcGFjaXR5OjE7Y29sb3I6YmxhY2s7ZmlsbDp3aGl0ZTtmaWxsLW9wYWNpdHk6MTtmaWxsLXJ1bGU6ZXZlbm9kZDtzdHJva2U6YmxhY2s7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlLWxpbmVjYXA6YnV0dDtzdHJva2UtbGluZWpvaW46bWl0ZXI7bWFya2VyOm5vbmU7bWFya2VyLXN0YXJ0Om5vbmU7bWFya2VyLW1pZDpub25lO21hcmtlci1lbmQ6bm9uZTtzdHJva2UtbWl0ZXJsaW1pdDo0O3N0cm9rZS1kYXNoYXJyYXk6bm9uZTtzdHJva2UtZGFzaG9mZnNldDowO3N0cm9rZS1vcGFjaXR5OjE7dmlzaWJpbGl0eTp2aXNpYmxlO2Rpc3BsYXk6aW5saW5lO292ZXJmbG93OnZpc2libGUiCiAgICAgICBpZD0icmVjdDE4NzEiIC8+CiAgICA8cGF0aAogICAgICAgZD0iTSA0MTMuMTE4MTEsMzc2LjQwMDczIEMgMzkwLjYwNDE1LDM3Ni44MzgxMyAzNDAuMDQyNzMsMzUzLjY2Nzg1IDMxMS40MDQ1NSwzMjkuNzg5NzcgQyAyNzguMjU4OTMsMzAyLjE1Mjk2IDI3NS4xNDc4MSwzMDIuNTc1NCAyNjUuMDY5NDgsMzM2LjA3ODE0IEMgMjYxLjk1MzA2LDM0Ni40Mzc5NiAyNTguODUyNzQsMzUwLjYxMDU2IDI1NS4yMjY4NSwzNDkuMzIzOTYgQyAyNTEuMTkzOTksMzQ3Ljg5MzU3IDI1MC44MTM3MiwzNDguNTk4NzggMjUzLjYyOTQ1LDM1Mi4yODM4OCBDIDI1OC40MTU3MywzNTguNTQ3NTYgMjM1Ljg2Njk3LDM4Mi40NDg0OSAyMjcuOTI1ODcsMzc5LjUyODczIEMgMjIzLjY3MDg0LDM3Ny45NjQyNSAyMjMuMzQ0MywzNzkuMjc0MTUgMjI2LjM2MjQzLDM4NS44MDIxOSBDIDIyOC40NjA0MSwzOTAuMzM5NyAyMjguMzQ5MTEsMzk2LjE0MTgzIDIyNi4xMTU1NiwzOTguNjk0ODcgQyAyMjMuODgxNDEsNDAxLjI0ODMyIDIyMy41MTk1LDQwNS4yMDcxMyAyMjUuMzEwODYsNDA3LjQ5MjIxIEMgMjMxLjMyNjMyLDQxNS4xNjUzMiAyMjUuODQyOTQsNDE5Ljc1OTUyIDIxNy45NjMzNCw0MTMuNjQ3NzUgQyAyMTAuNjMxNDksNDA3Ljk2MTY2IDIxMC40ODI4LDQwOC4xMjIzNiAyMTQuNjc3MjUsNDE3LjE5NDc0IEMgMjE3LjMyMTcyLDQyMi45MTQ1NyAyMTcuMDU2ODYsNDI4Ljg0NjA3IDIxNC4wMTEyNiw0MzIuMDk3NTQgQyAyMTEuMjI5MDYsNDM1LjA2NzkxIDIwNi42MTc2Myw0NDEuMTc0MjYgMjAzLjc2MzEsNDQ1LjY2NzgxIEMgMjAwLjkwOTI0LDQ1MC4xNjExNiAxOTYuMjQ0MzMsNDUyLjk4MTAyIDE5My4zOTY5Nyw0NTEuOTM0MTEgQyAxODUuODI5OTgsNDQ5LjE1MTkgMTc5LjQ3MDM3LDQzMy4xNjEyMiAxODMuOTEyLDQyOC4wODQ0MyBDIDE4Ni4wMTI1Nyw0MjUuNjgzMjkgMTg1LjMzMDMsNDIxLjYxNzY3IDE4Mi4zOTU0Niw0MTkuMDUwMzggQyAxNzguMTAzMjQsNDE1LjI5NDkyIDE3OS4wMjk0Miw0MTAuMzU3MjQgMTg3LjEzMTg3LDM5My44MDM0OCBDIDE5My45MjM1MSwzNzkuOTI4MzQgMTk1LjkwMjExLDM3Mi4xODQ3OCAxOTMuMjA2NjMsMzcwLjAzMTA1IEMgMTkwLjQ4NDkyLDM2Ny44NTcwOCAxOTUuMjM0ODEsMzQ5Ljg2NDY3IDIwOC4wODc2NywzMTMuNjYwMDIgQyAyMTguNDcwODYsMjg0LjQxMjU5IDIyNy41ODkxNiwyNTguMTQ4NiAyMjguMzQ5OTksMjU1LjI5NjIyIEMgMjI5LjExMDkzLDI1Mi40NDQxMiAyMjUuNjI4MzUsMjQ2LjIwMTE4IDIyMC42MTA1OSwyNDEuNDIzNzIgQyAyMTUuNTkyNTksMjM2LjY0NjM5IDE5Ny45ODQ5NCwyMTQuNjQyMSAxODEuNDgyMTIsMTkyLjUyNjE4IEMgMTY0Ljk3OTE5LDE3MC40MDk4MiAxNDcuOTIyNDMsMTQ3LjkzNzQ2IDE0My41NzgzLDE0Mi41ODcgQyAxMTQuOTcxNTMsMTA3LjM1NTk2IDExMC4xNzg1OSwxMDAuMTMyMzEgMTA5LjUwODg0LDkxLjI0MjcyNyBDIDEwOS4wOTczNiw4NS43ODEzODUgMTExLjE1MTcyLDc3Ljg3ODIwOCAxMTQuMDc0LDczLjY4MDQ2IEMgMTE5LjgwMDQ5LDY1LjQ1Mzk4OSAxNDUuMTIyOTYsNjIuNDI3OTc0IDE2MC42MDI2NSw2OC4xMTk1MSBDIDE3Ny4wNzg1Myw3NC4xNzczMjMgMjI5Ljg0NDA5LDEzMS45Nzg5NSAyNDAuMjExMDEsMTU1LjMyNTc1IEMgMjUzLjk5NTYyLDE4Ni4zNjk2NyAyNTcuNzE4MTYsMTg1Ljk5MDA4IDI3MC41ODEyNSwxNTIuMjI2NTggQyAyODcuNzY4NzMsMTA3LjExMDU3IDMwMi45NTU1Niw3NS4xODA5MzIgMzEwLjM2MTczLDY4LjU5MjMzMiBDIDMyMS4wMzQyMSw1OS4wOTc4NDUgMzQ0LjA2NDMsNTYuMjQ4NTg3IDM1Ni4zMDk5Nyw2Mi45MDc1ODMgQyAzNjIuMzE1MjMsNjYuMTczMDc4IDM3MC4wMzA5Miw3NS4yNjQxNTEgMzczLjQ1NjI4LDgzLjEwOTU4NCBDIDM3OS42MDEzMSw5Ny4xODUzODYgMzc5LjUwOTc2LDk3LjYwNTcyNSAzNjYuNTQ2NDcsMTE0LjgzMjkyIEMgMzU4LjAxODg4LDEyNi4xNjU0MiAzNDUuNzIzMjUsMTUyLjI1NCAzMzEuNTA0NjYsMTg5LjE4MzQxIEwgMzA5LjU5OTg5LDI0Ni4wNzUgTCAzMzkuMTQ5MiwyNzcuMDk1MDYgQyAzNzUuODYyMTIsMzE1LjYzNTQxIDM5MS40NTA3MywzMzAuMzUxNjcgNDA0Ljc0MDIzLDMzOS4wMTU5IEMgNDE3LjQyODEzLDM0Ny4yODc4NiA0MjMuODk0ODQsMzYwLjExMDU1IDQxNy43OTIyOCwzNjQuODk1MTUgQyA0MTUuMDgzODMsMzY3LjAxODEyIDQxNS4zNzg4NiwzNjguMDA4NiA0MTguNTI3ODMsMzY3LjM2NjIgQyA0MjEuNDE4OCwzNjYuNzc2NSA0MjQuMjM2NjIsMzY4LjUxMjcgNDI0Ljc4OTM0LDM3MS4yMjQzNiBDIDQyNS4zNDI2NCwzNzMuOTM2MDYgNDIwLjA5MDQsMzc2LjI2NTQgNDEzLjExODExLDM3Ni40MDA3MyB6ICIKICAgICAgIHN0eWxlPSJmaWxsOmJsYWNrIgogICAgICAgaWQ9InBhdGgxMiIgLz4KICA8L2c+Cjwvc3ZnPgo="
 
 /***/ }),
 /* 381 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE2IDE2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTUuMzc2LDEzLjQ3NmMtMC41Ny0wLjU3MS0xLjE0My0xLjE0Mi0xLjcxNC0xLjcxNw0KCWMtMC4wNTUtMC4wNTUtMC4xMTQtMC4wNjMtMC4xODUtMC4wNjJjLTAuNDY3LDAtMC45MzMsMC0xLjQwMSwwYy0xLjU3OCwwLTMuMTU2LDAtNC43MzUsMGMtMC4wNjgsMC0wLjEzMSwwLjAwNS0wLjE4OC0wLjA1NA0KCWMtMC40NjYtMC40NzEtMC45MzUtMC45MzgtMS40MDQtMS40MDRjLTAuMDUxLTAuMDUxLTAuMDQ3LTAuMDc4LDAuMDAxLTAuMTI0YzAuMTY4LTAuMTY0LDAuMzM2LTAuMzI2LDAuNDk2LTAuNDk2DQoJYzAuMDc0LTAuMDgyLDAuMTEzLTAuMDYzLDAuMTgsMC4wMDZjMC4zNTQsMC4zNiwwLjcxNiwwLjcxNywxLjA3LDEuMDc4YzAuMDY0LDAuMDYyLDAuMTI1LDAuMDkyLDAuMjE3LDAuMDkyDQoJYzAuNzc0LTAuMDA1LDEuNTQ5LTAuMDAzLDIuMzIzLTAuMDA0YzAuMDQ0LDAsMC4wODgsMC4wMTcsMC4xMzItMC4wMjNjLTAuMDM1LTAuMDM4LTAuMDctMC4wNzctMC4xMDktMC4xMTUNCglDOS4yODUsOS44NzksOC41MTIsOS4xMDEsNy43MzIsOC4zM2MtMC4wODEtMC4wODItMC4wNzktMC4xMjUsMC4wMDMtMC4yQzcuODg5LDcuOTg4LDguMDM5LDcuODQsOC4xNzgsNy42ODQNCgljMC4wODMtMC4wOSwwLjEyNS0wLjA4OCwwLjIxMi0wLjAwMWMwLjc3LDAuNzc5LDEuNTQ3LDEuNTUzLDIuMzIzLDIuMzI3YzAuMDM0LDAuMDM1LDAuMDYxLDAuMDg3LDAuMTMzLDAuMDk3DQoJYzAtMC4wNDgsMC0wLjA5MSwwLTAuMTM0YzAtMC43NjktMC4wMDItMS41MzgsMC4wMDItMi4zMDhjMC0wLjA5Ni0wLjAzLTAuMTYyLTAuMDk5LTAuMjI4Yy0wLjM1LTAuMzQ1LTAuNjkyLTAuNjk4LTEuMDQ3LTEuMDQNCglDOS42MTMsNi4zMSw5LjU5NSw2LjI1OCw5LjY5OSw2LjE2NWMwLjE3Mi0wLjE1NywwLjMyOC0wLjMzMiwwLjQ5MS0wLjQ5OGMwLjA3LTAuMDM2LDAuMDkzLDAuMDMsMC4xMjgsMC4wNjQNCgljMC40NDQsMC40NDIsMC44ODcsMC44ODksMS4zMzMsMS4zMjljMC4wNzIsMC4wNzIsMC4xMDMsMC4xNDEsMC4xMDMsMC4yNDNjLTAuMDA0LDEuMTE0LTAuMDAyLDIuMjI5LTAuMDA2LDMuMzQ0DQoJYzAsMC4xMDksMC4wMiwwLjE1MiwwLjE0NCwwLjE0OWMwLjUyLTAuMDA4LDEuMDQxLTAuMDA3LDEuNTYyLDBjMC4xMTcsMC4wMDIsMC4xNDQtMC4wMzQsMC4xNDQtMC4xNDYNCgljLTAuMDAzLTEuMzc4LTAuMDAyLTIuNzU2LTAuMDAyLTQuMTMzYzAtMC4wODUtMC4wMjItMC4xNDUtMC4wODMtMC4yMDVDMTIuODgsNS42ODMsMTIuMjUsNS4wNTQsMTEuNjIzLDQuNDINCgljLTAuMDc1LTAuMDc2LTAuMTEzLTAuMDgzLTAuMTkyLTAuMDAxYy0wLjM2NSwwLjM3NS0wLjczOCwwLjc0NS0xLjExMiwxLjExNmMtMC4wMzUsMC4wMzMtMC4wNTgsMC4xLTAuMTI4LDAuMDYzDQoJYy0wLjAwOS0wLjAxMi0wLjAxNi0wLjAyNS0wLjAyNi0wLjAzNUM5LjE1Miw0LjU1MSw4LjEzOCwzLjU0LDcuMTI3LDIuNTI2QzcuMDY3LDIuNDY3LDcuMDA1LDIuNDU5LDYuOTMsMi40NTkNCglDNC45MDQsMi40NiwyLjg3NywyLjQ2LDAuODUxLDIuNDYxYy0wLjA0NCwwLTAuMDk2LTAuMDIxLTAuMTQyLDAuMDI0QzAuNzQzLDIuNTIyLDAuNzc1LDIuNTU5LDAuODEsMi41OTINCgljMC41MzcsMC41MzgsMS4wNzYsMS4wNzQsMS42MSwxLjYxNGMwLjA3MiwwLjA3MiwwLjE0MiwwLjEsMC4yNDIsMC4wOThjMS4xNjktMC4wMDIsMi4zMzctMC4wMDEsMy41MDctMC4wMDENCgljMC4wNzQsMCwwLjEzOCwwLjAwNCwwLjE5NywwLjA2NWMwLjM5MywwLjM5OSwwLjc4OCwwLjc5NSwxLjE4OCwxLjE4OGMwLjA3MSwwLjA2OCwwLjA1MSwwLjEwMS0wLjAwNywwLjE1OA0KCUM2Ljk1LDYuMzA5LDYuMzU0LDYuOTA0LDUuNzYsNy41MDJjLTAuMDYzLDAuMDY0LTAuMDk2LDAuMDY1LTAuMTU5LDBjLTAuMzktMC4zOTYtMC43ODMtMC43ODktMS4xNzgtMS4xNzgNCglDNC4zNjUsNi4yNjgsNC4zNDUsNi4yMTEsNC4zNDYsNi4xMzJjMC4wMDMtMC4yNjgtMC4wMDItMC41MzYsMC4wMDMtMC44MDRjMC4wMDItMC4wOTYtMC4wMjQtMC4xMjMtMC4xMjEtMC4xMjINCglDMy42OTcsNS4yMSwzLjE2Niw1LjIxMiwyLjYzNSw1LjIwNUMyLjUxOCw1LjIwNCwyLjUwMyw1LjI0NiwyLjUwMyw1LjM0OGMwLjAwNCwwLjUxMiwwLjAwNCwxLjAyMywwLDEuNTM1DQoJYzAsMC4wOTUsMC4wMjcsMC4xNjIsMC4wOTUsMC4yMjljMC45OTEsMC45ODYsMS45NzcsMS45NzksMi45NjksMi45NjJjMC4wOTYsMC4wOTQsMC4wODIsMC4xMzctMC4wMDUsMC4yMjMNCgljLTAuMzY2LDAuMzU2LTAuNzIyLDAuNzIzLTEuMDg4LDEuMDhjLTAuMDc4LDAuMDc2LTAuMDc5LDAuMTE0LDAsMC4xOTFjMC42MywwLjYyMywxLjI1NywxLjI1MiwxLjg4MSwxLjg4MQ0KCWMwLjA2NywwLjA2NywwLjEzNCwwLjA5MywwLjIyOSwwLjA5M2MyLjg5My0wLjAwMSw1Ljc4OS0wLjAwMSw4LjY4Mi0wLjAwMmMwLjA0NywwLDAuMDk1LDAuMDE3LDAuMTQ2LTAuMDE4DQoJQzE1LjM5NywxMy41MDUsMTUuMzg5LDEzLjQ4OSwxNS4zNzYsMTMuNDc2eiIvPg0KPC9zdmc+DQo="
+
+/***/ }),
+/* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56103,7 +56110,7 @@ var _reactRedux = __webpack_require__(4);
 
 var _redux = __webpack_require__(3);
 
-var _Dropzone = __webpack_require__(382);
+var _Dropzone = __webpack_require__(383);
 
 var _Dropzone2 = _interopRequireDefault(_Dropzone);
 
@@ -56206,7 +56213,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Dropzones);
 
 /***/ }),
-/* 382 */
+/* 383 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56226,7 +56233,7 @@ var _reactRedux = __webpack_require__(4);
 
 var _redux = __webpack_require__(3);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -56305,7 +56312,7 @@ var Dropzone = function (_React$Component) {
 exports.default = Dropzone;
 
 /***/ }),
-/* 383 */
+/* 384 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56327,13 +56334,13 @@ exports.default = {
 module.exports = exports['default'];
 
 /***/ }),
-/* 384 */
+/* 385 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMzJweCIgaGVpZ2h0PSIzMnB4IiB2aWV3Qm94PSIwIDAgMzIgMzIiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMyIDMyIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxsaW5lIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzc3Nzc3NyIgc3Ryb2tlLXdpZHRoPSIwLjE0MTciIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgeDE9IjQuMTY3IiB5MT0iNC4xNjciIHgyPSIyNy44MzMiIHkyPSIyNy44MzMiIG9wYWNpdHk9IjAuMyIgLz4NCjxsaW5lIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzc3Nzc3NyIgc3Ryb2tlLXdpZHRoPSIwLjE0MTciIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgeDE9IjQuMTY3IiB5MT0iMjcuODMzIiB4Mj0iMjcuODMzIiB5Mj0iNC4xNjciIG9wYWNpdHk9IjAuMyIgLz4NCjwvc3ZnPg0K"
 
 /***/ }),
-/* 385 */
+/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56359,11 +56366,11 @@ var _reactFontawesome = __webpack_require__(7);
 
 var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
 
-var _ProgressSlider = __webpack_require__(386);
+var _ProgressSlider = __webpack_require__(387);
 
 var _ProgressSlider2 = _interopRequireDefault(_ProgressSlider);
 
-var _VolumeControl = __webpack_require__(387);
+var _VolumeControl = __webpack_require__(388);
 
 var _VolumeControl2 = _interopRequireDefault(_VolumeControl);
 
@@ -56379,7 +56386,7 @@ var _Thumbnail = __webpack_require__(16);
 
 var _Thumbnail2 = _interopRequireDefault(_Thumbnail);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -56660,7 +56667,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PlaybackControls);
 
 /***/ }),
-/* 386 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56774,7 +56781,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ProgressSlider);
 
 /***/ }),
-/* 387 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56954,7 +56961,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(VolumeControl);
 
 /***/ }),
-/* 388 */
+/* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57967,7 +57974,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24), __webpack_require__(14)))
 
 /***/ }),
-/* 389 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58112,7 +58119,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Dragger);
 
 /***/ }),
-/* 390 */
+/* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58140,55 +58147,55 @@ var _helpers = __webpack_require__(2);
 
 var helpers = _interopRequireWildcard(_helpers);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
-var _AddToPlaylistModal = __webpack_require__(391);
+var _AddToPlaylistModal = __webpack_require__(392);
 
 var _AddToPlaylistModal2 = _interopRequireDefault(_AddToPlaylistModal);
 
-var _AddToQueueModal = __webpack_require__(392);
+var _AddToQueueModal = __webpack_require__(393);
 
 var _AddToQueueModal2 = _interopRequireDefault(_AddToQueueModal);
 
-var _CreatePlaylistModal = __webpack_require__(393);
+var _CreatePlaylistModal = __webpack_require__(394);
 
 var _CreatePlaylistModal2 = _interopRequireDefault(_CreatePlaylistModal);
 
-var _EditPlaylistModal = __webpack_require__(394);
+var _EditPlaylistModal = __webpack_require__(395);
 
 var _EditPlaylistModal2 = _interopRequireDefault(_EditPlaylistModal);
 
-var _EditRadioModal = __webpack_require__(395);
+var _EditRadioModal = __webpack_require__(396);
 
 var _EditRadioModal2 = _interopRequireDefault(_EditRadioModal);
 
-var _ImageZoomModal = __webpack_require__(396);
+var _ImageZoomModal = __webpack_require__(397);
 
 var _ImageZoomModal2 = _interopRequireDefault(_ImageZoomModal);
 
-var _KioskModeModal = __webpack_require__(397);
+var _KioskModeModal = __webpack_require__(398);
 
 var _KioskModeModal2 = _interopRequireDefault(_KioskModeModal);
 
-var _SearchURISchemesModal = __webpack_require__(398);
+var _SearchURISchemesModal = __webpack_require__(399);
 
 var _SearchURISchemesModal2 = _interopRequireDefault(_SearchURISchemesModal);
 
-var _VolumeModal = __webpack_require__(399);
+var _VolumeModal = __webpack_require__(400);
 
 var _VolumeModal2 = _interopRequireDefault(_VolumeModal);
 
-var _EnterUsernameModal = __webpack_require__(400);
+var _EnterUsernameModal = __webpack_require__(401);
 
 var _EnterUsernameModal2 = _interopRequireDefault(_EnterUsernameModal);
 
-var _AuthorizationModal_Send = __webpack_require__(401);
+var _AuthorizationModal_Send = __webpack_require__(402);
 
 var _AuthorizationModal_Send2 = _interopRequireDefault(_AuthorizationModal_Send);
 
-var _AuthorizationModal_Receive = __webpack_require__(402);
+var _AuthorizationModal_Receive = __webpack_require__(403);
 
 var _AuthorizationModal_Receive2 = _interopRequireDefault(_AuthorizationModal_Receive);
 
@@ -58387,7 +58394,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)))
 
 /***/ }),
-/* 391 */
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58407,7 +58414,7 @@ var _reactFontawesome = __webpack_require__(7);
 
 var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -58550,7 +58557,7 @@ var AddToPlaylistModal = function (_React$Component) {
 exports.default = AddToPlaylistModal;
 
 /***/ }),
-/* 392 */
+/* 393 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58570,7 +58577,7 @@ var _reactFontawesome = __webpack_require__(7);
 
 var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -58709,7 +58716,7 @@ var AddToQueueModal = function (_React$Component) {
 exports.default = AddToQueueModal;
 
 /***/ }),
-/* 393 */
+/* 394 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58725,7 +58732,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -58965,7 +58972,7 @@ var CreatePlaylistModal = function (_React$Component) {
 exports.default = CreatePlaylistModal;
 
 /***/ }),
-/* 394 */
+/* 395 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58981,7 +58988,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -59181,7 +59188,7 @@ var EditPlaylistModal = function (_React$Component) {
 exports.default = EditPlaylistModal;
 
 /***/ }),
-/* 395 */
+/* 396 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59201,7 +59208,7 @@ var _reactFontawesome = __webpack_require__(7);
 
 var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -59537,7 +59544,7 @@ var EditRadioModal = function (_React$Component) {
 exports.default = EditRadioModal;
 
 /***/ }),
-/* 396 */
+/* 397 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59567,7 +59574,7 @@ var _helpers = __webpack_require__(2);
 
 var helpers = _interopRequireWildcard(_helpers);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -59623,7 +59630,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ImageZoomModal);
 
 /***/ }),
-/* 397 */
+/* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59653,7 +59660,7 @@ var _helpers = __webpack_require__(2);
 
 var helpers = _interopRequireWildcard(_helpers);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -59733,7 +59740,7 @@ var KioskModeModal = function (_React$Component) {
 exports.default = KioskModeModal;
 
 /***/ }),
-/* 398 */
+/* 399 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59753,7 +59760,7 @@ var _reactFontawesome = __webpack_require__(7);
 
 var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -59881,7 +59888,7 @@ var SearchURISchemesModal = function (_React$Component) {
 exports.default = SearchURISchemesModal;
 
 /***/ }),
-/* 399 */
+/* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59901,7 +59908,7 @@ var _reactFontawesome = __webpack_require__(7);
 
 var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -59980,7 +59987,7 @@ var VolumeModal = function (_React$Component) {
 exports.default = VolumeModal;
 
 /***/ }),
-/* 400 */
+/* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59996,7 +60003,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -60096,7 +60103,7 @@ var EnterUsernameModal = function (_React$Component) {
 exports.default = EnterUsernameModal;
 
 /***/ }),
-/* 401 */
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60126,7 +60133,7 @@ var _helpers = __webpack_require__(2);
 
 var helpers = _interopRequireWildcard(_helpers);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -60243,7 +60250,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AuthorizationModal_Send);
 
 /***/ }),
-/* 402 */
+/* 403 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60273,7 +60280,7 @@ var _helpers = __webpack_require__(2);
 
 var helpers = _interopRequireWildcard(_helpers);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -60384,7 +60391,7 @@ var _class = function (_React$Component) {
 exports.default = _class;
 
 /***/ }),
-/* 403 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60576,7 +60583,7 @@ var Notifications = function (_React$Component) {
 exports.default = Notifications;
 
 /***/ }),
-/* 404 */
+/* 405 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60783,7 +60790,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(DebugInfo);
 
 /***/ }),
-/* 405 */
+/* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61120,7 +61127,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Album);
 
 /***/ }),
-/* 406 */
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61174,7 +61181,7 @@ var _ArtistGrid = __webpack_require__(60);
 
 var _ArtistGrid2 = _interopRequireDefault(_ArtistGrid);
 
-var _RelatedArtists = __webpack_require__(407);
+var _RelatedArtists = __webpack_require__(408);
 
 var _RelatedArtists2 = _interopRequireDefault(_RelatedArtists);
 
@@ -61669,7 +61676,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 407 */
+/* 408 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61753,7 +61760,7 @@ var RelatedArtists = function (_React$Component) {
 exports.default = RelatedArtists;
 
 /***/ }),
-/* 408 */
+/* 409 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62179,7 +62186,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Playlist);
 
 /***/ }),
-/* 409 */
+/* 410 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62414,7 +62421,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(User);
 
 /***/ }),
-/* 410 */
+/* 411 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62460,7 +62467,7 @@ var _ArtistGrid = __webpack_require__(60);
 
 var _ArtistGrid2 = _interopRequireDefault(_ArtistGrid);
 
-var _LastfmLoveButton = __webpack_require__(411);
+var _LastfmLoveButton = __webpack_require__(412);
 
 var _LastfmLoveButton2 = _interopRequireDefault(_LastfmLoveButton);
 
@@ -62500,7 +62507,7 @@ var _actions4 = __webpack_require__(30);
 
 var lastfmActions = _interopRequireWildcard(_actions4);
 
-var _actions5 = __webpack_require__(412);
+var _actions5 = __webpack_require__(413);
 
 var geniusActions = _interopRequireWildcard(_actions5);
 
@@ -62887,7 +62894,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 411 */
+/* 412 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63018,7 +63025,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(FollowButton);
 
 /***/ }),
-/* 412 */
+/* 413 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63165,7 +63172,7 @@ function findTrackLyrics(track) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)))
 
 /***/ }),
-/* 413 */
+/* 414 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63222,6 +63229,10 @@ var _Header2 = _interopRequireDefault(_Header);
 var _URILink = __webpack_require__(36);
 
 var _URILink2 = _interopRequireDefault(_URILink);
+
+var _Icon = __webpack_require__(17);
+
+var _Icon2 = _interopRequireDefault(_Icon);
 
 var _helpers = __webpack_require__(2);
 
@@ -63439,12 +63450,28 @@ var Queue = function (_React$Component) {
 								null,
 								_react2.default.createElement(
 									'button',
-									{ className: 'primary', key: index, onClick: function onClick(e) {
+									{ className: 'primary nomargin has-tooltip', key: index, onClick: function onClick(e) {
 											return _this2.props.pusherActions.castBotRockVote(index + 1);
 										} },
+									_react2.default.createElement(_Icon2.default, { name: 'vote' }),
 									'Vote! (',
 									song.votes.length,
-									')'
+									')',
+									_react2.default.createElement(
+										'span',
+										{ className: 'tooltip' },
+										song.votes.length ? song.votes.map(function (t) {
+											return _react2.default.createElement(
+												'p',
+												null,
+												t
+											);
+										}) : _react2.default.createElement(
+											'p',
+											null,
+											'No Votes'
+										)
+									)
 								)
 							)
 						)
@@ -63538,7 +63565,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 414 */
+/* 415 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63690,7 +63717,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 415 */
+/* 416 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63720,7 +63747,7 @@ var _SpotifyAuthenticationFrame = __webpack_require__(161);
 
 var _SpotifyAuthenticationFrame2 = _interopRequireDefault(_SpotifyAuthenticationFrame);
 
-var _LastfmAuthenticationFrame = __webpack_require__(416);
+var _LastfmAuthenticationFrame = __webpack_require__(417);
 
 var _LastfmAuthenticationFrame2 = _interopRequireDefault(_LastfmAuthenticationFrame);
 
@@ -63748,7 +63775,7 @@ var _Parallax = __webpack_require__(43);
 
 var _Parallax2 = _interopRequireDefault(_Parallax);
 
-var _Icon = __webpack_require__(18);
+var _Icon = __webpack_require__(17);
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -64579,7 +64606,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 416 */
+/* 417 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64765,7 +64792,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LastfmAuthenticationFrame);
 
 /***/ }),
-/* 417 */
+/* 418 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65302,7 +65329,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 418 */
+/* 419 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65336,7 +65363,7 @@ var _Header = __webpack_require__(23);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _DropdownField = __webpack_require__(419);
+var _DropdownField = __webpack_require__(420);
 
 var _DropdownField2 = _interopRequireDefault(_DropdownField);
 
@@ -65360,7 +65387,7 @@ var _LazyLoadListener = __webpack_require__(44);
 
 var _LazyLoadListener2 = _interopRequireDefault(_LazyLoadListener);
 
-var _SearchForm = __webpack_require__(420);
+var _SearchForm = __webpack_require__(421);
 
 var _SearchForm2 = _interopRequireDefault(_SearchForm);
 
@@ -65725,7 +65752,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)))
 
 /***/ }),
-/* 419 */
+/* 420 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65866,7 +65893,7 @@ exports.default = DropdownField;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)))
 
 /***/ }),
-/* 420 */
+/* 421 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66010,7 +66037,7 @@ exports.default = (0, _reactRedux.connect)(mapDispatchToProps)(SearchForm);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 421 */
+/* 422 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66058,7 +66085,7 @@ var _Parallax = __webpack_require__(43);
 
 var _Parallax2 = _interopRequireDefault(_Parallax);
 
-var _AddSeedField = __webpack_require__(422);
+var _AddSeedField = __webpack_require__(423);
 
 var _AddSeedField2 = _interopRequireDefault(_AddSeedField);
 
@@ -66411,7 +66438,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Discover);
 
 /***/ }),
-/* 422 */
+/* 423 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66639,7 +66666,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)))
 
 /***/ }),
-/* 423 */
+/* 424 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66864,7 +66891,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 424 */
+/* 425 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66888,7 +66915,7 @@ var _Header = __webpack_require__(23);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _CategoryGrid = __webpack_require__(425);
+var _CategoryGrid = __webpack_require__(426);
 
 var _CategoryGrid2 = _interopRequireDefault(_CategoryGrid);
 
@@ -66988,7 +67015,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(DiscoverCategories);
 
 /***/ }),
-/* 425 */
+/* 426 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67058,7 +67085,7 @@ exports.default = CategoryGrid;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 426 */
+/* 427 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67220,7 +67247,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(DiscoverCategory);
 
 /***/ }),
-/* 427 */
+/* 428 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67472,7 +67499,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 428 */
+/* 429 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -17,10 +17,16 @@
 			opacity: 1;
 		}
 
-		@include responsive($min_width: $bp_medium){
+		.voting-track {
+			display: inline-block;
+			width: 50%;
+		}
+
+		@include responsive($bp_medium){
 			.voting-track {
-				display: inline-block;
-				width: 50%;
+				display: block;
+				width: 100%;
+				padding-bottom: 20px;
 			}
 		}
 
@@ -51,6 +57,12 @@
 					z-index: 2;
 				}
 			}
+		}
+
+		.icon {
+			height: 14px;
+			padding-right: 5px;
+			vertical-align: middle;
 		}
 
 		.title {
