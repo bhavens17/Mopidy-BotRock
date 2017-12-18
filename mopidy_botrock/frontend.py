@@ -90,7 +90,9 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 				mem.botrock.core.playback.resume()
 			elif action == "tracklistAdd":
 				uris = data[u'uris']
-				at_position = data[u'at_position']
+				at_position = None
+				if u'at_position' in data:
+					at_position = data[u'at_position']
 				return self.tracklistAdd(uris, at_position)
 			elif action == "playNow":
 				insertIndex = 0
@@ -130,8 +132,7 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 	def playbackGetCurrentTlTrack(self):
 		return mem.botrock.core.playback.get_current_tl_track()
 
-
-	def tracklistAdd(self, uris, at_position = 0):
+	def tracklistAdd(self, uris, at_position = None):
 		return mem.botrock.core.tracklist.add(at_position = at_position, uris = uris)
 
 	def tracklistSlice(self, start, end):
