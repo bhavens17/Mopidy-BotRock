@@ -110,7 +110,7 @@ const PusherMiddleware = (function(){
                 var connection = {
                     client_id: helpers.generateGuid(),
                     connection_id: helpers.generateGuid(),
-                    username: 'Anonymous'
+                    username: null
                 }
                 if (state.pusher.username){
                     connection.username = state.pusher.username;

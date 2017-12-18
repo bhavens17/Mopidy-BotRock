@@ -75,7 +75,7 @@ class BotRockCore(object):
         except:
             client_id = self.generateGuid(12)
             connection_id = self.generateGuid(12)
-            username = 'Anonymous'
+            username = None
             generated = True
         
         # construct our protocol object, and return
