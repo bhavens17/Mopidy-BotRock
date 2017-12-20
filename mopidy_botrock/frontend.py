@@ -71,7 +71,7 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 			
 	def handle_mqtt_action(self, action, data = None):
 		try:
-			logger.info("handle_mqtt_action - Action: " + action + ", Data: " + data)
+			logger.info("handle_mqtt_action - Action: " + action + ", Data: " + str(data)
 			if action == "play":
 				self.playbackPlay()
 			elif action == "playFirst":
