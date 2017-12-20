@@ -55,23 +55,23 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 		logger.info('Starting BotRock '+ mem.botrock.version)
 
 	def tracklist_changed(self):
-		#print 'tracklist_changed'
+		logger.debug('tracklist_changed')
 		mem.botrock.play_first_track_if_one_not_already_playing()
 		mem.botrock.update_botrock_voting_status()
 
 	def track_playback_started(self, tl_track):
-		#print 'track_playback_started'
+		logger.debug('track_playback_started')
 		mem.botrock.create_new_botrock_voting()
 
 	def track_playback_ended(self, tl_track, time_position):
 		if time_position > 1:
-			#print 'track_playback_ended'
+			logger.debug('track_playback_ended')
 			mem.botrock.remove_tl_track(tl_track)
 			mem.botrock.play_winner_of_botrock_voting()
 			
 	def handle_mqtt_action(self, action, data = None):
 		try:
-			logger.info("Action: " + action)
+			logger.info("handle_mqtt_action - Action: " + action + ", Data: " + data)
 			if action == "play":
 				self.playbackPlay()
 			elif action == "playFirst":

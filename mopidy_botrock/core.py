@@ -716,7 +716,7 @@ class BotRockCore(object):
     # create_new_botrock_voting
     ##  
     def create_new_botrock_voting(self):
-        #print 'create_new_botrock_voting'
+        logger.debug('create_new_botrock_voting')
         tracklist = self.core.tracklist.get_tl_tracks().get()
             
         if len(tracklist) > self.botRockVoteCandidateNum:
@@ -734,7 +734,7 @@ class BotRockCore(object):
     # get_songs_for_botrock_voting
     ##
     def get_songs_for_botrock_voting(self):
-        #print 'get_songs_for_botrock_voting'
+        logger.debug('get_songs_for_botrock_voting')
         tracklist = self.core.tracklist.get_tl_tracks().get()
         currenttrack = self.core.playback.get_current_tl_track().get()
         trackIndexList = []
@@ -781,7 +781,7 @@ class BotRockCore(object):
     ##
     def get_botrock_voting(self, *args, **kwargs):
         callback = kwargs.get('callback', False)
-        #print(u'get_botrock_voting')
+        logger.debug(u'get_botrock_voting')
             
         returnData = {
             "voting": self.botRockVoting
@@ -814,7 +814,7 @@ class BotRockCore(object):
     ##
     def cast_botrock_vote_internal(self, username, song_number):
         song_index = song_number - 1
-        #print 'Vote cast: username - ' + username + ', song_index - ' + str(song_index)
+        logger.debug('Vote cast: username - ' + username + ', song_index - ' + str(song_index))
 
         for i in range(0, len(self.botRockVoting['songs'])):
             song = self.botRockVoting['songs'][i]
@@ -848,7 +848,7 @@ class BotRockCore(object):
     # play_winner_of_botrock_voting
     ##
     def play_winner_of_botrock_voting(self):
-        #print 'play_winner_of_botrock_voting'
+        logger.debug('play_winner_of_botrock_voting')
 
         winner = None
 
@@ -864,7 +864,7 @@ class BotRockCore(object):
                     winnerTimestamp = songTimestamp
             if winner:
                 winnerIndex = self.core.tracklist.index(tlid = winner['track']['tlid']).get()
-                #print 'Voting Winner: ' + str(winner) + ' index: ' + str(winnerIndex)
+                logger.debug('Voting Winner: ' + str(winner) + ' index: ' + str(winnerIndex))
 
                 self.broadcast(
                     data={
@@ -881,7 +881,7 @@ class BotRockCore(object):
     # remove_tl_track
     ##
     def remove_tl_track(self, tl_track):
-        #print 'remove_tl_track'
+        logger.debug('remove_tl_track')
         self.core.tracklist.remove({ 'tlid': [ tl_track.tlid ] })
 
     ##
