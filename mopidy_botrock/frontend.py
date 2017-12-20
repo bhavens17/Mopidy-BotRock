@@ -5,6 +5,7 @@ from mopidy.core import CoreListener
 # stdlib imports
 import logging
 import json
+import time
 
 # third-party imports
 import mem
@@ -22,8 +23,7 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 		
 		mem.botrock.core = core
 		mem.botrock.config = config
-
-		_hostname = 'mqtt.beebotte.com'
+		
 		#_accesskey = self.config['accesskey']
 		#_secretkey = self.config['secretkey']
 		_channeltoken = config['botrock']['channeltoken']
@@ -35,14 +35,24 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 
 		self.client.username_pw_set("token:" + _channeltoken)
 
-		self.client.connect(_hostname, 1883, 60)
+		self.mqtt_connect()
 
-		self.client.loop_start()
+	def mqtt_connect(self):
+		_hostname = 'mqtt.beebotte.com'
+		while True:
+			try:
+				self.client.connect(_hostname, 1883, 60)
+
+				self.client.loop_start()
+				break
+			except:
+				logger.error('Unable to connect to MQTT server, retrying...')
+				time.sleep(4)
 
 	def on_mqtt_connect(self, client, data, flags, rc):
 		client.subscribe(self.topic, 1)
 		logger.info("Connected to topic: " + self.topic)
-	
+
 	def on_mqtt_message(self, client, data, msg):
 		logger.info("Received a message on " + msg.topic + " with payload " + str(msg.payload))
 		payload = json.loads(msg.payload)
