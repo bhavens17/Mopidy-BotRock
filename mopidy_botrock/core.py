@@ -274,28 +274,13 @@ class BotRockCore(object):
 
     def get_version(self, *args, **kwargs):
         callback = kwargs.get('callback', False)
-        url = 'https://pypi.python.org/pypi/Mopidy-BotRock/json'
-        req = urllib2.Request(url)
-        
-        try:
-            response = urllib2.urlopen(req, timeout=30).read()
-            response = json.loads(response)
-            latest_version = response['info']['version']
-            
-            # compare our versions, and convert result to boolean
-            upgrade_available = cmp( parse_version( latest_version ), parse_version( self.version ) )
-            upgrade_available = ( upgrade_available == 1 )
 
-        except urllib2.HTTPError as e:
-            latest_version = '0.0.0'
-            upgrade_available = False
-        
         response = {
             'version': {
-                'current': self.version,
-                'latest': latest_version,
-                'is_root': self.is_root,
-                'upgrade_available': upgrade_available
+                'current': None,
+                'latest': None,
+                'is_root': None,
+                'upgrade_available': None
             }
         }
         if (callback):
