@@ -45,8 +45,8 @@ class Queue extends React.Component{
 		this.props.mopidyActions.changeTrack(track.tlid);
 	}
 
-	playTracks(tracks){
-		this.props.mopidyActions.changeTrack(tracks[0].tlid);
+	enqueueTracks(tracks){
+		//this.props.mopidyActions.changeTrack(tracks[0].tlid);
 	}
 
 	reorderTracks(indexes, index){
@@ -219,7 +219,7 @@ class Queue extends React.Component{
 							className="queue-track-list"
 							tracks={tracks}
 							removeTracks={track_indexes => this.removeTracks(track_indexes)}
-							playTracks={tracks => this.playTracks(tracks)}
+							enqueueTracks={tracks => this.enqueueTracks(tracks)}
 							playTrack={track => this.playTrack(track)}
 							reorderTracks={(indexes, index) => this.reorderTracks(indexes, index)} />
 					</section>

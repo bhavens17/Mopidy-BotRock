@@ -26,7 +26,24 @@
                     data: JSON.stringify(payload),
                     processData: false,
                     contentType: 'application/json; charset=utf-8',
-                    
+                })
+            }
+
+            function addSongToQueue(username, uri, at_position){
+                var payload = {
+                    data: {
+                        action: 'tracklistAdd'
+                        ,username: username
+                        ,uris: [ uri ]
+                        ,at_position: null
+                    }
+                }
+                $.ajax({
+                    url: 'https://api.beebotte.com/v1/data/publish/BotRock/MoshPit?token=1512502520228_cKDTidgaEPi6ZXwh',
+                    type: "POST",
+                    data: JSON.stringify(payload),
+                    processData: false,
+                    contentType: 'application/json; charset=utf-8',
                 })
             }
 
@@ -37,6 +54,10 @@
             $('#btnVoteForSong2').on('click', function(){
                 voteForSong('MQTT Client 1', 2)
             })
+
+            $('#btnQueueSong').on('click', function(){
+                addSongToQueue('MQTT Client 1', 'spotify:track:3fXY1GLVF8QmzbTfNTTaFr')
+            })
         })
     </script>
 </head>
@@ -44,6 +65,7 @@
 <body>
     <button id="btnVoteForSong1" class="btn btn-primary">1</button>
     <button id="btnVoteForSong2" class="btn btn-primary">2</button>
+    <button id="btnQueueSong" class="btn btn-primary">Add Praise to Queue</button>
 </body>
 
 </html>

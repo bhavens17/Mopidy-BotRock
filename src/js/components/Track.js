@@ -278,8 +278,8 @@ export default class Track extends React.Component{
 							//onTouchEnd={e => this.handleTouchEnd(e)}			// When touch dragging is dropped on me
 							//onMouseDown={e => this.handleMouseDown(e)}			// Click (or potentially a mouse drag start)
 							//onMouseMove={e => this.handleMouseMove(e)}			// Any movement over me
-							//onMouseUp={e => this.handleMouseUp(e)}				// End of click, or potentially a dragging drop event
-							//onDoubleClick={e => this.props.handleDoubleClick(e)}
+							onMouseUp={e => this.handleMouseUp(e)}				// End of click, or potentially a dragging drop event
+							onDoubleClick={e => this.props.handleDoubleClick(e)}
 							onContextMenu={e => {this.handleContextMenu(e)}}>
 								{track_columns}
 						</div>

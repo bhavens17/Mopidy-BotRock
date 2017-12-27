@@ -227,7 +227,6 @@ class Artist extends React.Component{
 						<div className="liner">
 							<h1>{this.props.artist ? this.props.artist.name : null}</h1>
 							<div className="actions">
-								<button className="primary" onClick={e => this.enqueueArtistTopTracks(e)}>Add Top Tracks to BotRock</button>
 								<ContextMenuTrigger className="white" onTrigger={e => this.handleContextMenu(e)} />
 							</div>
 							{ this.renderSubViewMenu() }

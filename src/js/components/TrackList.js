@@ -45,35 +45,35 @@ class TrackList extends React.Component{
 
 		var tracks_keys = this.digestTracksKeys()
 
-		switch(e.keyCode){			
-			case 13: // enter
-				if (tracks_keys && tracks_keys.length > 0){
-					this.playTracks();
-				}
-				break;
+		// switch(e.keyCode){			
+		// 	case 13: // enter
+		// 		if (tracks_keys && tracks_keys.length > 0){
+		// 			this.playTracks();
+		// 		}
+		// 		break;
 			
-			case 46: // delete
-				if (tracks_keys && tracks_keys.length > 0){
-					this.removeTracks();
-				}
-				break;
+		// 	case 46: // delete
+		// 		if (tracks_keys && tracks_keys.length > 0){
+		// 			this.removeTracks();
+		// 		}
+		// 		break;
 			
-			case 65: // a
-				if ((e.ctrlKey || e.metaKey)){
+		// 	case 65: // a
+		// 		if ((e.ctrlKey || e.metaKey)){
 
-					e.preventDefault();
+		// 			e.preventDefault();
 
-					// Select all our tracks
-					var all_tracks = []
-					for (var i = 0; i < this.props.tracks.length; i++){
-						all_tracks.push(this.buildTrackKey(this.props.tracks[i], i))
-					}
-					this.props.uiActions.setSelectedTracks(all_tracks)
+		// 			// Select all our tracks
+		// 			var all_tracks = []
+		// 			for (var i = 0; i < this.props.tracks.length; i++){
+		// 				all_tracks.push(this.buildTrackKey(this.props.tracks[i], i))
+		// 			}
+		// 			this.props.uiActions.setSelectedTracks(all_tracks)
 
-					return false
-				}
-				break;
-		}
+		// 			return false
+		// 		}
+		// 		break;
+		// }
 	}
 
 	handleDrag(e,track_key){
@@ -178,6 +178,7 @@ class TrackList extends React.Component{
 
 	handleDoubleClick(e,track_key){
 		if (this.props.context_menu) this.props.uiActions.hideContextMenu()
+		this.enqueueTracks()
 		//this.playTracks()
 	}
 
@@ -262,18 +263,18 @@ class TrackList extends React.Component{
 		return false
 	}
 
-	playTracks(){
+	enqueueTracks(){
 		let selected_tracks = this.digestTracksKeys()
 		let selected_tracks_indexes = helpers.arrayOf('index',selected_tracks)
 
 		// Our parent handles playing
-		if (this.props.playTracks !== undefined){
-			return this.props.playTracks(selected_tracks)
+		if (this.props.enqueueTracks !== undefined){
+			return this.props.enqueueTracks(selected_tracks)
 
 		// Default to playing the URIs
 		} else {
 			let selected_tracks_uris = helpers.arrayOf('uri',selected_tracks)
-			return this.props.mopidyActions.playURIs(selected_tracks_uris, this.props.uri)
+			return this.props.mopidyActions.enqueueURIs(selected_tracks_uris, this.props.uri)
 		}
 	}
 
