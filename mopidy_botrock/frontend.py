@@ -6,6 +6,7 @@ from mopidy.core import CoreListener
 import logging
 import json
 import time
+import threading
 
 # third-party imports
 import mem
@@ -36,6 +37,8 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 		self.client.username_pw_set("token:" + _channeltoken)
 
 		self.mqtt_connect()
+
+		self.voting_song_change_counter = 0
 
 	def mqtt_connect(self):
 		_hostname = 'mqtt.beebotte.com'
@@ -70,14 +73,25 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 		mem.botrock.update_botrock_voting_status()
 
 	def track_playback_started(self, tl_track):
-		logger.debug('track_playback_started')
+		print ('BotRock - track_playback_started - track: ' + tl_track.track.name.encode('ascii', 'ignore').decode('ascii'))
 		mem.botrock.create_new_botrock_voting()
 
 	def track_playback_ended(self, tl_track, time_position):
-		if time_position > 1:
-			logger.debug('track_playback_ended')
+		print ('BotRock - track_playback_ended - track: ' + tl_track.track.name.encode('ascii', 'ignore').decode('ascii') + ', time_position: ' + str(time_position) + ', voting_song_change_counter: ' + str(self.voting_song_change_counter))
+		if self.voting_song_change_counter <= 0:
+			print ('BotRock - playback ended, tallying votes')
+			winner_played = mem.botrock.play_winner_of_botrock_voting()
+			print 'BotRock - voting tallied, winner_played: ' + str(winner_played)
+			if winner_played:
+				self.voting_song_change_counter = 1
+			print ('BotRock - removing previous track: ' + tl_track.track.name.encode('ascii', 'ignore').decode('ascii'))
 			mem.botrock.remove_tl_track(tl_track)
-			mem.botrock.play_winner_of_botrock_voting()
+		else:
+			self.voting_song_change_counter -= 1
+				
+	def set_is_voting_song_change_false(self):
+		print 'BotRock - set_is_voting_song_change_false'
+		self.is_voting_song_change = False
 			
 	def handle_mqtt_action(self, action, data = None):
 		try:

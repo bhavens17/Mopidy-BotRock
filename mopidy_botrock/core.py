@@ -862,12 +862,16 @@ class BotRockCore(object):
                 #Play winner
                 self.core.playback.play(tlid = winner['track']['tlid'])
 
+            self.botRockVoting = None
+
+        return winner != None
+
     ##
     # remove_tl_track
     ##
     def remove_tl_track(self, tl_track):
         logger.debug('remove_tl_track')
-        self.core.tracklist.remove({ 'tlid': [ tl_track.tlid ] })
+        self.core.tracklist.remove({ 'tlid': [ tl_track.tlid ] }).get()
 
     ##
     # update_botrock_voting_status
