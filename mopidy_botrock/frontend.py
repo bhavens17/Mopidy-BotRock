@@ -38,7 +38,7 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 
 		self.mqtt_connect()
 
-		self.voting_song_change_counter = 0
+		self.tl_track_now_playing = None
 
 	def mqtt_connect(self):
 		_hostname = 'mqtt.beebotte.com'
@@ -70,28 +70,32 @@ class BotRockFrontend(pykka.ThreadingActor, CoreListener):
 	def tracklist_changed(self):
 		logger.debug('tracklist_changed')
 		mem.botrock.play_first_track_if_one_not_already_playing()
-		mem.botrock.update_botrock_voting_status()
 
 	def track_playback_started(self, tl_track):
-		print ('BotRock - track_playback_started - track: ' + tl_track.track.name.encode('ascii', 'ignore').decode('ascii'))
-		mem.botrock.create_new_botrock_voting()
+		logger.debug('BotRock - track_playback_started - track: ' + tl_track.track.name.encode('ascii', 'ignore').decode('ascii'))
+		mem.botrock.update_botrock_voting_status()
+		if not self.tl_track_now_playing:
+			logger.debug('BotRock - No tl_track_now_playing.  Set to playing track')
+			timer = threading.Timer(1, self.set_tl_track_now_playing_callback, [tl_track])
+			timer.start()
 
 	def track_playback_ended(self, tl_track, time_position):
-		print ('BotRock - track_playback_ended - track: ' + tl_track.track.name.encode('ascii', 'ignore').decode('ascii') + ', time_position: ' + str(time_position) + ', voting_song_change_counter: ' + str(self.voting_song_change_counter))
-		if self.voting_song_change_counter <= 0:
-			print ('BotRock - playback ended, tallying votes')
+		logger.debug('BotRock - track_playback_ended - track: ' + tl_track.track.name.encode('ascii', 'ignore').decode('ascii') + ', time_position: ' + str(time_position))
+			
+		if self.tl_track_now_playing and self.tl_track_now_playing.tlid == tl_track.tlid:
+			logger.debug('BotRock - tl_track_now_playing matches tl_track')
+			
+			logger.debug('BotRock - Playback ended, tallying votes')
 			winner_played = mem.botrock.play_winner_of_botrock_voting()
-			print 'BotRock - voting tallied, winner_played: ' + str(winner_played)
-			if winner_played:
-				self.voting_song_change_counter = 1
-			print ('BotRock - removing previous track: ' + tl_track.track.name.encode('ascii', 'ignore').decode('ascii'))
+			logger.debug('BotRock - voting tallied, winner_played: ' + str(winner_played))
+
+			logger.debug('BotRock - Remove track')
 			mem.botrock.remove_tl_track(tl_track)
-		else:
-			self.voting_song_change_counter -= 1
-				
-	def set_is_voting_song_change_false(self):
-		print 'BotRock - set_is_voting_song_change_false'
-		self.is_voting_song_change = False
+			self.tl_track_now_playing = None
+
+	def set_tl_track_now_playing_callback(self, tl_track):
+		logger.debug('BotRock - set_tl_track_now_playing_callback - tl_track: ' + tl_track.track.name.encode('ascii', 'ignore').decode('ascii'))
+		self.tl_track_now_playing = tl_track
 			
 	def handle_mqtt_action(self, action, data = None):
 		try:
